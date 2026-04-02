@@ -1,0 +1,30 @@
+﻿using System.Windows;
+using System.Windows.Controls;
+
+namespace Vktun.Antd.Wpf;
+
+/// <summary>
+/// Represents a button with a dedicated icon slot.
+/// </summary>
+public class IconButton : Button
+{
+    static IconButton()
+    {
+        DefaultStyleKeyProperty.OverrideMetadata(typeof(IconButton), new FrameworkPropertyMetadata(typeof(IconButton)));
+    }
+
+    /// <summary>
+    /// Identifies the <see cref="Icon"/> dependency property.
+    /// </summary>
+    public static readonly DependencyProperty IconProperty =
+        DependencyProperty.Register(nameof(Icon), typeof(object), typeof(IconButton), new PropertyMetadata(null));
+
+    /// <summary>
+    /// Gets or sets the icon content.
+    /// </summary>
+    public object? Icon
+    {
+        get => GetValue(IconProperty);
+        set => SetValue(IconProperty, value);
+    }
+}
