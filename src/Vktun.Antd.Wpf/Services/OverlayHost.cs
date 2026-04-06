@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -15,13 +16,21 @@ internal sealed class OverlayHost
     private readonly StackPanel _messagePanel;
     private readonly StackPanel _notificationRightPanel;
     private readonly StackPanel _notificationLeftPanel;
+    private readonly Grid _floatButtonLayer;
     private readonly Grid _modalLayer;
+    private readonly Dictionary<FloatButton, ContentControl> _floatButtonHosts = [];
 
-    private OverlayHost(StackPanel messagePanel, StackPanel notificationRightPanel, StackPanel notificationLeftPanel, Grid modalLayer)
+    private OverlayHost(
+        StackPanel messagePanel,
+        StackPanel notificationRightPanel,
+        StackPanel notificationLeftPanel,
+        Grid floatButtonLayer,
+        Grid modalLayer)
     {
         _messagePanel = messagePanel;
         _notificationRightPanel = notificationRightPanel;
         _notificationLeftPanel = notificationLeftPanel;
+        _floatButtonLayer = floatButtonLayer;
         _modalLayer = modalLayer;
     }
 
@@ -44,10 +53,9 @@ internal sealed class OverlayHost
             owner.Content = root;
         }
 
-        var overlayCanvas = new Grid
+        var passiveOverlay = new Grid
         {
             IsHitTestVisible = false,
-            Background = Brushes.Transparent,
         };
 
         var messagePanel = new StackPanel
@@ -71,27 +79,102 @@ internal sealed class OverlayHost
             Margin = new Thickness(24d, 24d, 0d, 0d),
         };
 
+        var interactiveOverlay = new Grid();
+
+        var floatButtonLayer = new Grid();
+
         var modalLayer = new Grid
         {
             Visibility = Visibility.Collapsed,
             IsHitTestVisible = false,
         };
 
-        overlayCanvas.Children.Add(messagePanel);
-        overlayCanvas.Children.Add(notificationRightPanel);
-        overlayCanvas.Children.Add(notificationLeftPanel);
-        overlayCanvas.Children.Add(modalLayer);
-        root.Children.Add(overlayCanvas);
+        passiveOverlay.Children.Add(messagePanel);
+        passiveOverlay.Children.Add(notificationRightPanel);
+        passiveOverlay.Children.Add(notificationLeftPanel);
 
-        var host = new OverlayHost(messagePanel, notificationRightPanel, notificationLeftPanel, modalLayer);
+        interactiveOverlay.Children.Add(floatButtonLayer);
+        interactiveOverlay.Children.Add(modalLayer);
+
+        root.Children.Add(passiveOverlay);
+        root.Children.Add(interactiveOverlay);
+
+        var host = new OverlayHost(messagePanel, notificationRightPanel, notificationLeftPanel, floatButtonLayer, modalLayer);
         root.Tag = host;
         return host;
+    }
+
+    public void AddFloatButton(FloatButton button)
+    {
+        ArgumentNullException.ThrowIfNull(button);
+
+        if (_floatButtonHosts.TryGetValue(button, out var existingHost))
+        {
+            UpdateFloatButton(button);
+            existingHost.Visibility = button.Visibility;
+            return;
+        }
+
+        var host = new ContentControl
+        {
+            Content = button,
+            Focusable = false,
+        };
+
+        _floatButtonHosts.Add(button, host);
+        _floatButtonLayer.Children.Add(host);
+        UpdateFloatButton(button);
+    }
+
+    public void UpdateFloatButton(FloatButton button)
+    {
+        ArgumentNullException.ThrowIfNull(button);
+
+        if (!_floatButtonHosts.TryGetValue(button, out var host))
+        {
+            return;
+        }
+
+        host.Visibility = button.Visibility;
+        host.Margin = button.GlobalMargin;
+
+        switch (button.Placement)
+        {
+            case AntdFloatButtonPlacement.BottomLeft:
+                host.HorizontalAlignment = HorizontalAlignment.Left;
+                host.VerticalAlignment = VerticalAlignment.Bottom;
+                break;
+            case AntdFloatButtonPlacement.TopRight:
+                host.HorizontalAlignment = HorizontalAlignment.Right;
+                host.VerticalAlignment = VerticalAlignment.Top;
+                break;
+            case AntdFloatButtonPlacement.TopLeft:
+                host.HorizontalAlignment = HorizontalAlignment.Left;
+                host.VerticalAlignment = VerticalAlignment.Top;
+                break;
+            default:
+                host.HorizontalAlignment = HorizontalAlignment.Right;
+                host.VerticalAlignment = VerticalAlignment.Bottom;
+                break;
+        }
+    }
+
+    public void RemoveFloatButton(FloatButton button)
+    {
+        ArgumentNullException.ThrowIfNull(button);
+
+        if (!_floatButtonHosts.Remove(button, out var host))
+        {
+            return;
+        }
+
+        _floatButtonLayer.Children.Remove(host);
+        host.Content = null;
     }
 
     public Border ShowMessage(Window owner, string content, MessageKind kind, TimeSpan duration)
     {
         var item = CreateToast(owner, content, kind, width: 320d, showTitle: false);
-        item.IsHitTestVisible = true;
         _messagePanel.Children.Add(item);
         ScheduleRemoval(item, _messagePanel, duration);
         return item;
@@ -103,7 +186,6 @@ internal sealed class OverlayHost
             ? request.Title
             : $"{request.Title}{Environment.NewLine}{request.Description}";
         var item = CreateToast(owner, text, request.Kind, width: 360d, showTitle: true);
-        item.IsHitTestVisible = true;
         var panel = request.Placement == NotificationPlacement.TopLeft ? _notificationLeftPanel : _notificationRightPanel;
         panel.Children.Add(item);
         ScheduleRemoval(item, panel, request.Duration);
@@ -308,4 +390,3 @@ internal sealed class OverlayHost
         };
     }
 }
-

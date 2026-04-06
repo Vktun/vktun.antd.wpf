@@ -10,11 +10,7 @@ public sealed class AntdThemeResources : ResourceDictionary
 {
     private static readonly Uri[] SharedDictionaries =
     {
-        new("/Vktun.Antd.Wpf;component/Themes/Styles/Foundation.xaml", UriKind.Relative),
-        new("/Vktun.Antd.Wpf;component/Themes/Styles/Buttons.xaml", UriKind.Relative),
-        new("/Vktun.Antd.Wpf;component/Themes/Styles/Inputs.xaml", UriKind.Relative),
-        new("/Vktun.Antd.Wpf;component/Themes/Styles/SelectionControls.xaml", UriKind.Relative),
-        new("/Vktun.Antd.Wpf;component/Themes/Styles/Containers.xaml", UriKind.Relative),
+        new("/Vktun.Antd.Wpf;component/Themes/Generic.xaml", UriKind.Relative),
     };
 
     private readonly ResourceDictionary _tokenDictionary = new();
@@ -76,3 +72,4 @@ public sealed class AntdThemeResources : ResourceDictionary
         }
     }
 }
+

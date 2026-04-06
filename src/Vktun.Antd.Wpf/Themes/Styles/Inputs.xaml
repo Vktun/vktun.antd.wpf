@@ -2,7 +2,7 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:local="clr-namespace:Vktun.Antd.Wpf">
     <Style x:Key="Antd.InputBaseStyle" TargetType="Control">
-        <Setter Property="FocusVisualStyle" Value="{StaticResource Antd.FocusVisualStyle}" />
+        <Setter Property="FocusVisualStyle" Value="{DynamicResource Antd.FocusVisualStyle}" />
         <Setter Property="Foreground" Value="{DynamicResource {x:Static local:AntdResourceKeys.BrushText}}" />
         <Setter Property="Background" Value="{DynamicResource {x:Static local:AntdResourceKeys.BrushBgContainer}}" />
         <Setter Property="BorderBrush" Value="{DynamicResource {x:Static local:AntdResourceKeys.BrushBorder}}" />
@@ -160,7 +160,8 @@
                                                   Margin="0,0,8,0"
                                                   VerticalAlignment="Center"
                                                   Content="{TemplateBinding local:InputAssist.Suffix}" />
-                                <Path Grid.Column="3"
+                                <Path x:Name="PART_Arrow"
+                                      Grid.Column="3"
                                       Width="10"
                                       Height="6"
                                       VerticalAlignment="Center"
@@ -169,7 +170,7 @@
                                       Stroke="{DynamicResource {x:Static local:AntdResourceKeys.BrushTextSecondary}}"
                                       RenderTransformOrigin="0.5,0.5">
                                     <Path.RenderTransform>
-                                        <RotateTransform x:Name="ArrowRotateTransform" />
+                                        <RotateTransform Angle="0" />
                                     </Path.RenderTransform>
                                 </Path>
                             </Grid>
@@ -202,7 +203,11 @@
                             <Setter TargetName="SuffixPresenter" Property="Visibility" Value="Collapsed" />
                         </Trigger>
                         <Trigger Property="IsDropDownOpen" Value="True">
-                            <Setter TargetName="ArrowRotateTransform" Property="Angle" Value="180" />
+                            <Setter TargetName="PART_Arrow" Property="RenderTransform">
+                                <Setter.Value>
+                                    <RotateTransform Angle="180" />
+                                </Setter.Value>
+                            </Setter>
                         </Trigger>
                         <Trigger Property="local:ComboBoxAssist.Variant" Value="Filled">
                             <Setter TargetName="Border" Property="Background" Value="{DynamicResource {x:Static local:AntdResourceKeys.BrushFillTertiary}}" />

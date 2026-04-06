@@ -1,0 +1,506 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:Vktun.Antd.Wpf">
+    <Style x:Key="Antd.InputBaseStyle" TargetType="Control">
+        <Setter Property="FocusVisualStyle" Value="{DynamicResource Antd.FocusVisualStyle}" />
+        <Setter Property="Foreground" Value="{DynamicResource Antd.Brush.Text}" />
+        <Setter Property="Background" Value="{DynamicResource Antd.Brush.BgContainer}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource Antd.Brush.Border}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="MinHeight" Value="{DynamicResource Antd.Control.Height.Md}" />
+        <Setter Property="Padding" Value="12,0" />
+    </Style>
+
+    <Style TargetType="DatePickerTextBox">
+        <Setter Property="Foreground" Value="{DynamicResource Antd.Brush.Text}" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Padding" Value="0" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="DatePickerTextBox">
+                    <Grid Background="{TemplateBinding Background}">
+                        <ScrollViewer x:Name="PART_ContentHost"
+                                      Margin="0"
+                                      VerticalAlignment="Center"
+                                      Focusable="False" />
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="Antd.DatePicker.TriggerButtonStyle" TargetType="Button">
+        <Setter Property="Width" Value="28" />
+        <Setter Property="Height" Value="28" />
+        <Setter Property="Foreground" Value="{DynamicResource Antd.Brush.TextTertiary}" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderBrush" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Focusable" Value="False" />
+        <Setter Property="Cursor" Value="Hand" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="Root"
+                            Background="{TemplateBinding Background}"
+                            CornerRadius="{DynamicResource Antd.BorderRadius.Sm}">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="Root" Property="Background" Value="{DynamicResource Antd.Brush.FillSecondary}" />
+                            <Setter Property="Foreground" Value="{DynamicResource Antd.Brush.TextSecondary}" />
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="Root" Property="Background" Value="{DynamicResource Antd.Brush.FillTertiary}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="Antd.CalendarNavigationButtonStyle" TargetType="Button">
+        <Setter Property="MinWidth" Value="30" />
+        <Setter Property="MinHeight" Value="30" />
+        <Setter Property="Padding" Value="7,4" />
+        <Setter Property="Foreground" Value="{DynamicResource Antd.Brush.TextSecondary}" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderBrush" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="Cursor" Value="Hand" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="Root"
+                            Padding="{TemplateBinding Padding}"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="{DynamicResource Antd.BorderRadius.Sm}">
+                        <ContentPresenter HorizontalAlignment="Center"
+                                          VerticalAlignment="Center"
+                                          RecognizesAccessKey="True" />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="Root" Property="Background" Value="{DynamicResource Antd.Brush.FillSecondary}" />
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="Root" Property="Background" Value="{DynamicResource Antd.Brush.FillTertiary}" />
+                        </Trigger>
+                        <Trigger Property="IsKeyboardFocused" Value="True">
+                            <Setter TargetName="Root" Property="BorderBrush" Value="{DynamicResource Antd.Brush.Primary}" />
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Opacity" Value="0.56" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="Antd.CalendarButtonStyle" TargetType="CalendarButton">
+        <Setter Property="MinWidth" Value="56" />
+        <Setter Property="MinHeight" Value="36" />
+        <Setter Property="Padding" Value="10,7" />
+        <Setter Property="Foreground" Value="{DynamicResource Antd.Brush.Text}" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderBrush" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="FontWeight" Value="SemiBold" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="CalendarButton">
+                    <Border x:Name="Root"
+                            Margin="3"
+                            Padding="{TemplateBinding Padding}"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="{DynamicResource Antd.BorderRadius.Sm}">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="Root" Property="Background" Value="{DynamicResource Antd.Brush.FillSecondary}" />
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="Root" Property="Background" Value="{DynamicResource Antd.Brush.FillTertiary}" />
+                        </Trigger>
+                        <Trigger Property="HasSelectedDays" Value="True">
+                            <Setter TargetName="Root" Property="Background" Value="{DynamicResource Antd.Brush.BgSpotlight}" />
+                            <Setter TargetName="Root" Property="BorderBrush" Value="{DynamicResource Antd.Brush.PrimaryHover}" />
+                            <Setter Property="Foreground" Value="{DynamicResource Antd.Brush.Primary}" />
+                        </Trigger>
+                        <Trigger Property="IsKeyboardFocused" Value="True">
+                            <Setter TargetName="Root" Property="BorderBrush" Value="{DynamicResource Antd.Brush.PrimaryHover}" />
+                        </Trigger>
+                        <Trigger Property="IsInactive" Value="True">
+                            <Setter Property="Foreground" Value="{DynamicResource Antd.Brush.TextTertiary}" />
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Opacity" Value="0.56" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="Antd.CalendarDayButtonStyle" TargetType="CalendarDayButton">
+        <Setter Property="MinWidth" Value="34" />
+        <Setter Property="MinHeight" Value="32" />
+        <Setter Property="Foreground" Value="{DynamicResource Antd.Brush.Text}" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderBrush" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="FontSize" Value="{DynamicResource Antd.FontSize.Small}" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="CalendarDayButton">
+                    <Grid Margin="1.5">
+                        <Border x:Name="TodayBorder"
+                                CornerRadius="{DynamicResource Antd.BorderRadius.Sm}"
+                                BorderBrush="Transparent"
+                                BorderThickness="1.2" />
+                        <Border x:Name="Root"
+                                Margin="2"
+                                Background="Transparent"
+                                BorderBrush="Transparent"
+                                BorderThickness="1"
+                                CornerRadius="{DynamicResource Antd.BorderRadius.Sm}" />
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="Root" Property="Background" Value="{DynamicResource Antd.Brush.FillSecondary}" />
+                        </Trigger>
+                        <Trigger Property="IsHighlighted" Value="True">
+                            <Setter TargetName="Root" Property="Background" Value="{DynamicResource Antd.Brush.FillSecondary}" />
+                        </Trigger>
+                        <Trigger Property="IsKeyboardFocused" Value="True">
+                            <Setter TargetName="TodayBorder" Property="BorderBrush" Value="{DynamicResource Antd.Brush.PrimaryHover}" />
+                        </Trigger>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter TargetName="Root" Property="Background" Value="{DynamicResource Antd.Brush.Primary}" />
+                            <Setter TargetName="Root" Property="BorderBrush" Value="{DynamicResource Antd.Brush.Primary}" />
+                            <Setter Property="Foreground" Value="{DynamicResource Antd.Brush.White}" />
+                            <Setter Property="FontWeight" Value="SemiBold" />
+                        </Trigger>
+                        <Trigger Property="IsToday" Value="True">
+                            <Setter TargetName="TodayBorder" Property="BorderBrush" Value="{DynamicResource Antd.Brush.Primary}" />
+                        </Trigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsSelected" Value="True" />
+                                <Condition Property="IsToday" Value="True" />
+                            </MultiTrigger.Conditions>
+                            <Setter TargetName="TodayBorder" Property="BorderBrush" Value="{DynamicResource Antd.Brush.White}" />
+                        </MultiTrigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsSelected" Value="True" />
+                                <Condition Property="IsMouseOver" Value="True" />
+                            </MultiTrigger.Conditions>
+                            <Setter TargetName="Root" Property="Background" Value="{DynamicResource Antd.Brush.PrimaryActive}" />
+                            <Setter TargetName="Root" Property="BorderBrush" Value="{DynamicResource Antd.Brush.PrimaryActive}" />
+                        </MultiTrigger>
+                        <Trigger Property="IsInactive" Value="True">
+                            <Setter Property="Foreground" Value="{DynamicResource Antd.Brush.TextTertiary}" />
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Opacity" Value="0.38" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="CalendarButton" BasedOn="{StaticResource Antd.CalendarButtonStyle}" />
+
+    <Style TargetType="CalendarDayButton" BasedOn="{StaticResource Antd.CalendarDayButtonStyle}" />
+
+    <Style x:Key="Antd.CalendarItemStyle" TargetType="CalendarItem">
+        <Setter Property="Background" Value="{DynamicResource Antd.Brush.BgElevated}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource Antd.Brush.BorderSecondary}" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="CalendarItem">
+                    <ControlTemplate.Resources>
+                        <DataTemplate x:Key="DayTitleTemplate">
+                            <Border Margin="2,0,2,8"
+                                    Padding="0,6"
+                                    Background="{DynamicResource Antd.Brush.FillQuaternary}"
+                                    CornerRadius="{DynamicResource Antd.BorderRadius.Sm}">
+                                <TextBlock HorizontalAlignment="Center"
+                                           VerticalAlignment="Center"
+                                           Foreground="{DynamicResource Antd.Brush.TextSecondary}"
+                                           FontSize="{DynamicResource Antd.FontSize.Small}"
+                                           FontWeight="SemiBold"
+                                           Text="{Binding}" />
+                            </Border>
+                        </DataTemplate>
+                    </ControlTemplate.Resources>
+                    <Border Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="{DynamicResource Antd.BorderRadius.Md}">
+                        <Grid x:Name="PART_Root" Margin="2">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="10" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+
+                            <Grid Margin="2,2,2,0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+
+                                <Button x:Name="PART_PreviousButton"
+                                        Width="30"
+                                        Height="30"
+                                        Style="{StaticResource Antd.CalendarNavigationButtonStyle}">
+                                    <Path Width="8"
+                                          Height="12"
+                                          Stretch="Fill"
+                                          Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"
+                                          StrokeThickness="1.6"
+                                          StrokeStartLineCap="Round"
+                                          StrokeEndLineCap="Round"
+                                          Data="M 7 1 L 1 6 L 7 11" />
+                                </Button>
+
+                                <Button x:Name="PART_HeaderButton"
+                                        Grid.Column="1"
+                                        Margin="10,0"
+                                        HorizontalAlignment="Stretch"
+                                        Style="{StaticResource Antd.CalendarNavigationButtonStyle}"
+                                        Background="{DynamicResource Antd.Brush.FillQuaternary}"
+                                        BorderBrush="{DynamicResource Antd.Brush.BorderSecondary}"
+                                        FontWeight="SemiBold"
+                                        Foreground="{DynamicResource Antd.Brush.Text}" />
+
+                                <Button x:Name="PART_NextButton"
+                                        Grid.Column="2"
+                                        Width="30"
+                                        Height="30"
+                                        Style="{StaticResource Antd.CalendarNavigationButtonStyle}">
+                                    <Path Width="8"
+                                          Height="12"
+                                          Stretch="Fill"
+                                          Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"
+                                          StrokeThickness="1.6"
+                                          StrokeStartLineCap="Round"
+                                          StrokeEndLineCap="Round"
+                                          Data="M 1 1 L 7 6 L 1 11" />
+                                </Button>
+                            </Grid>
+
+                            <Grid Grid.Row="2">
+                                <Grid x:Name="PART_MonthView"
+                                      Margin="0"
+                                      Visibility="Visible">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="*" />
+                                        <RowDefinition Height="*" />
+                                        <RowDefinition Height="*" />
+                                        <RowDefinition Height="*" />
+                                        <RowDefinition Height="*" />
+                                        <RowDefinition Height="*" />
+                                    </Grid.RowDefinitions>
+                                </Grid>
+
+                                <Grid x:Name="PART_YearView"
+                                      Margin="0"
+                                      Visibility="Hidden">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="*" />
+                                        <RowDefinition Height="*" />
+                                        <RowDefinition Height="*" />
+                                    </Grid.RowDefinitions>
+                                </Grid>
+                            </Grid>
+
+                            <Rectangle x:Name="PART_DisabledVisual"
+                                       Grid.RowSpan="3"
+                                       RadiusX="12"
+                                       RadiusY="12"
+                                       Fill="{DynamicResource Antd.Brush.Mask}"
+                                       Opacity="0" />
+                        </Grid>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter TargetName="PART_DisabledVisual" Property="Opacity" Value="0.08" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="Calendar">
+        <Setter Property="CalendarItemStyle" Value="{StaticResource Antd.CalendarItemStyle}" />
+        <Setter Property="Foreground" Value="{DynamicResource Antd.Brush.Text}" />
+        <Setter Property="Background" Value="{DynamicResource Antd.Brush.BgElevated}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource Antd.Brush.BorderSecondary}" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="CalendarButtonStyle" Value="{StaticResource Antd.CalendarButtonStyle}" />
+        <Setter Property="CalendarDayButtonStyle" Value="{StaticResource Antd.CalendarDayButtonStyle}" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Calendar">
+                    <Border Background="{TemplateBinding Background}">
+                        <Grid x:Name="PART_Root">
+                            <CalendarItem x:Name="PART_CalendarItem"
+                                          Style="{TemplateBinding CalendarItemStyle}"
+                                          Background="{TemplateBinding Background}"
+                                          BorderBrush="{TemplateBinding BorderBrush}"
+                                          BorderThickness="{TemplateBinding BorderThickness}" />
+                        </Grid>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="DatePicker" BasedOn="{StaticResource Antd.InputBaseStyle}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="DatePicker">
+                    <Grid x:Name="PART_Root" SnapsToDevicePixels="True">
+                        <Border x:Name="Border"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="{DynamicResource Antd.BorderRadius.Md}">
+                            <Grid x:Name="ContentGrid" Margin="12,0,10,0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <DatePickerTextBox x:Name="PART_TextBox"
+                                                   Background="Transparent"
+                                                   BorderThickness="0"
+                                                   Padding="0"
+                                                   VerticalContentAlignment="Center"
+                                                   Foreground="{TemplateBinding Foreground}" />
+                                <Button x:Name="PART_Button"
+                                        Grid.Column="1"
+                                        Margin="10,0,0,0"
+                                        Style="{StaticResource Antd.DatePicker.TriggerButtonStyle}">
+                                    <Grid Width="14" Height="14">
+                                        <Rectangle RadiusX="2"
+                                                   RadiusY="2"
+                                                   Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"
+                                                   StrokeThickness="1" />
+                                        <Line X1="0"
+                                              Y1="4"
+                                              X2="14"
+                                              Y2="4"
+                                              Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"
+                                              StrokeThickness="1" />
+                                        <Line X1="4"
+                                              Y1="0"
+                                              X2="4"
+                                              Y2="4"
+                                              Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"
+                                              StrokeThickness="1" />
+                                        <Line X1="10"
+                                              Y1="0"
+                                              X2="10"
+                                              Y2="4"
+                                              Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"
+                                              StrokeThickness="1" />
+                                    </Grid>
+                                </Button>
+                            </Grid>
+                        </Border>
+                        <Popup x:Name="PART_Popup"
+                               IsOpen="{TemplateBinding IsDropDownOpen}"
+                               Placement="Bottom"
+                               AllowsTransparency="True"
+                               PopupAnimation="Fade"
+                               PlacementTarget="{Binding RelativeSource={RelativeSource TemplatedParent}}">
+                            <Border x:Name="PART_PopupBorder"
+                                    Margin="0,8,0,0"
+                                    Padding="10"
+                                    Background="{DynamicResource Antd.Brush.BgElevated}"
+                                    BorderBrush="{DynamicResource Antd.Brush.BorderSecondary}"
+                                    BorderThickness="1"
+                                    CornerRadius="{DynamicResource Antd.BorderRadius.Lg}"
+                                    Effect="{DynamicResource Antd.Shadow.Popup}">
+                                <Calendar x:Name="PART_Calendar"
+                                          Width="270"
+                                          Background="Transparent"
+                                          BorderThickness="0" />
+                            </Border>
+                        </Popup>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsKeyboardFocusWithin" Value="True">
+                            <Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource Antd.Brush.PrimaryHover}" />
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource Antd.Brush.PrimaryHover}" />
+                        </Trigger>
+                        <Trigger Property="IsDropDownOpen" Value="True">
+                            <Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource Antd.Brush.PrimaryHover}" />
+                            <Setter TargetName="PART_Button" Property="Background" Value="{DynamicResource Antd.Brush.FillSecondary}" />
+                            <Setter TargetName="PART_Button" Property="Foreground" Value="{DynamicResource Antd.Brush.Primary}" />
+                            <Setter TargetName="PART_PopupBorder" Property="BorderBrush" Value="{DynamicResource Antd.Brush.PrimaryHover}" />
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Opacity" Value="0.56" />
+                        </Trigger>
+                        <Trigger Property="local:StatusAssist.Status" Value="Error">
+                            <Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource Antd.Brush.Error}" />
+                        </Trigger>
+                        <Trigger Property="local:StatusAssist.Status" Value="Warning">
+                            <Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource Antd.Brush.Warning}" />
+                        </Trigger>
+                        <Trigger Property="local:StatusAssist.Status" Value="Success">
+                            <Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource Antd.Brush.Success}" />
+                        </Trigger>
+                        <Trigger Property="local:ControlAssist.Size" Value="Small">
+                            <Setter Property="MinHeight" Value="{DynamicResource Antd.Control.Height.Sm}" />
+                            <Setter Property="FontSize" Value="{DynamicResource Antd.FontSize.Small}" />
+                            <Setter TargetName="PART_Button" Property="Width" Value="24" />
+                            <Setter TargetName="PART_Button" Property="Height" Value="24" />
+                        </Trigger>
+                        <Trigger Property="local:ControlAssist.Size" Value="Large">
+                            <Setter Property="MinHeight" Value="{DynamicResource Antd.Control.Height.Lg}" />
+                            <Setter Property="FontSize" Value="{DynamicResource Antd.FontSize.Large}" />
+                            <Setter TargetName="PART_Button" Property="Width" Value="30" />
+                            <Setter TargetName="PART_Button" Property="Height" Value="30" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>

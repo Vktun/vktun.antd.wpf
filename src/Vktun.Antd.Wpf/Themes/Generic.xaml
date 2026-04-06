@@ -3,6 +3,15 @@
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="/Vktun.Antd.Wpf;component/Themes/Styles/Foundation.xaml" />
         <ResourceDictionary Source="/Vktun.Antd.Wpf;component/Themes/Styles/Buttons.xaml" />
+        <ResourceDictionary Source="/Vktun.Antd.Wpf;component/Themes/Styles/Inputs.xaml" />
+        <ResourceDictionary Source="/Vktun.Antd.Wpf;component/Themes/Styles/DatePickers.xaml" />
+        <ResourceDictionary Source="/Vktun.Antd.Wpf;component/Themes/Styles/SelectionControls.xaml" />
+        <ResourceDictionary Source="/Vktun.Antd.Wpf;component/Themes/Styles/Navigation.xaml" />
         <ResourceDictionary Source="/Vktun.Antd.Wpf;component/Themes/Styles/Containers.xaml" />
+        <!-- New component styles -->
+        <ResourceDictionary Source="/Vktun.Antd.Wpf;component/Themes/Styles/Feedback.xaml" />
+        <ResourceDictionary Source="/Vktun.Antd.Wpf;component/Themes/Styles/DataDisplay.xaml" />
+        <ResourceDictionary Source="/Vktun.Antd.Wpf;component/Themes/Styles/Layout.xaml" />
     </ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>
+
