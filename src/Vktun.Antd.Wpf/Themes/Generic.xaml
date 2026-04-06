@@ -12,6 +12,8 @@
         <ResourceDictionary Source="/Vktun.Antd.Wpf;component/Themes/Styles/Feedback.xaml" />
         <ResourceDictionary Source="/Vktun.Antd.Wpf;component/Themes/Styles/DataDisplay.xaml" />
         <ResourceDictionary Source="/Vktun.Antd.Wpf;component/Themes/Styles/Layout.xaml" />
+        <ResourceDictionary Source="/Vktun.Antd.Wpf;component/Themes/Styles/Overlay.xaml" />
+        <ResourceDictionary Source="/Vktun.Antd.Wpf;component/Themes/Styles/DataEntry.xaml" />
     </ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>
 

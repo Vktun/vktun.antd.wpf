@@ -1,10 +1,16 @@
-﻿# vktun.antd.wpf
+# vktun.antd.wpf
 
 基于 Ant Design 设计语言的 WPF UI 库首版实现，包含：
 
 - `src/Vktun.Antd.Wpf`：主题、token、附加属性、基础控件、消息/通知/弹窗服务
 - `samples/Vktun.Antd.Wpf.Sample`：登录页、设置页、工作台示例
 - `tests/Vktun.Antd.Wpf.Tests`：主题资源、附加属性和浮层宿主测试
+
+## 主题预览
+
+| Light 主题 | Dark 主题 | 自定义主题色 |
+|:----------:|:---------:|:------------:|
+| ![Light Theme](samples/docs/theme1.png) | ![Dark Theme](samples/docs/theme2.png) | ![Custom Theme](samples/docs/theme3.png) |
 
 ## 快速使用
 
