@@ -8,6 +8,7 @@ namespace Vktun.Antd.Wpf;
 /// <summary>
 /// Applies simple spacing to the direct children of a panel.
 /// </summary>
+[Obsolete("Use antd:Space.Gap property instead. Will be removed in v2.0.")]
 public static class SpaceAssist
 {
     /// <summary>

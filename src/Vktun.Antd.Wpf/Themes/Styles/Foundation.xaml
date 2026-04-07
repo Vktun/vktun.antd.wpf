@@ -34,4 +34,270 @@
         <Setter Property="BorderBrush" Value="{DynamicResource {x:Static local:AntdResourceKeys.BrushBorderSecondary}}" />
         <Setter Property="Padding" Value="10,6" />
     </Style>
+
+    <!-- TypographyTitle Styles -->
+    <Style TargetType="{x:Type local:TypographyTitle}">
+        <Setter Property="Foreground" Value="{DynamicResource {x:Static local:AntdResourceKeys.BrushText}}" />
+        <Setter Property="Margin" Value="0,0,0,16" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type local:TypographyTitle}">
+                    <Grid>
+                        <Border x:Name="MarkBorder"
+                                Background="#FFE58F"
+                                CornerRadius="2"
+                                Margin="-4,0"
+                                Padding="4,0"
+                                Visibility="Collapsed">
+                            <TextBlock x:Name="InnerText"
+                                       Text="{TemplateBinding Text}"
+                                       FontSize="{TemplateBinding FontSize}"
+                                       FontWeight="{TemplateBinding FontWeight}"
+                                       Foreground="{TemplateBinding Foreground}"
+                                       TextWrapping="Wrap" />
+                        </Border>
+                        <TextBlock x:Name="NormalText"
+                                   Text="{TemplateBinding Text}"
+                                   FontSize="{TemplateBinding FontSize}"
+                                   FontWeight="{TemplateBinding FontWeight}"
+                                   Foreground="{TemplateBinding Foreground}"
+                                   TextWrapping="Wrap" />
+                        <Button x:Name="CopyButton"
+                                Visibility="Collapsed"
+                                Width="20"
+                                Height="20"
+                                Margin="4,0,0,0"
+                                Cursor="Hand"
+                                ToolTip="复制">
+                            <Path Width="14"
+                                  Height="14"
+                                  Data="M 8 2 h 8 a 2 2 0 0 1 2 2 v 8 a 2 2 0 0 1 -2 2 h -8 a 2 2 0 0 1 -2 -2 v -8 a 2 2 0 0 1 2 -2 z M 4 6 v 10 a 2 2 0 0 0 2 2 h 10 v -2 h -10 v -10 z"
+                                  Fill="{DynamicResource {x:Static local:AntdResourceKeys.BrushTextSecondary}}"
+                                  Stretch="Uniform" />
+                        </Button>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="Level" Value="1">
+                            <Setter Property="FontSize" Value="38" />
+                            <Setter Property="FontWeight" Value="Bold" />
+                        </Trigger>
+                        <Trigger Property="Level" Value="2">
+                            <Setter Property="FontSize" Value="30" />
+                            <Setter Property="FontWeight" Value="SemiBold" />
+                        </Trigger>
+                        <Trigger Property="Level" Value="3">
+                            <Setter Property="FontSize" Value="24" />
+                            <Setter Property="FontWeight" Value="SemiBold" />
+                        </Trigger>
+                        <Trigger Property="Level" Value="4">
+                            <Setter Property="FontSize" Value="20" />
+                            <Setter Property="FontWeight" Value="SemiBold" />
+                        </Trigger>
+                        <Trigger Property="Mark" Value="True">
+                            <Setter TargetName="NormalText" Property="Visibility" Value="Collapsed" />
+                            <Setter TargetName="MarkBorder" Property="Visibility" Value="Visible" />
+                        </Trigger>
+                        <Trigger Property="IsCopyable" Value="True">
+                            <Setter TargetName="CopyButton" Property="Visibility" Value="Visible" />
+                        </Trigger>
+                        <Trigger Property="Type" Value="Primary">
+                            <Setter Property="Foreground" Value="{DynamicResource {x:Static local:AntdResourceKeys.BrushPrimary}}" />
+                        </Trigger>
+                        <Trigger Property="Type" Value="Secondary">
+                            <Setter Property="Foreground" Value="{DynamicResource {x:Static local:AntdResourceKeys.BrushTextSecondary}}" />
+                        </Trigger>
+                        <Trigger Property="Type" Value="Success">
+                            <Setter Property="Foreground" Value="{DynamicResource {x:Static local:AntdResourceKeys.BrushSuccess}}" />
+                        </Trigger>
+                        <Trigger Property="Type" Value="Warning">
+                            <Setter Property="Foreground" Value="{DynamicResource {x:Static local:AntdResourceKeys.BrushWarning}}" />
+                        </Trigger>
+                        <Trigger Property="Type" Value="Error">
+                            <Setter Property="Foreground" Value="{DynamicResource {x:Static local:AntdResourceKeys.BrushError}}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- TypographyText Styles -->
+    <Style TargetType="{x:Type local:TypographyText}">
+        <Setter Property="Foreground" Value="{DynamicResource {x:Static local:AntdResourceKeys.BrushText}}" />
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type local:TypographyText}">
+                    <Grid>
+                        <!-- Code style -->
+                        <Border x:Name="CodeBorder"
+                                Background="#F5F5F5"
+                                BorderBrush="{DynamicResource {x:Static local:AntdResourceKeys.BrushBorder}}"
+                                BorderThickness="1"
+                                CornerRadius="3"
+                                Padding="4,2"
+                                Visibility="Collapsed">
+                            <TextBlock x:Name="CodeText"
+                                       FontFamily="Consolas, Courier New"
+                                       Text="{TemplateBinding Text}"
+                                       FontSize="{TemplateBinding FontSize}"
+                                       FontWeight="{TemplateBinding FontWeight}"
+                                       Foreground="{TemplateBinding Foreground}"
+                                       TextWrapping="Wrap" />
+                        </Border>
+                        <!-- Mark style -->
+                        <Border x:Name="MarkBorder"
+                                Background="#FFE58F"
+                                CornerRadius="2"
+                                Margin="-2,0"
+                                Padding="2,0"
+                                Visibility="Collapsed">
+                            <TextBlock x:Name="MarkText"
+                                       Text="{TemplateBinding Text}"
+                                       FontSize="{TemplateBinding FontSize}"
+                                       FontWeight="{TemplateBinding FontWeight}"
+                                       Foreground="{TemplateBinding Foreground}"
+                                       TextWrapping="Wrap" />
+                        </Border>
+                        <!-- Normal style -->
+                        <TextBlock x:Name="NormalText"
+                                   Text="{TemplateBinding Text}"
+                                   FontSize="{TemplateBinding FontSize}"
+                                   FontWeight="{TemplateBinding FontWeight}"
+                                   Foreground="{TemplateBinding Foreground}"
+                                   TextWrapping="Wrap" />
+                        <!-- Copy button -->
+                        <Button x:Name="CopyButton"
+                                Visibility="Collapsed"
+                                Width="16"
+                                Height="16"
+                                Margin="2,0,0,0"
+                                Cursor="Hand"
+                                ToolTip="复制">
+                            <Path Width="12"
+                                  Height="12"
+                                  Data="M 8 2 h 8 a 2 2 0 0 1 2 2 v 8 a 2 2 0 0 1 -2 2 h -8 a 2 2 0 0 1 -2 -2 v -8 a 2 2 0 0 1 2 -2 z M 4 6 v 10 a 2 2 0 0 0 2 2 h 10 v -2 h -10 v -10 z"
+                                  Fill="{DynamicResource {x:Static local:AntdResourceKeys.BrushTextSecondary}}"
+                                  Stretch="Uniform" />
+                        </Button>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="Strong" Value="True">
+                            <Setter Property="FontWeight" Value="Bold" />
+                        </Trigger>
+                        <Trigger Property="Delete" Value="True">
+                            <Setter TargetName="NormalText" Property="TextDecorations" Value="Strikethrough" />
+                            <Setter TargetName="MarkText" Property="TextDecorations" Value="Strikethrough" />
+                        </Trigger>
+                        <Trigger Property="Underline" Value="True">
+                            <Setter TargetName="NormalText" Property="TextDecorations" Value="Underline" />
+                            <Setter TargetName="MarkText" Property="TextDecorations" Value="Underline" />
+                        </Trigger>
+                        <Trigger Property="Code" Value="True">
+                            <Setter TargetName="NormalText" Property="Visibility" Value="Collapsed" />
+                            <Setter TargetName="MarkBorder" Property="Visibility" Value="Collapsed" />
+                            <Setter TargetName="CodeBorder" Property="Visibility" Value="Visible" />
+                        </Trigger>
+                        <Trigger Property="Mark" Value="True">
+                            <Setter TargetName="NormalText" Property="Visibility" Value="Collapsed" />
+                            <Setter TargetName="CodeBorder" Property="Visibility" Value="Collapsed" />
+                            <Setter TargetName="MarkBorder" Property="Visibility" Value="Visible" />
+                        </Trigger>
+                        <Trigger Property="IsCopyable" Value="True">
+                            <Setter TargetName="CopyButton" Property="Visibility" Value="Visible" />
+                        </Trigger>
+                        <Trigger Property="Type" Value="Primary">
+                            <Setter Property="Foreground" Value="{DynamicResource {x:Static local:AntdResourceKeys.BrushPrimary}}" />
+                        </Trigger>
+                        <Trigger Property="Type" Value="Secondary">
+                            <Setter Property="Foreground" Value="{DynamicResource {x:Static local:AntdResourceKeys.BrushTextSecondary}}" />
+                        </Trigger>
+                        <Trigger Property="Type" Value="Success">
+                            <Setter Property="Foreground" Value="{DynamicResource {x:Static local:AntdResourceKeys.BrushSuccess}}" />
+                        </Trigger>
+                        <Trigger Property="Type" Value="Warning">
+                            <Setter Property="Foreground" Value="{DynamicResource {x:Static local:AntdResourceKeys.BrushWarning}}" />
+                        </Trigger>
+                        <Trigger Property="Type" Value="Error">
+                            <Setter Property="Foreground" Value="{DynamicResource {x:Static local:AntdResourceKeys.BrushError}}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- TypographyParagraph Styles -->
+    <Style TargetType="{x:Type local:TypographyParagraph}">
+        <Setter Property="Foreground" Value="{DynamicResource {x:Static local:AntdResourceKeys.BrushText}}" />
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="Margin" Value="0,0,0,16" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type local:TypographyParagraph}">
+                    <Grid>
+                        <Border x:Name="MarkBorder"
+                                Background="#FFE58F"
+                                CornerRadius="2"
+                                Margin="-2,0"
+                                Padding="2,0"
+                                Visibility="Collapsed">
+                            <TextBlock x:Name="InnerText"
+                                       Text="{TemplateBinding Text}"
+                                       FontSize="{TemplateBinding FontSize}"
+                                       FontWeight="{TemplateBinding FontWeight}"
+                                       Foreground="{TemplateBinding Foreground}"
+                                       TextWrapping="Wrap" />
+                        </Border>
+                        <TextBlock x:Name="NormalText"
+                                   Text="{TemplateBinding Text}"
+                                   FontSize="{TemplateBinding FontSize}"
+                                   FontWeight="{TemplateBinding FontWeight}"
+                                   Foreground="{TemplateBinding Foreground}"
+                                   TextWrapping="Wrap" />
+                        <Button x:Name="CopyButton"
+                                Visibility="Collapsed"
+                                Width="16"
+                                Height="16"
+                                Margin="2,0,0,0"
+                                Cursor="Hand"
+                                ToolTip="复制">
+                            <Path Width="12"
+                                  Height="12"
+                                  Data="M 8 2 h 8 a 2 2 0 0 1 2 2 v 8 a 2 2 0 0 1 -2 2 h -8 a 2 2 0 0 1 -2 -2 v -8 a 2 2 0 0 1 2 -2 z M 4 6 v 10 a 2 2 0 0 0 2 2 h 10 v -2 h -10 v -10 z"
+                                  Fill="{DynamicResource {x:Static local:AntdResourceKeys.BrushTextSecondary}}"
+                                  Stretch="Uniform" />
+                        </Button>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="Strong" Value="True">
+                            <Setter Property="FontWeight" Value="Bold" />
+                        </Trigger>
+                        <Trigger Property="Mark" Value="True">
+                            <Setter TargetName="NormalText" Property="Visibility" Value="Collapsed" />
+                            <Setter TargetName="MarkBorder" Property="Visibility" Value="Visible" />
+                        </Trigger>
+                        <Trigger Property="IsCopyable" Value="True">
+                            <Setter TargetName="CopyButton" Property="Visibility" Value="Visible" />
+                        </Trigger>
+                        <Trigger Property="Type" Value="Primary">
+                            <Setter Property="Foreground" Value="{DynamicResource {x:Static local:AntdResourceKeys.BrushPrimary}}" />
+                        </Trigger>
+                        <Trigger Property="Type" Value="Secondary">
+                            <Setter Property="Foreground" Value="{DynamicResource {x:Static local:AntdResourceKeys.BrushTextSecondary}}" />
+                        </Trigger>
+                        <Trigger Property="Type" Value="Success">
+                            <Setter Property="Foreground" Value="{DynamicResource {x:Static local:AntdResourceKeys.BrushSuccess}}" />
+                        </Trigger>
+                        <Trigger Property="Type" Value="Warning">
+                            <Setter Property="Foreground" Value="{DynamicResource {x:Static local:AntdResourceKeys.BrushWarning}}" />
+                        </Trigger>
+                        <Trigger Property="Type" Value="Error">
+                            <Setter Property="Foreground" Value="{DynamicResource {x:Static local:AntdResourceKeys.BrushError}}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
 </ResourceDictionary>

@@ -6,6 +6,7 @@ namespace Vktun.Antd.Wpf;
 /// <summary>
 /// Provides shared semantic status metadata for controls.
 /// </summary>
+[Obsolete("Use Status property on antd:Button, antd:Input, antd:ComboBox instead. Will be removed in v2.0.")]
 public static class StatusAssist
 {
     /// <summary>

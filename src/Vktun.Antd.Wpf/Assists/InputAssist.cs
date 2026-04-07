@@ -6,6 +6,7 @@ namespace Vktun.Antd.Wpf;
 /// <summary>
 /// Provides prefix and suffix content slots for input controls.
 /// </summary>
+[Obsolete("Use Prefix/Suffix properties on antd:Input or antd:ComboBox instead. Will be removed in v2.0.")]
 public static class InputAssist
 {
     /// <summary>

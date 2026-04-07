@@ -273,4 +273,135 @@
         </Setter>
     </Style>
 
+    <!-- Tag Styles -->
+    <Style TargetType="{x:Type local:Tag}">
+        <Setter Property="Height" Value="22" />
+        <Setter Property="Padding" Value="4,0" />
+        <Setter Property="FontSize" Value="12" />
+        <Setter Property="Cursor" Value="Arrow" />
+        <Setter Property="Background" Value="{DynamicResource {x:Static local:AntdResourceKeys.BrushTagDefaultBackground}}" />
+        <Setter Property="Foreground" Value="{DynamicResource {x:Static local:AntdResourceKeys.BrushTagDefaultForeground}}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource {x:Static local:AntdResourceKeys.BrushBorder}}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type local:Tag}">
+                    <Border x:Name="TagBorder"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="4"
+                            Padding="{TemplateBinding Padding}">
+                        <ContentPresenter HorizontalAlignment="Center"
+                                          VerticalAlignment="Center" />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="Color" Value="Blue">
+                            <Setter TargetName="TagBorder" Property="Background" Value="#E6F7FF" />
+                            <Setter TargetName="TagBorder" Property="BorderBrush" Value="#91D5FF" />
+                            <Setter Property="Foreground" Value="#1890FF" />
+                        </Trigger>
+                        <Trigger Property="Color" Value="Green">
+                            <Setter TargetName="TagBorder" Property="Background" Value="#F6FFED" />
+                            <Setter TargetName="TagBorder" Property="BorderBrush" Value="#B7EB8F" />
+                            <Setter Property="Foreground" Value="#52C41A" />
+                        </Trigger>
+                        <Trigger Property="Color" Value="Red">
+                            <Setter TargetName="TagBorder" Property="Background" Value="#FFF1F0" />
+                            <Setter TargetName="TagBorder" Property="BorderBrush" Value="#FFA39E" />
+                            <Setter Property="Foreground" Value="#F5222D" />
+                        </Trigger>
+                        <Trigger Property="Color" Value="Orange">
+                            <Setter TargetName="TagBorder" Property="Background" Value="#FFF7E6" />
+                            <Setter TargetName="TagBorder" Property="BorderBrush" Value="#FFD591" />
+                            <Setter Property="Foreground" Value="#FA8C16" />
+                        </Trigger>
+                        <Trigger Property="Color" Value="Success">
+                            <Setter TargetName="TagBorder" Property="Background" Value="#F6FFED" />
+                            <Setter TargetName="TagBorder" Property="BorderBrush" Value="#B7EB8F" />
+                            <Setter Property="Foreground" Value="#52C41A" />
+                        </Trigger>
+                        <Trigger Property="Color" Value="Warning">
+                            <Setter TargetName="TagBorder" Property="Background" Value="#FFF7E6" />
+                            <Setter TargetName="TagBorder" Property="BorderBrush" Value="#FFD591" />
+                            <Setter Property="Foreground" Value="#FA8C16" />
+                        </Trigger>
+                        <Trigger Property="Color" Value="Error">
+                            <Setter TargetName="TagBorder" Property="Background" Value="#FFF1F0" />
+                            <Setter TargetName="TagBorder" Property="BorderBrush" Value="#FFA39E" />
+                            <Setter Property="Foreground" Value="#F5222D" />
+                        </Trigger>
+                        <Trigger Property="Borderless" Value="True">
+                            <Setter TargetName="TagBorder" Property="BorderThickness" Value="0" />
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Opacity" Value="0.56" />
+                            <Setter Property="Cursor" Value="Arrow" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- Ant Design Table Style -->
+    <Style TargetType="{x:Type local:Table}">
+        <Setter Property="Background" Value="{DynamicResource {x:Static local:AntdResourceKeys.BrushBgContainer}}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource {x:Static local:AntdResourceKeys.BrushBorderSecondary}}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="RowBackground" Value="Transparent" />
+        <Setter Property="AlternatingRowBackground" Value="{DynamicResource {x:Static local:AntdResourceKeys.BrushFillTertiary}}" />
+        <Setter Property="HeadersVisibility" Value="Column" />
+        <Setter Property="GridLinesVisibility" Value="None" />
+        <Setter Property="CanUserAddRows" Value="False" />
+        <Setter Property="CanUserDeleteRows" Value="False" />
+        <Setter Property="AutoGenerateColumns" Value="False" />
+        <Setter Property="IsReadOnly" Value="True" />
+        <Setter Property="RowHeight" Value="55" />
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="ColumnHeaderStyle">
+            <Setter.Value>
+                <Style TargetType="DataGridColumnHeader">
+                    <Setter Property="Background" Value="{DynamicResource {x:Static local:AntdResourceKeys.BrushBgContainer}}" />
+                    <Setter Property="Foreground" Value="{DynamicResource {x:Static local:AntdResourceKeys.BrushText}}" />
+                    <Setter Property="BorderBrush" Value="{DynamicResource {x:Static local:AntdResourceKeys.BrushBorderSecondary}}" />
+                    <Setter Property="BorderThickness" Value="0,0,1,1" />
+                    <Setter Property="Padding" Value="16,8" />
+                    <Setter Property="FontWeight" Value="SemiBold" />
+                    <Setter Property="FontSize" Value="14" />
+                    <Setter Property="HorizontalContentAlignment" Value="Left" />
+                    <Setter Property="VerticalContentAlignment" Value="Center" />
+                </Style>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="RowStyle">
+            <Setter.Value>
+                <Style TargetType="DataGridRow">
+                    <Setter Property="Background" Value="Transparent" />
+                    <Setter Property="BorderBrush" Value="{DynamicResource {x:Static local:AntdResourceKeys.BrushBorderSecondary}}" />
+                    <Setter Property="BorderThickness" Value="0,0,0,1" />
+                    <Setter Property="FontSize" Value="14" />
+                    <Style.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="{DynamicResource {x:Static local:AntdResourceKeys.BrushFillSecondary}}" />
+                        </Trigger>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter Property="Background" Value="{DynamicResource {x:Static local:AntdResourceKeys.BrushPrimaryHover}}" />
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="CellStyle">
+            <Setter.Value>
+                <Style TargetType="DataGridCell">
+                    <Setter Property="BorderThickness" Value="0" />
+                    <Setter Property="Padding" Value="16,8" />
+                    <Setter Property="VerticalAlignment" Value="Center" />
+                    <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+                </Style>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
 </ResourceDictionary>

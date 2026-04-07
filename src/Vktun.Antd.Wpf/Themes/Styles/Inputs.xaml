@@ -1,6 +1,8 @@
 <ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:local="clr-namespace:Vktun.Antd.Wpf">
+
+    <!-- Input Base Style -->
     <Style x:Key="Antd.InputBaseStyle" TargetType="Control">
         <Setter Property="FocusVisualStyle" Value="{DynamicResource Antd.FocusVisualStyle}" />
         <Setter Property="Foreground" Value="{DynamicResource {x:Static local:AntdResourceKeys.BrushText}}" />
@@ -11,10 +13,11 @@
         <Setter Property="Padding" Value="12,0" />
     </Style>
 
-    <Style TargetType="TextBox" BasedOn="{StaticResource Antd.InputBaseStyle}">
+    <!-- Input (TextBox) Style -->
+    <Style TargetType="{x:Type local:Input}" BasedOn="{StaticResource Antd.InputBaseStyle}">
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="TextBox">
+                <ControlTemplate TargetType="{x:Type local:Input}">
                     <Border x:Name="Border"
                             Background="{TemplateBinding Background}"
                             BorderBrush="{TemplateBinding BorderBrush}"
@@ -29,22 +32,24 @@
                             <ContentPresenter x:Name="PrefixPresenter"
                                               Margin="0,0,8,0"
                                               VerticalAlignment="Center"
-                                              Content="{TemplateBinding local:InputAssist.Prefix}" />
+                                              Content="{TemplateBinding Prefix}" />
                             <ScrollViewer x:Name="PART_ContentHost" Grid.Column="1" VerticalAlignment="Center" />
                             <ContentPresenter x:Name="SuffixPresenter"
                                               Grid.Column="2"
                                               Margin="8,0,0,0"
                                               VerticalAlignment="Center"
-                                              Content="{TemplateBinding local:InputAssist.Suffix}" />
+                                              Content="{TemplateBinding Suffix}" />
                         </Grid>
                     </Border>
                     <ControlTemplate.Triggers>
-                        <Trigger Property="local:InputAssist.Prefix" Value="{x:Null}">
+                        <!-- Prefix/Suffix visibility -->
+                        <Trigger Property="Prefix" Value="{x:Null}">
                             <Setter TargetName="PrefixPresenter" Property="Visibility" Value="Collapsed" />
                         </Trigger>
-                        <Trigger Property="local:InputAssist.Suffix" Value="{x:Null}">
+                        <Trigger Property="Suffix" Value="{x:Null}">
                             <Setter TargetName="SuffixPresenter" Property="Visibility" Value="Collapsed" />
                         </Trigger>
+                        <!-- Focus and hover states -->
                         <Trigger Property="IsKeyboardFocused" Value="True">
                             <Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource {x:Static local:AntdResourceKeys.BrushPrimary}}" />
                         </Trigger>
@@ -54,22 +59,33 @@
                         <Trigger Property="IsEnabled" Value="False">
                             <Setter Property="Opacity" Value="0.56" />
                         </Trigger>
-                        <Trigger Property="local:StatusAssist.Status" Value="Error">
+                        <!-- Status triggers -->
+                        <Trigger Property="Status" Value="Error">
                             <Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource {x:Static local:AntdResourceKeys.BrushError}}" />
                         </Trigger>
-                        <Trigger Property="local:StatusAssist.Status" Value="Warning">
+                        <Trigger Property="Status" Value="Warning">
                             <Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource {x:Static local:AntdResourceKeys.BrushWarning}}" />
                         </Trigger>
-                        <Trigger Property="local:StatusAssist.Status" Value="Success">
+                        <Trigger Property="Status" Value="Success">
                             <Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource {x:Static local:AntdResourceKeys.BrushSuccess}}" />
                         </Trigger>
-                        <Trigger Property="local:ControlAssist.Size" Value="Small">
+                        <!-- Size triggers -->
+                        <Trigger Property="Size" Value="Small">
                             <Setter Property="MinHeight" Value="{DynamicResource {x:Static local:AntdResourceKeys.ControlHeightSmall}}" />
                             <Setter Property="FontSize" Value="{DynamicResource {x:Static local:AntdResourceKeys.FontSizeSmall}}" />
                         </Trigger>
-                        <Trigger Property="local:ControlAssist.Size" Value="Large">
+                        <Trigger Property="Size" Value="Large">
                             <Setter Property="MinHeight" Value="{DynamicResource {x:Static local:AntdResourceKeys.ControlHeightLarge}}" />
                             <Setter Property="FontSize" Value="{DynamicResource {x:Static local:AntdResourceKeys.FontSizeLarge}}" />
+                        </Trigger>
+                        <!-- Variant triggers -->
+                        <Trigger Property="Variant" Value="Filled">
+                            <Setter TargetName="Border" Property="Background" Value="{DynamicResource {x:Static local:AntdResourceKeys.BrushFillTertiary}}" />
+                            <Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource {x:Static local:AntdResourceKeys.BrushTransparent}}" />
+                        </Trigger>
+                        <Trigger Property="Variant" Value="Borderless">
+                            <Setter TargetName="Border" Property="Background" Value="{DynamicResource {x:Static local:AntdResourceKeys.BrushTransparent}}" />
+                            <Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource {x:Static local:AntdResourceKeys.BrushTransparent}}" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -77,10 +93,11 @@
         </Setter>
     </Style>
 
-    <Style TargetType="PasswordBox" BasedOn="{StaticResource Antd.InputBaseStyle}">
+    <!-- PasswordInput Style -->
+    <Style TargetType="{x:Type local:PasswordInput}" BasedOn="{StaticResource Antd.InputBaseStyle}">
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="PasswordBox">
+                <ControlTemplate TargetType="{x:Type local:PasswordInput}">
                     <Border x:Name="Border"
                             Background="{TemplateBinding Background}"
                             BorderBrush="{TemplateBinding BorderBrush}"
@@ -95,33 +112,48 @@
                             <ContentPresenter x:Name="PrefixPresenter"
                                               Margin="0,0,8,0"
                                               VerticalAlignment="Center"
-                                              Content="{TemplateBinding local:InputAssist.Prefix}" />
-                            <ScrollViewer x:Name="PART_ContentHost" Grid.Column="1" VerticalAlignment="Center" />
+                                              Content="{TemplateBinding Prefix}" />
+                            <PasswordBox x:Name="PART_PasswordHost"
+                                         Grid.Column="1"
+                                         VerticalAlignment="Center"
+                                         Background="Transparent"
+                                         BorderThickness="0"
+                                         PasswordChar="*"
+                                         Password="{Binding Password, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}" />
                             <ContentPresenter x:Name="SuffixPresenter"
                                               Grid.Column="2"
                                               Margin="8,0,0,0"
                                               VerticalAlignment="Center"
-                                              Content="{TemplateBinding local:InputAssist.Suffix}" />
+                                              Content="{TemplateBinding Suffix}" />
                         </Grid>
                     </Border>
                     <ControlTemplate.Triggers>
-                        <Trigger Property="local:InputAssist.Prefix" Value="{x:Null}">
+                        <Trigger Property="Prefix" Value="{x:Null}">
                             <Setter TargetName="PrefixPresenter" Property="Visibility" Value="Collapsed" />
                         </Trigger>
-                        <Trigger Property="local:InputAssist.Suffix" Value="{x:Null}">
+                        <Trigger Property="Suffix" Value="{x:Null}">
                             <Setter TargetName="SuffixPresenter" Property="Visibility" Value="Collapsed" />
                         </Trigger>
                         <Trigger Property="IsKeyboardFocused" Value="True">
                             <Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource {x:Static local:AntdResourceKeys.BrushPrimary}}" />
                         </Trigger>
-                        <Trigger Property="local:StatusAssist.Status" Value="Error">
+                        <Trigger Property="Status" Value="Error">
                             <Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource {x:Static local:AntdResourceKeys.BrushError}}" />
                         </Trigger>
-                        <Trigger Property="local:StatusAssist.Status" Value="Warning">
+                        <Trigger Property="Status" Value="Warning">
                             <Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource {x:Static local:AntdResourceKeys.BrushWarning}}" />
                         </Trigger>
-                        <Trigger Property="local:StatusAssist.Status" Value="Success">
+                        <Trigger Property="Status" Value="Success">
                             <Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource {x:Static local:AntdResourceKeys.BrushSuccess}}" />
+                        </Trigger>
+                        <!-- Size triggers -->
+                        <Trigger Property="Size" Value="Small">
+                            <Setter Property="MinHeight" Value="{DynamicResource {x:Static local:AntdResourceKeys.ControlHeightSmall}}" />
+                            <Setter Property="FontSize" Value="{DynamicResource {x:Static local:AntdResourceKeys.FontSizeSmall}}" />
+                        </Trigger>
+                        <Trigger Property="Size" Value="Large">
+                            <Setter Property="MinHeight" Value="{DynamicResource {x:Static local:AntdResourceKeys.ControlHeightLarge}}" />
+                            <Setter Property="FontSize" Value="{DynamicResource {x:Static local:AntdResourceKeys.FontSizeLarge}}" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -129,10 +161,11 @@
         </Setter>
     </Style>
 
-    <Style TargetType="ComboBox" BasedOn="{StaticResource Antd.InputBaseStyle}">
+    <!-- ComboBox Style -->
+    <Style TargetType="{x:Type local:ComboBox}" BasedOn="{StaticResource Antd.InputBaseStyle}">
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="ComboBox">
+                <ControlTemplate TargetType="{x:Type local:ComboBox}">
                     <Grid SnapsToDevicePixels="True">
                         <Border x:Name="Border"
                                 Background="{TemplateBinding Background}"
@@ -149,7 +182,7 @@
                                 <ContentPresenter x:Name="PrefixPresenter"
                                                   Margin="0,0,8,0"
                                                   VerticalAlignment="Center"
-                                                  Content="{TemplateBinding local:InputAssist.Prefix}" />
+                                                  Content="{TemplateBinding Prefix}" />
                                 <ContentPresenter Grid.Column="1"
                                                   Margin="0,0,8,0"
                                                   VerticalAlignment="Center"
@@ -159,7 +192,7 @@
                                                   Grid.Column="2"
                                                   Margin="0,0,8,0"
                                                   VerticalAlignment="Center"
-                                                  Content="{TemplateBinding local:InputAssist.Suffix}" />
+                                                  Content="{TemplateBinding Suffix}" />
                                 <Path x:Name="PART_Arrow"
                                       Grid.Column="3"
                                       Width="10"
@@ -196,12 +229,14 @@
                         </Popup>
                     </Grid>
                     <ControlTemplate.Triggers>
-                        <Trigger Property="local:InputAssist.Prefix" Value="{x:Null}">
+                        <!-- Prefix/Suffix visibility -->
+                        <Trigger Property="Prefix" Value="{x:Null}">
                             <Setter TargetName="PrefixPresenter" Property="Visibility" Value="Collapsed" />
                         </Trigger>
-                        <Trigger Property="local:InputAssist.Suffix" Value="{x:Null}">
+                        <Trigger Property="Suffix" Value="{x:Null}">
                             <Setter TargetName="SuffixPresenter" Property="Visibility" Value="Collapsed" />
                         </Trigger>
+                        <!-- Dropdown arrow rotation -->
                         <Trigger Property="IsDropDownOpen" Value="True">
                             <Setter TargetName="PART_Arrow" Property="RenderTransform">
                                 <Setter.Value>
@@ -209,33 +244,35 @@
                                 </Setter.Value>
                             </Setter>
                         </Trigger>
-                        <Trigger Property="local:ComboBoxAssist.Variant" Value="Filled">
+                        <!-- Variant triggers -->
+                        <Trigger Property="Variant" Value="Filled">
                             <Setter TargetName="Border" Property="Background" Value="{DynamicResource {x:Static local:AntdResourceKeys.BrushFillTertiary}}" />
                             <Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource {x:Static local:AntdResourceKeys.BrushTransparent}}" />
                         </Trigger>
-                        <Trigger Property="local:ComboBoxAssist.Variant" Value="Borderless">
+                        <Trigger Property="Variant" Value="Borderless">
                             <Setter TargetName="Border" Property="Background" Value="{DynamicResource {x:Static local:AntdResourceKeys.BrushTransparent}}" />
                             <Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource {x:Static local:AntdResourceKeys.BrushTransparent}}" />
                             <Setter TargetName="ContentGrid" Property="Margin" Value="6,0,6,0" />
                         </Trigger>
+                        <!-- Focus and hover states by variant -->
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
                                 <Condition Property="IsKeyboardFocusWithin" Value="True" />
-                                <Condition Property="local:ComboBoxAssist.Variant" Value="Outlined" />
+                                <Condition Property="Variant" Value="Outlined" />
                             </MultiTrigger.Conditions>
                             <Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource {x:Static local:AntdResourceKeys.BrushPrimary}}" />
                         </MultiTrigger>
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
                                 <Condition Property="IsMouseOver" Value="True" />
-                                <Condition Property="local:ComboBoxAssist.Variant" Value="Outlined" />
+                                <Condition Property="Variant" Value="Outlined" />
                             </MultiTrigger.Conditions>
                             <Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource {x:Static local:AntdResourceKeys.BrushPrimaryHover}}" />
                         </MultiTrigger>
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
                                 <Condition Property="IsKeyboardFocusWithin" Value="True" />
-                                <Condition Property="local:ComboBoxAssist.Variant" Value="Filled" />
+                                <Condition Property="Variant" Value="Filled" />
                             </MultiTrigger.Conditions>
                             <Setter TargetName="Border" Property="Background" Value="{DynamicResource {x:Static local:AntdResourceKeys.BrushBgContainer}}" />
                             <Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource {x:Static local:AntdResourceKeys.BrushPrimary}}" />
@@ -243,38 +280,40 @@
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
                                 <Condition Property="IsMouseOver" Value="True" />
-                                <Condition Property="local:ComboBoxAssist.Variant" Value="Filled" />
+                                <Condition Property="Variant" Value="Filled" />
                             </MultiTrigger.Conditions>
                             <Setter TargetName="Border" Property="Background" Value="{DynamicResource {x:Static local:AntdResourceKeys.BrushFillSecondary}}" />
                         </MultiTrigger>
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
                                 <Condition Property="IsKeyboardFocusWithin" Value="True" />
-                                <Condition Property="local:ComboBoxAssist.Variant" Value="Borderless" />
+                                <Condition Property="Variant" Value="Borderless" />
                             </MultiTrigger.Conditions>
                             <Setter TargetName="Border" Property="Background" Value="{DynamicResource {x:Static local:AntdResourceKeys.BrushFillSecondary}}" />
                         </MultiTrigger>
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
                                 <Condition Property="IsMouseOver" Value="True" />
-                                <Condition Property="local:ComboBoxAssist.Variant" Value="Borderless" />
+                                <Condition Property="Variant" Value="Borderless" />
                             </MultiTrigger.Conditions>
                             <Setter TargetName="Border" Property="Background" Value="{DynamicResource {x:Static local:AntdResourceKeys.BrushFillQuaternary}}" />
                         </MultiTrigger>
-                        <Trigger Property="local:StatusAssist.Status" Value="Error">
+                        <!-- Status triggers -->
+                        <Trigger Property="Status" Value="Error">
                             <Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource {x:Static local:AntdResourceKeys.BrushError}}" />
                         </Trigger>
-                        <Trigger Property="local:StatusAssist.Status" Value="Warning">
+                        <Trigger Property="Status" Value="Warning">
                             <Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource {x:Static local:AntdResourceKeys.BrushWarning}}" />
                         </Trigger>
-                        <Trigger Property="local:StatusAssist.Status" Value="Success">
+                        <Trigger Property="Status" Value="Success">
                             <Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource {x:Static local:AntdResourceKeys.BrushSuccess}}" />
                         </Trigger>
-                        <Trigger Property="local:ControlAssist.Size" Value="Small">
+                        <!-- Size triggers -->
+                        <Trigger Property="Size" Value="Small">
                             <Setter Property="MinHeight" Value="{DynamicResource {x:Static local:AntdResourceKeys.ControlHeightSmall}}" />
                             <Setter Property="FontSize" Value="{DynamicResource {x:Static local:AntdResourceKeys.FontSizeSmall}}" />
                         </Trigger>
-                        <Trigger Property="local:ControlAssist.Size" Value="Large">
+                        <Trigger Property="Size" Value="Large">
                             <Setter Property="MinHeight" Value="{DynamicResource {x:Static local:AntdResourceKeys.ControlHeightLarge}}" />
                             <Setter Property="FontSize" Value="{DynamicResource {x:Static local:AntdResourceKeys.FontSizeLarge}}" />
                         </Trigger>
@@ -287,6 +326,7 @@
         </Setter>
     </Style>
 
+    <!-- ComboBoxItem Style -->
     <Style TargetType="ComboBoxItem">
         <Setter Property="Padding" Value="12,8" />
         <Setter Property="HorizontalContentAlignment" Value="Stretch" />

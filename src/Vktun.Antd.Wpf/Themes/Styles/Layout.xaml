@@ -239,4 +239,9 @@
         </Setter>
     </Style>
 
+    <!-- Space Styles -->
+    <Style TargetType="{x:Type local:Space}">
+        <Setter Property="HorizontalAlignment" Value="{Binding Align, RelativeSource={RelativeSource Self}}" />
+    </Style>
+
 </ResourceDictionary>

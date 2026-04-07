@@ -6,6 +6,7 @@ namespace Vktun.Antd.Wpf;
 /// <summary>
 /// Provides visual variant metadata for <see cref="System.Windows.Controls.ComboBox"/>.
 /// </summary>
+[Obsolete("Use antd:ComboBox.Variant property instead. Will be removed in v2.0.")]
 public static class ComboBoxAssist
 {
     /// <summary>

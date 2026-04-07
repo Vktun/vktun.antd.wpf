@@ -44,6 +44,16 @@ public enum AntdComboBoxVariant
 }
 
 /// <summary>
+/// Represents Input visual variants.
+/// </summary>
+public enum AntdInputVariant
+{
+    Outlined,
+    Filled,
+    Borderless,
+}
+
+/// <summary>
 /// Represents the supported float button shapes.
 /// </summary>
 public enum AntdFloatButtonShape
@@ -321,4 +331,74 @@ public enum AntdPopoverTrigger
     Hover,
     Click,
     Focus,
+}
+
+/// <summary>
+/// Represents tag colors.
+/// </summary>
+public enum AntdTagColor
+{
+    Default,
+    Blue,
+    Green,
+    Red,
+    Orange,
+    Yellow,
+    Cyan,
+    Purple,
+    Pink,
+    Magenta,
+    Volcano,
+    GeekBlue,
+    Lime,
+    Gold,
+    Success,
+    Warning,
+    Error,
+    Info,
+}
+
+/// <summary>
+/// Represents typography types.
+/// </summary>
+public enum AntdTypographyType
+{
+    Default,
+    Primary,
+    Secondary,
+    Success,
+    Warning,
+    Error,
+}
+
+/// <summary>
+/// Represents form layouts.
+/// </summary>
+public enum AntdFormLayout
+{
+    Horizontal,
+    Vertical,
+    Inline,
+}
+
+/// <summary>
+/// Represents form validation statuses.
+/// </summary>
+public enum AntdFormValidateStatus
+{
+    Default,
+    Success,
+    Warning,
+    Error,
+    Validating,
+}
+
+/// <summary>
+/// Represents table sizes.
+/// </summary>
+public enum AntdTableSize
+{
+    Small,
+    Middle,
+    Large,
 }

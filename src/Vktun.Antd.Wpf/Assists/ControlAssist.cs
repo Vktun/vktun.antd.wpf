@@ -6,6 +6,7 @@ namespace Vktun.Antd.Wpf;
 /// <summary>
 /// Provides shared size metadata for controls.
 /// </summary>
+[Obsolete("Use Size property on antd:Button, antd:Input, antd:ComboBox instead. Will be removed in v2.0.")]
 public static class ControlAssist
 {
     /// <summary>

@@ -443,4 +443,65 @@
             </Setter.Value>
         </Setter>
     </Style>
+
+    <!-- Popconfirm Styles -->
+    <Style TargetType="{x:Type local:Popconfirm}">
+        <Setter Property="FocusVisualStyle" Value="{DynamicResource Antd.FocusVisualStyle}" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type local:Popconfirm}">
+                    <Grid>
+                        <ContentPresenter x:Name="ContentPresenter"
+                                          Content="{TemplateBinding Content}"
+                                          ContentTemplate="{TemplateBinding ContentTemplate}"
+                                          Cursor="Hand" />
+                        <Popup x:Name="PART_Popup"
+                               PlacementTarget="{Binding ElementName=ContentPresenter}"
+                               Placement="{TemplateBinding Placement}"
+                               IsOpen="{TemplateBinding IsOpen}"
+                               StaysOpen="False"
+                               AllowsTransparency="True"
+                               PopupAnimation="Fade">
+                            <Border Background="{DynamicResource {x:Static local:AntdResourceKeys.BrushBgContainer}}"
+                                    BorderBrush="{DynamicResource {x:Static local:AntdResourceKeys.BrushBorderSecondary}}"
+                                    BorderThickness="1"
+                                    CornerRadius="8"
+                                    Padding="16"
+                                    MaxWidth="320"
+                                    Effect="{DynamicResource {x:Static local:AntdResourceKeys.ShadowPopup}}">
+                                <StackPanel>
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
+                                        <!-- Warning Icon -->
+                                        <Path x:Name="WarningIcon"
+                                              Width="14"
+                                              Height="14"
+                                              Margin="0,2,8,0"
+                                              Data="M 12 2 L 22 20 L 2 20 Z M 12 8 L 12 13 M 12 16 L 12 16.01"
+                                              Stroke="#FAAD14"
+                                              StrokeThickness="2"
+                                              Stretch="Uniform"
+                                              Visibility="{TemplateBinding ShowIcon, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                                        <TextBlock Text="{TemplateBinding Title}"
+                                                   FontSize="14"
+                                                   Foreground="{DynamicResource {x:Static local:AntdResourceKeys.BrushText}}"
+                                                   TextWrapping="Wrap"
+                                                   VerticalAlignment="Center" />
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                                        <local:Button x:Name="PART_CancelButton"
+                                                      Content="{TemplateBinding CancelText}"
+                                                      Type="Default"
+                                                      Margin="0,0,8,0" />
+                                        <local:Button x:Name="PART_ConfirmButton"
+                                                      Content="{TemplateBinding OkText}"
+                                                      Type="{TemplateBinding OkType}" />
+                                    </StackPanel>
+                                </StackPanel>
+                            </Border>
+                        </Popup>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
 </ResourceDictionary>

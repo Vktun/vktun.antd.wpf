@@ -6,6 +6,7 @@ namespace Vktun.Antd.Wpf;
 /// <summary>
 /// Provides attached properties for semantic button variants.
 /// </summary>
+[Obsolete("Use antd:Button.Type property instead. Will be removed in v2.0.")]
 public static class ButtonAssist
 {
     /// <summary>

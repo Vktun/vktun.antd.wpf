@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Controls;
 
 namespace Vktun.Antd.Wpf;
@@ -6,6 +7,7 @@ namespace Vktun.Antd.Wpf;
 /// <summary>
 /// Represents a button with a dedicated icon slot.
 /// </summary>
+[Obsolete("Use antd:Button with Icon property instead. Will be removed in v2.0.")]
 public class IconButton : Button
 {
     static IconButton()

@@ -1,0 +1,112 @@
+using System.Windows;
+using System.Windows.Controls;
+
+namespace Vktun.Antd.Wpf;
+
+/// <summary>
+/// Represents an Ant Design styled input field with prefix, suffix, size, and status support.
+/// </summary>
+public class Input : TextBox
+{
+    static Input()
+    {
+        DefaultStyleKeyProperty.OverrideMetadata(typeof(Input),
+            new FrameworkPropertyMetadata(typeof(Input)));
+    }
+
+    /// <summary>
+    /// Identifies the <see cref="Size"/> dependency property.
+    /// </summary>
+    public static readonly DependencyProperty SizeProperty =
+        DependencyProperty.Register(nameof(Size), typeof(AntdControlSize), typeof(Input),
+            new PropertyMetadata(AntdControlSize.Middle));
+
+    /// <summary>
+    /// Identifies the <see cref="Status"/> dependency property.
+    /// </summary>
+    public static readonly DependencyProperty StatusProperty =
+        DependencyProperty.Register(nameof(Status), typeof(AntdStatus), typeof(Input),
+            new PropertyMetadata(AntdStatus.None));
+
+    /// <summary>
+    /// Identifies the <see cref="Variant"/> dependency property.
+    /// </summary>
+    public static readonly DependencyProperty VariantProperty =
+        DependencyProperty.Register(nameof(Variant), typeof(AntdInputVariant), typeof(Input),
+            new PropertyMetadata(AntdInputVariant.Outlined));
+
+    /// <summary>
+    /// Identifies the <see cref="Prefix"/> dependency property.
+    /// </summary>
+    public static readonly DependencyProperty PrefixProperty =
+        DependencyProperty.Register(nameof(Prefix), typeof(object), typeof(Input),
+            new PropertyMetadata(null));
+
+    /// <summary>
+    /// Identifies the <see cref="Suffix"/> dependency property.
+    /// </summary>
+    public static readonly DependencyProperty SuffixProperty =
+        DependencyProperty.Register(nameof(Suffix), typeof(object), typeof(Input),
+            new PropertyMetadata(null));
+
+    /// <summary>
+    /// Identifies the <see cref="AllowClear"/> dependency property.
+    /// </summary>
+    public static readonly DependencyProperty AllowClearProperty =
+        DependencyProperty.Register(nameof(AllowClear), typeof(bool), typeof(Input),
+            new PropertyMetadata(false));
+
+    /// <summary>
+    /// Gets or sets the input size.
+    /// </summary>
+    public AntdControlSize Size
+    {
+        get => (AntdControlSize)GetValue(SizeProperty);
+        set => SetValue(SizeProperty, value);
+    }
+
+    /// <summary>
+    /// Gets or sets the input status.
+    /// </summary>
+    public AntdStatus Status
+    {
+        get => (AntdStatus)GetValue(StatusProperty);
+        set => SetValue(StatusProperty, value);
+    }
+
+    /// <summary>
+    /// Gets or sets the input variant style.
+    /// </summary>
+    public AntdInputVariant Variant
+    {
+        get => (AntdInputVariant)GetValue(VariantProperty);
+        set => SetValue(VariantProperty, value);
+    }
+
+    /// <summary>
+    /// Gets or sets the prefix content.
+    /// </summary>
+    public object? Prefix
+    {
+        get => GetValue(PrefixProperty);
+        set => SetValue(PrefixProperty, value);
+    }
+
+    /// <summary>
+    /// Gets or sets the suffix content.
+    /// </summary>
+    public object? Suffix
+    {
+        get => GetValue(SuffixProperty);
+        set => SetValue(SuffixProperty, value);
+    }
+
+    /// <summary>
+    /// Gets or sets whether to show a clear button.
+    /// </summary>
+    public bool AllowClear
+    {
+        get => (bool)GetValue(AllowClearProperty);
+        set => SetValue(AllowClearProperty, value);
+    }
+}

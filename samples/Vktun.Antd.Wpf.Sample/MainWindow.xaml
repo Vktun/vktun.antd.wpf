@@ -221,13 +221,13 @@
                                                    Text="这一页重点展示 DatePicker 与 ComboBox 在不同主题下的输入框、交互状态和弹层内容。" />
                                     </StackPanel>
                                     <WrapPanel Grid.Column="1" Margin="16,0,0,0">
-                                        <Button Margin="0,0,8,0"
+                                        <antd:Button Margin="0,0,8,0"
                                                 Content="成功消息"
                                                 Click="ShowSuccessMessageButton_OnClick" />
-                                        <Button Margin="0,0,8,0"
+                                        <antd:Button Margin="0,0,8,0"
                                                 Content="通知"
                                                 Click="ShowNotificationButton_OnClick" />
-                                        <Button Content="弹窗"
+                                        <antd:Button Content="弹窗"
                                                 Click="ShowModalButton_OnClick" />
                                     </WrapPanel>
                                 </Grid>
@@ -248,43 +248,43 @@
                                                        Foreground="{DynamicResource Antd.Brush.TextSecondary}"
                                                        Text="切换共享变体后，再对比下方固定的 Outlined、Filled 与 Borderless 视觉差异。" />
                                         </StackPanel>
-                                        <StackPanel Grid.Column="1"
+                                        <antd:Space Grid.Column="1"
                                                     Orientation="Horizontal"
                                                     VerticalAlignment="Center"
-                                                    antd:SpaceAssist.Gap="12">
+                                                    Gap="12">
                                             <TextBlock VerticalAlignment="Center"
                                                        Foreground="{DynamicResource Antd.Brush.TextSecondary}"
                                                        Text="共享变体" />
-                                            <ComboBox x:Name="ComboBoxVariantSelector"
+                                            <antd:ComboBox x:Name="ComboBoxVariantSelector"
                                                       Width="140"
                                                       SelectedIndex="0"
                                                       SelectionChanged="ComboBoxVariantSelector_OnSelectionChanged"
-                                                      antd:ControlAssist.Size="Small">
+                                                      Size="Small">
                                                 <ComboBoxItem Content="Outlined" Tag="{x:Static antd:AntdComboBoxVariant.Outlined}" />
                                                 <ComboBoxItem Content="Filled" Tag="{x:Static antd:AntdComboBoxVariant.Filled}" />
                                                 <ComboBoxItem Content="Borderless" Tag="{x:Static antd:AntdComboBoxVariant.Borderless}" />
-                                            </ComboBox>
-                                        </StackPanel>
+                                            </antd:ComboBox>
+                                        </antd:Space>
                                     </Grid>
 
                                     <WrapPanel Margin="0,16,0,14">
-                                        <ComboBox x:Name="PreviewCategoryComboBox" Width="156" Margin="0,0,12,12" SelectedIndex="0">
+                                        <antd:ComboBox x:Name="PreviewCategoryComboBox" Width="156" Margin="0,0,12,12" SelectedIndex="0">
                                             <ComboBoxItem Content="Dropdown menus" />
                                             <ComboBoxItem Content="Theme presets" />
                                             <ComboBoxItem Content="Runtime switching" />
-                                        </ComboBox>
-                                        <TextBox Width="136"
+                                        </antd:ComboBox>
+                                        <antd:Input Width="136"
                                                  Margin="0,0,12,12"
                                                  Text="#1677FF" />
-                                        <ComboBox x:Name="PreviewTagComboBox" Width="240" Margin="0,0,12,12" SelectedIndex="0">
+                                        <antd:ComboBox x:Name="PreviewTagComboBox" Width="240" Margin="0,0,12,12" SelectedIndex="0">
                                             <ComboBoxItem Content="Apple  x    Banana  x" />
                                             <ComboBoxItem Content="Lime  x    Orange  x" />
-                                        </ComboBox>
+                                        </antd:ComboBox>
                                         <DatePicker x:Name="PreviewInlineDatePicker" Width="176" Margin="0,0,12,12" />
-                                        <ComboBox x:Name="PreviewFruitComboBox" Width="340" Margin="0,0,0,12" SelectedIndex="0">
+                                        <antd:ComboBox x:Name="PreviewFruitComboBox" Width="340" Margin="0,0,0,12" SelectedIndex="0">
                                             <ComboBoxItem Content="Apple  x    Banana  x" />
                                             <ComboBoxItem Content="Cocoa  x    Avocado  x" />
-                                        </ComboBox>
+                                        </antd:ComboBox>
                                     </WrapPanel>
 
                                     <WrapPanel Margin="0,0,0,4">
@@ -292,35 +292,35 @@
                                             <TextBlock Margin="0,0,0,8"
                                                        Foreground="{DynamicResource Antd.Brush.TextSecondary}"
                                                        Text="Outlined" />
-                                            <ComboBox Width="180" SelectedIndex="0">
+                                            <antd:ComboBox Width="180" SelectedIndex="0">
                                                 <ComboBoxItem Content="Ocean Dashboard" />
                                                 <ComboBoxItem Content="Aurora Workspace" />
                                                 <ComboBoxItem Content="Nebula Console" />
-                                            </ComboBox>
+                                            </antd:ComboBox>
                                         </StackPanel>
                                         <StackPanel Width="180" Margin="0,0,12,12">
                                             <TextBlock Margin="0,0,0,8"
                                                        Foreground="{DynamicResource Antd.Brush.TextSecondary}"
                                                        Text="Filled" />
-                                            <ComboBox Width="180"
+                                            <antd:ComboBox Width="180"
                                                       SelectedIndex="0"
-                                                      antd:ComboBoxAssist.Variant="Filled">
+                                                      Variant="Filled">
                                                 <ComboBoxItem Content="Ocean Dashboard" />
                                                 <ComboBoxItem Content="Aurora Workspace" />
                                                 <ComboBoxItem Content="Nebula Console" />
-                                            </ComboBox>
+                                            </antd:ComboBox>
                                         </StackPanel>
                                         <StackPanel Width="180" Margin="0,0,12,12">
                                             <TextBlock Margin="0,0,0,8"
                                                        Foreground="{DynamicResource Antd.Brush.TextSecondary}"
                                                        Text="Borderless" />
-                                            <ComboBox Width="180"
+                                            <antd:ComboBox Width="180"
                                                       SelectedIndex="0"
-                                                      antd:ComboBoxAssist.Variant="Borderless">
+                                                      Variant="Borderless">
                                                 <ComboBoxItem Content="Ocean Dashboard" />
                                                 <ComboBoxItem Content="Aurora Workspace" />
                                                 <ComboBoxItem Content="Nebula Console" />
-                                            </ComboBox>
+                                            </antd:ComboBox>
                                         </StackPanel>
                                     </WrapPanel>
                                 </StackPanel>
