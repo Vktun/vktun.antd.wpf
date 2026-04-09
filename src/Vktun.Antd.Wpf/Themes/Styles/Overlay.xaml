@@ -364,12 +364,13 @@
                     <Grid>
                         <ContentPresenter x:Name="TriggerContent"
                                           ContentSource="Content" />
-                        <Popup x:Name="DropdownPopup"
+                        <Popup x:Name="PART_Popup"
                                Placement="{TemplateBinding Placement}"
                                IsOpen="{TemplateBinding IsOpen}"
+                               StaysOpen="False"
                                AllowsTransparency="True"
                                PopupAnimation="Fade">
-                            <local:DropdownMenu ItemsSource="{TemplateBinding Menu}" />
+                            <ContentPresenter Content="{TemplateBinding Menu}" />
                         </Popup>
                     </Grid>
                     <ControlTemplate.Triggers>
@@ -417,12 +418,13 @@
                                       Data="M 2 2 L 8 6 L 2 10" />
                             </StackPanel>
                         </Border>
-                        <Popup x:Name="DropdownPopup"
+                        <Popup x:Name="PART_Popup"
                                Placement="{TemplateBinding Placement}"
-                               IsOpen="False"
+                               IsOpen="{TemplateBinding IsOpen}"
+                               StaysOpen="False"
                                AllowsTransparency="True"
                                PopupAnimation="Fade">
-                            <local:DropdownMenu ItemsSource="{TemplateBinding Menu}" />
+                            <ContentPresenter Content="{TemplateBinding Menu}" />
                         </Popup>
                     </Grid>
                     <ControlTemplate.Triggers>

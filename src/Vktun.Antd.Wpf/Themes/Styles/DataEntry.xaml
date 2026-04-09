@@ -171,11 +171,16 @@
                         <Trigger Property="Extra" Value="{x:Null}">
                             <Setter TargetName="ExtraPresenter" Property="Visibility" Value="Collapsed" />
                         </Trigger>
-                        <Trigger Property="IsHoverable" Value="True">
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="RootBorder" Property="Background" Value="{DynamicResource Antd.Brush.FillSecondary}" />
-                            </Trigger>
-                        </Trigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsHoverable" Value="True" />
+                                <Condition Property="IsMouseOver" Value="True" />
+                            </MultiTrigger.Conditions>
+                            <Setter TargetName="RootBorder" Property="Background" Value="{DynamicResource Antd.Brush.FillSecondary}" />
+                        </MultiTrigger>
+                        <DataTrigger Binding="{Binding Split, RelativeSource={RelativeSource AncestorType=local:List}}" Value="False">
+                            <Setter TargetName="RootBorder" Property="BorderThickness" Value="0" />
+                        </DataTrigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
@@ -241,11 +246,6 @@
                         </Trigger>
                         <Trigger Property="Bordered" Value="True">
                             <Setter TargetName="RootBorder" Property="BorderThickness" Value="1" />
-                        </Trigger>
-                        <Trigger Property="Split" Value="False">
-                            <Style TargetType="local:ListItem">
-                                <Setter Property="BorderThickness" Value="0" />
-                            </Style>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>

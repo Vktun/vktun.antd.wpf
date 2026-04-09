@@ -61,7 +61,6 @@ public class LayoutSider : ContentControl
 
     public LayoutSider()
     {
-        Width = 240d;
         DockPanel.SetDock(this, Placement);
     }
 
