@@ -1,0 +1,113 @@
+<UserControl x:Class="Vktun.Antd.Wpf.Sample.Pages.NavigationPage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:antd="clr-namespace:Vktun.Antd.Wpf;assembly=Vktun.Antd.Wpf"
+             xmlns:controls="clr-namespace:Vktun.Antd.Wpf.Sample.Controls"
+             xmlns:snippets="clr-namespace:Vktun.Antd.Wpf.Sample.Snippets">
+    <ScrollViewer VerticalScrollBarVisibility="Auto"
+                  HorizontalScrollBarVisibility="Disabled">
+        <StackPanel Margin="4,0,4,12">
+            <TextBlock Style="{StaticResource Catalog.PageTitleTextStyle}"
+                       Text="导航" />
+            <TextBlock Style="{StaticResource Catalog.PageDescriptionTextStyle}"
+                       Text="Breadcrumb、Menu、Tabs 等导航组件已经统一纳入 sample，用来展示页面切换和层级组织方式。" />
+
+            <controls:ComponentDemo Title="Breadcrumb"
+                                    Description="适合壳层中的路径回溯和页面层级定位。"
+                                    XamlCode="{x:Static snippets:NavigationSnippets.Breadcrumb}">
+                <controls:ComponentDemo.PreviewContent>
+                    <antd:Breadcrumb>
+                        <antd:BreadcrumbItem Header="首页" />
+                        <antd:BreadcrumbItem Header="组件目录" />
+                        <antd:BreadcrumbItem Header="导航" IsLast="True" />
+                    </antd:Breadcrumb>
+                </controls:ComponentDemo.PreviewContent>
+            </controls:ComponentDemo>
+
+            <controls:ComponentDemo Title="Dropdown"
+                                    Description="Dropdown 使用 DropdownMenu 承载操作项，保持 click / hover 触发语义。"
+                                    XamlCode="{x:Static snippets:NavigationSnippets.Dropdown}">
+                <controls:ComponentDemo.PreviewContent>
+                    <antd:Dropdown Trigger="Click">
+                        <antd:Dropdown.Menu>
+                            <antd:DropdownMenu>
+                                <antd:DropdownItem Header="查看详情" Key="view" />
+                                <antd:DropdownItem Header="编辑配置" Key="edit" />
+                                <antd:DropdownItem Header="删除" Key="delete" Danger="True" />
+                            </antd:DropdownMenu>
+                        </antd:Dropdown.Menu>
+                        <antd:Button Content="更多操作" />
+                    </antd:Dropdown>
+                </controls:ComponentDemo.PreviewContent>
+            </controls:ComponentDemo>
+
+            <controls:ComponentDemo Title="DropdownButton"
+                                    Description="主操作和次级菜单拆分，更适合发布、导出等双层动作。"
+                                    XamlCode="{x:Static snippets:NavigationSnippets.DropdownButton}">
+                <controls:ComponentDemo.PreviewContent>
+                    <antd:DropdownButton Content="发布"
+                                         Type="Primary"
+                                         Trigger="Click"
+                                         Arrow="True">
+                        <antd:DropdownButton.Menu>
+                            <antd:DropdownMenu>
+                                <antd:DropdownItem Header="发布到生产" Key="prod" />
+                                <antd:DropdownItem Header="发布到预发" Key="staging" />
+                            </antd:DropdownMenu>
+                        </antd:DropdownButton.Menu>
+                    </antd:DropdownButton>
+                </controls:ComponentDemo.PreviewContent>
+            </controls:ComponentDemo>
+
+            <controls:ComponentDemo Title="Menu"
+                                    Description="支持 Menu、Submenu 和 SelectedKey，适合侧边导航和顶部导航。"
+                                    XamlCode="{x:Static snippets:NavigationSnippets.Menu}"
+                                    PreviewMinHeight="220">
+                <controls:ComponentDemo.PreviewContent>
+                    <antd:Menu Width="240" SelectedKey="dashboard">
+                        <antd:MenuItem Header="Dashboard" Key="dashboard" />
+                        <antd:Submenu Header="系统管理">
+                            <antd:MenuItem Header="用户管理" Key="users" />
+                            <antd:MenuItem Header="角色管理" Key="roles" />
+                        </antd:Submenu>
+                        <antd:MenuItem Header="设置" Key="settings" />
+                    </antd:Menu>
+                </controls:ComponentDemo.PreviewContent>
+            </controls:ComponentDemo>
+
+            <controls:ComponentDemo Title="Pagination"
+                                    Description="支持页码、每页条数和快速跳页，适合作为 Table / List 的配套组件。"
+                                    XamlCode="{x:Static snippets:NavigationSnippets.Pagination}">
+                <controls:ComponentDemo.PreviewContent>
+                    <antd:Pagination Total="240"
+                                     CurrentPage="3"
+                                     PageSize="20"
+                                     ShowSizeChanger="True"
+                                     ShowQuickJumper="True" />
+                </controls:ComponentDemo.PreviewContent>
+            </controls:ComponentDemo>
+
+            <controls:ComponentDemo Title="Steps"
+                                    Description="用来呈现流程阶段、任务进度和审批链路。"
+                                    XamlCode="{x:Static snippets:NavigationSnippets.Steps}">
+                <controls:ComponentDemo.PreviewContent>
+                    <antd:Steps Current="1">
+                        <antd:Step Title="已创建" Description="录入信息" />
+                        <antd:Step Title="审核中" Description="等待审批" />
+                        <antd:Step Title="已完成" Description="发布上线" />
+                    </antd:Steps>
+                </controls:ComponentDemo.PreviewContent>
+            </controls:ComponentDemo>
+
+            <controls:ComponentDemo Title="Tabs"
+                                    Description="Tabs 通过 TabPane 集合管理内容页，是目录页右侧内容承载方式之一。"
+                                    CSharpCode="{x:Static snippets:NavigationSnippets.Tabs}"
+                                    PreviewMinHeight="220">
+                <controls:ComponentDemo.PreviewContent>
+                    <antd:Tabs Items="{Binding DemoTabs}"
+                               SelectedIndex="0" />
+                </controls:ComponentDemo.PreviewContent>
+            </controls:ComponentDemo>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

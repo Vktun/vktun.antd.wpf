@@ -1,0 +1,76 @@
+<UserControl x:Class="Vktun.Antd.Wpf.Sample.Pages.GeneralPage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:antd="clr-namespace:Vktun.Antd.Wpf;assembly=Vktun.Antd.Wpf"
+             xmlns:controls="clr-namespace:Vktun.Antd.Wpf.Sample.Controls"
+             xmlns:snippets="clr-namespace:Vktun.Antd.Wpf.Sample.Snippets">
+    <ScrollViewer VerticalScrollBarVisibility="Auto"
+                  HorizontalScrollBarVisibility="Disabled">
+        <StackPanel Margin="4,0,4,12">
+            <TextBlock Style="{StaticResource Catalog.PageTitleTextStyle}"
+                       Text="通用" />
+            <TextBlock Style="{StaticResource Catalog.PageDescriptionTextStyle}"
+                       Text="补齐基础操作、悬浮入口和排版语义，让 sample 不再只围绕主题演示。" />
+
+            <controls:ComponentDemo Title="Button"
+                                    Description="直接展示 antd:Button 自身的 Type、Size、Status 等属性，不再通过 ButtonAssist 设置。"
+                                    XamlCode="{x:Static snippets:GeneralSnippets.Button}">
+                <controls:ComponentDemo.PreviewContent>
+                    <WrapPanel>
+                        <antd:Button Margin="0,0,12,12" Content="Default" />
+                        <antd:Button Margin="0,0,12,12" Type="Primary" Content="Primary" />
+                        <antd:Button Margin="0,0,12,12" Type="Dashed" Content="Dashed" />
+                        <antd:Button Margin="0,0,12,12" Type="Text" Content="Text" />
+                        <antd:Button Margin="0,0,12,12" Type="Link" Content="Link" />
+                        <antd:Button Margin="0,0,12,12" Size="Small" Content="Small" />
+                        <antd:Button Margin="0,0,12,12" Size="Large" Status="Warning" Content="Large Warning" />
+                    </WrapPanel>
+                </controls:ComponentDemo.PreviewContent>
+            </controls:ComponentDemo>
+
+            <controls:ComponentDemo Title="FloatButton"
+                                    Description="sample 中保留局部预览，同时在代码片段里给出全局悬浮按钮的推荐写法。"
+                                    XamlCode="{x:Static snippets:GeneralSnippets.FloatButton}">
+                <controls:ComponentDemo.PreviewContent>
+                    <Grid Height="180">
+                        <Border Background="{DynamicResource Antd.Brush.BgContainer}"
+                                BorderBrush="{DynamicResource Antd.Brush.BorderSecondary}"
+                                BorderThickness="1"
+                                CornerRadius="16" />
+                        <TextBlock Margin="20"
+                                   Foreground="{DynamicResource Antd.Brush.TextSecondary}"
+                                   Text="这里演示局部浮动按钮。实际项目里更适合配合 IsGlobal 使用。"
+                                   TextWrapping="Wrap" />
+                        <antd:FloatButton Width="72"
+                                          Height="72"
+                                          Margin="0,0,20,20"
+                                          HorizontalAlignment="Right"
+                                          VerticalAlignment="Bottom"
+                                          Content="帮助"
+                                          Description="FAQ"
+                                          Icon="?" />
+                    </Grid>
+                </controls:ComponentDemo.PreviewContent>
+            </controls:ComponentDemo>
+
+            <controls:ComponentDemo Title="Typography"
+                                    Description="覆盖标题、正文和段落语义，对应 Ant Design Typography 的常见组合。"
+                                    XamlCode="{x:Static snippets:GeneralSnippets.Typography}">
+                <controls:ComponentDemo.PreviewContent>
+                    <StackPanel>
+                        <antd:TypographyTitle Level="2"
+                                              Text="组件目录页" />
+                        <antd:TypographyText Margin="0,8,0,0"
+                                             Text="这一页用来呈现 WPF 兼容组件的最小可用示例。" />
+                        <antd:TypographyText Margin="0,8,0,0"
+                                             Code="True"
+                                             Text="AntdThemeManager.Current.Apply(...)" />
+                        <antd:TypographyParagraph Margin="0,12,0,0"
+                                                  Strong="True"
+                                                  Text="目录页重构后，示例会按官方分类组织，并保留运行时主题切换能力。" />
+                    </StackPanel>
+                </controls:ComponentDemo.PreviewContent>
+            </controls:ComponentDemo>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

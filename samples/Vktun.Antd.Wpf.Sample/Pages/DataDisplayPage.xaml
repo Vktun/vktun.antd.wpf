@@ -1,0 +1,203 @@
+<UserControl x:Class="Vktun.Antd.Wpf.Sample.Pages.DataDisplayPage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:antd="clr-namespace:Vktun.Antd.Wpf;assembly=Vktun.Antd.Wpf"
+             xmlns:controls="clr-namespace:Vktun.Antd.Wpf.Sample.Controls"
+             xmlns:snippets="clr-namespace:Vktun.Antd.Wpf.Sample.Snippets">
+    <ScrollViewer VerticalScrollBarVisibility="Auto"
+                  HorizontalScrollBarVisibility="Disabled">
+        <StackPanel Margin="4,0,4,12">
+            <TextBlock Style="{StaticResource Catalog.PageTitleTextStyle}"
+                       Text="数据展示" />
+            <TextBlock Style="{StaticResource Catalog.PageDescriptionTextStyle}"
+                       Text="展示类组件覆盖卡片、表格、时间线、统计值，以及本轮新增的 Calendar / Segmented / Statistic。" />
+
+            <controls:ComponentDemo Title="Avatar"
+                                    Description="支持文本头像和方形 / 圆形外观。"
+                                    XamlCode="{x:Static snippets:DataDisplaySnippets.Avatar}">
+                <controls:ComponentDemo.PreviewContent>
+                    <antd:Space Orientation="Horizontal" Gap="12">
+                        <antd:Avatar Text="VK" />
+                        <antd:Avatar Shape="Square" Text="WPF" />
+                    </antd:Space>
+                </controls:ComponentDemo.PreviewContent>
+            </controls:ComponentDemo>
+
+            <controls:ComponentDemo Title="Badge"
+                                    Description="Badge 通过 Count / Dot 叠加到任意内容之上。"
+                                    XamlCode="{x:Static snippets:DataDisplaySnippets.Badge}">
+                <controls:ComponentDemo.PreviewContent>
+                    <WrapPanel>
+                        <antd:Badge Count="7">
+                            <antd:Avatar Text="CI" />
+                        </antd:Badge>
+                        <Border Width="24" />
+                        <antd:Badge Dot="True">
+                            <antd:Button Content="构建状态" />
+                        </antd:Badge>
+                    </WrapPanel>
+                </controls:ComponentDemo.PreviewContent>
+            </controls:ComponentDemo>
+
+            <controls:ComponentDemo Title="Card"
+                                    Description="Card 提供 Header、Extra 和内容区，是 sample 的主要容器之一。"
+                                    XamlCode="{x:Static snippets:DataDisplaySnippets.Card}">
+                <controls:ComponentDemo.PreviewContent>
+                    <antd:Card Header="发布摘要" Extra="更多">
+                        <StackPanel>
+                            <TextBlock Text="v1.0.0 已发布" />
+                            <TextBlock Margin="0,8,0,0"
+                                       Foreground="{DynamicResource Antd.Brush.TextSecondary}"
+                                       Text="包含 Layout、Segmented 和 Watermark 示例。" />
+                        </StackPanel>
+                    </antd:Card>
+                </controls:ComponentDemo.PreviewContent>
+            </controls:ComponentDemo>
+
+            <controls:ComponentDemo Title="Collapse"
+                                    Description="用 Accordion 模式压缩展示多段说明。"
+                                    XamlCode="{x:Static snippets:DataDisplaySnippets.Collapse}">
+                <controls:ComponentDemo.PreviewContent>
+                    <antd:Collapse Accordion="True">
+                        <antd:CollapsePanel Header="设计规范" IsExpanded="True">
+                            <TextBlock Text="统一间距、圆角和色板语义。" />
+                        </antd:CollapsePanel>
+                        <antd:CollapsePanel Header="兼容约束">
+                            <TextBlock Text="以 WPF 语义兼容优先。" />
+                        </antd:CollapsePanel>
+                    </antd:Collapse>
+                </controls:ComponentDemo.PreviewContent>
+            </controls:ComponentDemo>
+
+            <controls:ComponentDemo Title="Descriptions"
+                                    Description="适合展示只读详情页信息，支持 bordered 和多列布局。"
+                                    XamlCode="{x:Static snippets:DataDisplaySnippets.Descriptions}">
+                <controls:ComponentDemo.PreviewContent>
+                    <antd:Descriptions Title="构建信息"
+                                       Column="2"
+                                       Bordered="True">
+                        <antd:DescriptionItem Label="Version" Content="1.0.0" />
+                        <antd:DescriptionItem Label="Theme" Content="Dark" />
+                        <antd:DescriptionItem Label="Commit" Content="a1b2c3d" Span="2" />
+                    </antd:Descriptions>
+                </controls:ComponentDemo.PreviewContent>
+            </controls:ComponentDemo>
+
+            <controls:ComponentDemo Title="Empty"
+                                    Description="用于空列表、空筛选和未配置状态。"
+                                    XamlCode="{x:Static snippets:DataDisplaySnippets.Empty}">
+                <controls:ComponentDemo.PreviewContent>
+                    <antd:Empty Description="当前筛选条件下暂无数据" />
+                </controls:ComponentDemo.PreviewContent>
+            </controls:ComponentDemo>
+
+            <controls:ComponentDemo Title="List"
+                                    Description="适合中等复杂度的数据列表，支持 Header、Footer 和 Extra 区域。"
+                                    XamlCode="{x:Static snippets:DataDisplaySnippets.List}">
+                <controls:ComponentDemo.PreviewContent>
+                    <antd:List Header="最近变更" Bordered="True">
+                        <antd:ListItem Content="新增 Segmented 组件" Extra="今天" />
+                        <antd:ListItem Content="重构 Sample 目录页" Extra="昨天" />
+                    </antd:List>
+                </controls:ComponentDemo.PreviewContent>
+            </controls:ComponentDemo>
+
+            <controls:ComponentDemo Title="Tooltip / Popover"
+                                    Description="Tooltip 提供轻提示，Popover 负责富文本和操作型浮层。"
+                                    XamlCode="{x:Static snippets:DataDisplaySnippets.TooltipPopover}">
+                <controls:ComponentDemo.PreviewContent>
+                    <antd:Space Orientation="Horizontal" Gap="12">
+                        <antd:Tooltip Title="轻量提示">
+                            <antd:Button Content="Tooltip" />
+                        </antd:Tooltip>
+                        <antd:Popover Title="版本说明"
+                                      PopoverContent="包含 Calendar、Statistic 与 Watermark。">
+                            <antd:Button Content="Popover" />
+                        </antd:Popover>
+                    </antd:Space>
+                </controls:ComponentDemo.PreviewContent>
+            </controls:ComponentDemo>
+
+            <controls:ComponentDemo Title="Table"
+                                    Description="Table 基于 DataGrid，但对齐 Ant Design 的表头、行高和边框语义。"
+                                    XamlCode="{x:Static snippets:DataDisplaySnippets.Table}"
+                                    PreviewMinHeight="260">
+                <controls:ComponentDemo.PreviewContent>
+                    <antd:Table ItemsSource="{Binding Releases}"
+                                TableSize="Middle"
+                                Bordered="True"
+                                Height="220">
+                        <antd:Table.Columns>
+                            <DataGridTextColumn Header="版本" Binding="{Binding Version}" />
+                            <DataGridTextColumn Header="状态" Binding="{Binding Status}" />
+                            <DataGridTextColumn Header="日期" Binding="{Binding Date}" />
+                        </antd:Table.Columns>
+                    </antd:Table>
+                </controls:ComponentDemo.PreviewContent>
+            </controls:ComponentDemo>
+
+            <controls:ComponentDemo Title="Tag"
+                                    Description="Tag 语义色统一迁到 Tag.Color，并支持 checkable 模式。"
+                                    XamlCode="{x:Static snippets:DataDisplaySnippets.Tag}">
+                <controls:ComponentDemo.PreviewContent>
+                    <antd:Space Orientation="Horizontal" Gap="8">
+                        <antd:Tag Color="Blue">Design</antd:Tag>
+                        <antd:Tag Color="Success">Stable</antd:Tag>
+                        <antd:Tag IsCheckable="True" IsChecked="True">Selected</antd:Tag>
+                    </antd:Space>
+                </controls:ComponentDemo.PreviewContent>
+            </controls:ComponentDemo>
+
+            <controls:ComponentDemo Title="Timeline"
+                                    Description="Timeline 用于呈现按时间排序的任务或版本记录。"
+                                    XamlCode="{x:Static snippets:DataDisplaySnippets.Timeline}">
+                <controls:ComponentDemo.PreviewContent>
+                    <antd:Timeline>
+                        <antd:TimelineItem Label="阶段 1" Content="定义映射策略" Color="Blue" />
+                        <antd:TimelineItem Label="阶段 2" Content="补齐 sample" Color="Green" />
+                        <antd:TimelineItem Label="阶段 3" Content="回归测试" Color="Gray" />
+                    </antd:Timeline>
+                </controls:ComponentDemo.PreviewContent>
+            </controls:ComponentDemo>
+
+            <controls:ComponentDemo Title="Calendar"
+                                    Description="本轮新增独立 Calendar 组件，直接复用库内主题化日历资源。"
+                                    XamlCode="{x:Static snippets:DataDisplaySnippets.Calendar}"
+                                    PreviewMinHeight="320">
+                <controls:ComponentDemo.PreviewContent>
+                    <antd:Calendar Width="300"
+                                   DisplayDate="2026-04-09"
+                                   SelectedDate="2026-04-09" />
+                </controls:ComponentDemo.PreviewContent>
+            </controls:ComponentDemo>
+
+            <controls:ComponentDemo Title="Segmented"
+                                    Description="本轮新增 Segmented，适合周期切换和轻量单选筛选。"
+                                    XamlCode="{x:Static snippets:DataDisplaySnippets.Segmented}">
+                <controls:ComponentDemo.PreviewContent>
+                    <antd:Segmented ItemsSource="{Binding ReportingPeriods}"
+                                    SelectedIndex="1"
+                                    Block="True" />
+                </controls:ComponentDemo.PreviewContent>
+            </controls:ComponentDemo>
+
+            <controls:ComponentDemo Title="Statistic"
+                                    Description="本轮新增 Statistic，用来展示关键数字、趋势和单位。"
+                                    XamlCode="{x:Static snippets:DataDisplaySnippets.Statistic}">
+                <controls:ComponentDemo.PreviewContent>
+                    <WrapPanel>
+                        <antd:Statistic Margin="0,0,32,0"
+                                        Title="本月发布次数"
+                                        Value="42"
+                                        Prefix="+"
+                                        Suffix="次"
+                                        Precision="0" />
+                        <antd:Statistic Title="转化率"
+                                        Value="0.2734"
+                                        ValueFormat="{}{0:P1}" />
+                    </WrapPanel>
+                </controls:ComponentDemo.PreviewContent>
+            </controls:ComponentDemo>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

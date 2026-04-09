@@ -411,14 +411,14 @@ public class DropdownButton : Button
     /// <summary>
     /// Identifies the <see cref="Type"/> dependency property.
     /// </summary>
-    public static readonly DependencyProperty TypeProperty =
+    public new static readonly DependencyProperty TypeProperty =
         DependencyProperty.Register(nameof(Type), typeof(AntdButtonType), typeof(DropdownButton),
             new PropertyMetadata(AntdButtonType.Default));
 
     /// <summary>
     /// Identifies the <see cref="Size"/> dependency property.
     /// </summary>
-    public static readonly DependencyProperty SizeProperty =
+    public new static readonly DependencyProperty SizeProperty =
         DependencyProperty.Register(nameof(Size), typeof(AntdControlSize), typeof(DropdownButton),
             new PropertyMetadata(AntdControlSize.Middle));
 
@@ -439,7 +439,7 @@ public class DropdownButton : Button
     /// <summary>
     /// Identifies the <see cref="Icon"/> dependency property.
     /// </summary>
-    public static readonly DependencyProperty IconProperty =
+    public new static readonly DependencyProperty IconProperty =
         DependencyProperty.Register(nameof(Icon), typeof(object), typeof(DropdownButton),
             new PropertyMetadata(null));
 
@@ -473,7 +473,7 @@ public class DropdownButton : Button
     /// <summary>
     /// Gets or sets the button type.
     /// </summary>
-    public AntdButtonType Type
+    public new AntdButtonType Type
     {
         get => (AntdButtonType)GetValue(TypeProperty);
         set => SetValue(TypeProperty, value);
@@ -482,7 +482,7 @@ public class DropdownButton : Button
     /// <summary>
     /// Gets or sets the button size.
     /// </summary>
-    public AntdControlSize Size
+    public new AntdControlSize Size
     {
         get => (AntdControlSize)GetValue(SizeProperty);
         set => SetValue(SizeProperty, value);
@@ -509,7 +509,7 @@ public class DropdownButton : Button
     /// <summary>
     /// Gets or sets the icon content.
     /// </summary>
-    public object? Icon
+    public new object? Icon
     {
         get => GetValue(IconProperty);
         set => SetValue(IconProperty, value);

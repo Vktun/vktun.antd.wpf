@@ -165,7 +165,7 @@ public class FormItem : ContentControl
     /// <summary>
     /// Gets or sets the field name.
     /// </summary>
-    public string Name
+    public new string Name
     {
         get => (string)GetValue(NameProperty);
         set => SetValue(NameProperty, value);
@@ -174,7 +174,7 @@ public class FormItem : ContentControl
     /// <summary>
     /// Identifies the <see cref="Name"/> dependency property.
     /// </summary>
-    public static readonly DependencyProperty NameProperty =
+    public new static readonly DependencyProperty NameProperty =
         DependencyProperty.Register(nameof(Name), typeof(string), typeof(FormItem),
             new PropertyMetadata(string.Empty));
 

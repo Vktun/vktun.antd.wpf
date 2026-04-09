@@ -477,7 +477,6 @@
                         </Grid.ColumnDefinitions>
                         <!-- Label -->
                         <StackPanel Grid.Column="0"
-                                    Width="{Binding LabelCol, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource SpanToWidthConverter}}"
                                     Orientation="Horizontal"
                                     HorizontalAlignment="{Binding LabelAlign, RelativeSource={RelativeSource AncestorType=local:Form}}"
                                     Margin="0,8,12,0">

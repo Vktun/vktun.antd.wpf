@@ -313,10 +313,14 @@
                         </Trigger>
                         <Trigger Property="Danger" Value="True">
                             <Setter Property="Foreground" Value="{DynamicResource Antd.Brush.Error}" />
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="Root" Property="Background" Value="{DynamicResource Antd.Brush.ErrorBg}" />
-                            </Trigger>
                         </Trigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="Danger" Value="True" />
+                                <Condition Property="IsMouseOver" Value="True" />
+                            </MultiTrigger.Conditions>
+                            <Setter TargetName="Root" Property="Background" Value="{DynamicResource Antd.Brush.ErrorBg}" />
+                        </MultiTrigger>
                         <Trigger Property="IsDisabled" Value="True">
                             <Setter Property="Opacity" Value="0.45" />
                             <Setter Property="Cursor" Value="None" />
@@ -480,7 +484,7 @@
                                               Stroke="#FAAD14"
                                               StrokeThickness="2"
                                               Stretch="Uniform"
-                                              Visibility="{TemplateBinding ShowIcon, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                                              Visibility="Collapsed" />
                                         <TextBlock Text="{TemplateBinding Title}"
                                                    FontSize="14"
                                                    Foreground="{DynamicResource {x:Static local:AntdResourceKeys.BrushText}}"
@@ -500,6 +504,11 @@
                             </Border>
                         </Popup>
                     </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="ShowIcon" Value="True">
+                            <Setter TargetName="WarningIcon" Property="Visibility" Value="Visible" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>

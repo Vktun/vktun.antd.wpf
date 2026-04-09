@@ -155,12 +155,12 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type local:Pagination}">
-                    <StackPanel Orientation="Horizontal"
-                                VerticalAlignment="Center"
-                                local:SpaceAssist.Gap="18">
-                        <StackPanel Orientation="Horizontal"
-                                    VerticalAlignment="Center"
-                                    local:SpaceAssist.Gap="8">
+                    <local:Space Orientation="Horizontal"
+                                 VerticalAlignment="Center"
+                                 Gap="18">
+                        <local:Space Orientation="Horizontal"
+                                     VerticalAlignment="Center"
+                                     Gap="8">
                             <Button Style="{StaticResource Antd.Pagination.ActionButtonStyle}"
                                     Command="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=PreviousPageCommand}">
                                 <Path Width="8"
@@ -206,7 +206,7 @@
                                       Stroke="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}"
                                       Data="M 1 1 L 7 6 L 1 11" />
                             </Button>
-                        </StackPanel>
+                        </local:Space>
 
                         <ComboBox x:Name="PageSizeSelector"
                                   Width="110"
@@ -221,10 +221,10 @@
                             </ComboBox.ItemTemplate>
                         </ComboBox>
 
-                        <StackPanel x:Name="QuickJumperPanel"
-                                    Orientation="Horizontal"
-                                    VerticalAlignment="Center"
-                                    local:SpaceAssist.Gap="8">
+                        <local:Space x:Name="QuickJumperPanel"
+                                     Orientation="Horizontal"
+                                     VerticalAlignment="Center"
+                                     Gap="8">
                             <TextBlock VerticalAlignment="Center" Text="跳至" />
                             <TextBox x:Name="PART_QuickJumperTextBox"
                                      Width="52"
@@ -232,8 +232,8 @@
                                      HorizontalContentAlignment="Center"
                                      Text="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=QuickJumpText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                             <TextBlock VerticalAlignment="Center" Text="页" />
-                        </StackPanel>
-                    </StackPanel>
+                        </local:Space>
+                    </local:Space>
                     <ControlTemplate.Triggers>
                         <Trigger Property="ShowSizeChanger" Value="False">
                             <Setter TargetName="PageSizeSelector" Property="Visibility" Value="Collapsed" />
@@ -538,7 +538,6 @@
         </Setter>
     </Style>
 </ResourceDictionary>
-
 
 
 

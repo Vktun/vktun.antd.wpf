@@ -46,15 +46,15 @@
                         <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Center" />
                     </Border>
                     <ControlTemplate.Triggers>
-                        <Trigger Property="local:StatusAssist.Status" Value="Success">
+                        <Trigger Property="Color" Value="Success">
                             <Setter TargetName="Root" Property="Background" Value="{DynamicResource {x:Static local:AntdResourceKeys.BrushSuccess}}" />
                             <Setter Property="Foreground" Value="White" />
                         </Trigger>
-                        <Trigger Property="local:StatusAssist.Status" Value="Warning">
+                        <Trigger Property="Color" Value="Warning">
                             <Setter TargetName="Root" Property="Background" Value="{DynamicResource {x:Static local:AntdResourceKeys.BrushWarning}}" />
                             <Setter Property="Foreground" Value="White" />
                         </Trigger>
-                        <Trigger Property="local:StatusAssist.Status" Value="Error">
+                        <Trigger Property="Color" Value="Error">
                             <Setter TargetName="Root" Property="Background" Value="{DynamicResource {x:Static local:AntdResourceKeys.BrushError}}" />
                             <Setter Property="Foreground" Value="White" />
                         </Trigger>

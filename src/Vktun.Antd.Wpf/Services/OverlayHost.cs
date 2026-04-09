@@ -215,12 +215,12 @@ internal sealed class OverlayHost
             TextWrapping = TextWrapping.Wrap,
         };
 
-        var footer = new StackPanel
+        var footer = new Space
         {
             Orientation = Orientation.Horizontal,
             HorizontalAlignment = HorizontalAlignment.Right,
+            Gap = 8d,
         };
-        SpaceAssist.SetGap(footer, 8d);
 
         void Close(bool? result)
         {
@@ -252,8 +252,8 @@ internal sealed class OverlayHost
         {
             Content = request.OkText,
             MinWidth = 88d,
+            Type = AntdButtonType.Primary,
         };
-        ButtonAssist.SetType(okButton, AntdButtonType.Primary);
         okButton.Click += (_, _) => Close(true);
 
         if (request.ShowCancel)

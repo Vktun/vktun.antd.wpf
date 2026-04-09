@@ -1,0 +1,207 @@
+<UserControl x:Class="Vktun.Antd.Wpf.Sample.Pages.DataEntryPage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:antd="clr-namespace:Vktun.Antd.Wpf;assembly=Vktun.Antd.Wpf"
+             xmlns:controls="clr-namespace:Vktun.Antd.Wpf.Sample.Controls"
+             xmlns:snippets="clr-namespace:Vktun.Antd.Wpf.Sample.Snippets">
+    <ScrollViewer VerticalScrollBarVisibility="Auto"
+                  HorizontalScrollBarVisibility="Disabled">
+        <StackPanel Margin="4,0,4,12">
+            <TextBlock Style="{StaticResource Catalog.PageTitleTextStyle}"
+                       Text="数据录入" />
+            <TextBlock Style="{StaticResource Catalog.PageDescriptionTextStyle}"
+                       Text="输入类组件统一迁到控件自身属性，sample 中同时给出表单、选择器和日期类映射。" />
+
+            <controls:ComponentDemo Title="Checkbox / CheckboxGroup"
+                                    Description="单个勾选框与分组勾选都集中展示，覆盖 indeterminate 和分组值同步。"
+                                    XamlCode="{x:Static snippets:DataEntrySnippets.CheckboxGroup}">
+                <controls:ComponentDemo.PreviewContent>
+                    <StackPanel>
+                        <WrapPanel Margin="0,0,0,16">
+                            <antd:Checkbox Margin="0,0,16,0" Content="接收通知" IsChecked="True" />
+                            <antd:Checkbox Content="允许协作" Indeterminate="True" />
+                        </WrapPanel>
+                        <antd:CheckboxGroup Value="{Binding SelectedRegions}">
+                            <antd:Checkbox Margin="0,0,16,0" Content="北京" Tag="beijing" />
+                            <antd:Checkbox Margin="0,0,16,0" Content="上海" Tag="shanghai" />
+                            <antd:Checkbox Content="深圳" Tag="shenzhen" />
+                        </antd:CheckboxGroup>
+                    </StackPanel>
+                </controls:ComponentDemo.PreviewContent>
+            </controls:ComponentDemo>
+
+            <controls:ComponentDemo Title="Input"
+                                    Description="Input 直接暴露 Prefix、Suffix、Variant、Status 和 AllowClear。"
+                                    XamlCode="{x:Static snippets:DataEntrySnippets.Input}">
+                <controls:ComponentDemo.PreviewContent>
+                    <WrapPanel>
+                        <antd:Input Width="240"
+                                    Margin="0,0,16,12"
+                                    Prefix="@"
+                                    Suffix=".com"
+                                    AllowClear="True"
+                                    Text="ant-design-wpf" />
+                        <antd:Input Width="220"
+                                    Margin="0,0,0,12"
+                                    Variant="Filled"
+                                    Status="Success"
+                                    Text="Filled variant" />
+                    </WrapPanel>
+                </controls:ComponentDemo.PreviewContent>
+            </controls:ComponentDemo>
+
+            <controls:ComponentDemo Title="PasswordInput"
+                                    Description="密码输入框复用输入框视觉语义，示例里保留前缀和状态。"
+                                    XamlCode="{x:Static snippets:DataEntrySnippets.PasswordInput}">
+                <controls:ComponentDemo.PreviewContent>
+                    <antd:PasswordInput Width="260"
+                                        Prefix="Lock"
+                                        Password="DesignSystem!"
+                                        Status="Warning" />
+                </controls:ComponentDemo.PreviewContent>
+            </controls:ComponentDemo>
+
+            <controls:ComponentDemo Title="Select -> ComboBox"
+                                    Description="sample 明确用 antd:ComboBox 映射 Ant Design 的 Select。"
+                                    XamlCode="{x:Static snippets:DataEntrySnippets.SelectComboBox}">
+                <controls:ComponentDemo.PreviewContent>
+                    <WrapPanel>
+                        <antd:ComboBox Width="220"
+                                       Margin="0,0,16,12"
+                                       SelectedIndex="0"
+                                       Prefix="环境">
+                            <ComboBoxItem Content="开发环境" />
+                            <ComboBoxItem Content="预发环境" />
+                            <ComboBoxItem Content="生产环境" />
+                        </antd:ComboBox>
+                        <antd:ComboBox Width="220"
+                                       Variant="Filled"
+                                       SelectedIndex="1">
+                            <ComboBoxItem Content="北京" />
+                            <ComboBoxItem Content="上海" />
+                            <ComboBoxItem Content="深圳" />
+                        </antd:ComboBox>
+                    </WrapPanel>
+                </controls:ComponentDemo.PreviewContent>
+            </controls:ComponentDemo>
+
+            <controls:ComponentDemo Title="Form"
+                                    Description="Form / FormItem 负责标签布局、校验状态和提交动作，示例通过按钮触发表单校验。"
+                                    XamlCode="{x:Static snippets:DataEntrySnippets.Form}"
+                                    PreviewMinHeight="260">
+                <controls:ComponentDemo.PreviewContent>
+                    <StackPanel>
+                        <antd:Form Layout="Vertical"
+                                   Model="{Binding FormModel}">
+                            <antd:FormItem Label="应用名称"
+                                           Required="True">
+                                <antd:Input Text="Antd WPF" />
+                            </antd:FormItem>
+                            <antd:FormItem Label="部署环境">
+                                <antd:ComboBox SelectedIndex="0">
+                                    <ComboBoxItem Content="Production" />
+                                    <ComboBoxItem Content="Staging" />
+                                </antd:ComboBox>
+                            </antd:FormItem>
+                        </antd:Form>
+
+                        <antd:Button Margin="0,16,0,0"
+                                     Width="120"
+                                     Type="Primary"
+                                     Click="ValidateFormButton_OnClick"
+                                     Content="校验表单" />
+                    </StackPanel>
+                </controls:ComponentDemo.PreviewContent>
+            </controls:ComponentDemo>
+
+            <controls:ComponentDemo Title="Radio / RadioGroup"
+                                    Description="单选框和单选组统一映射到 Radio / RadioGroup，并支持按钮化样式。"
+                                    XamlCode="{x:Static snippets:DataEntrySnippets.RadioGroup}">
+                <controls:ComponentDemo.PreviewContent>
+                    <StackPanel>
+                        <WrapPanel Margin="0,0,0,16">
+                            <antd:Radio Margin="0,0,16,0" Content="日报" IsChecked="True" />
+                            <antd:Radio Content="周报" />
+                        </WrapPanel>
+                        <antd:RadioGroup Value="{Binding SelectedChannel}">
+                            <antd:Radio Margin="0,0,16,0" Content="邮件" Tag="mail" />
+                            <antd:Radio Margin="0,0,16,0" Content="短信" Tag="sms" />
+                            <antd:Radio Content="站内信" Tag="inbox" />
+                        </antd:RadioGroup>
+                    </StackPanel>
+                </controls:ComponentDemo.PreviewContent>
+            </controls:ComponentDemo>
+
+            <controls:ComponentDemo Title="DatePicker / RangePicker"
+                                    Description="sample 优先展示自定义 antd:DatePicker 和 antd:RangePicker，而不只依赖原生 WPF DatePicker。"
+                                    XamlCode="{x:Static snippets:DataEntrySnippets.DatePicker}">
+                <controls:ComponentDemo.PreviewContent>
+                    <WrapPanel>
+                        <antd:DatePicker Width="180"
+                                         Margin="0,0,16,12"
+                                         SelectedDate="2026-04-09"
+                                         AllowClear="True" />
+                        <antd:RangePicker Width="320"
+                                          Margin="0,0,0,12"
+                                          StartValue="2026-04-01"
+                                          EndValue="2026-04-09" />
+                    </WrapPanel>
+                </controls:ComponentDemo.PreviewContent>
+            </controls:ComponentDemo>
+
+            <controls:ComponentDemo Title="Switch"
+                                    Description="保留开关类 checked / unchecked 文案和 loading 语义。"
+                                    XamlCode="{x:Static snippets:DataEntrySnippets.Switch}">
+                <controls:ComponentDemo.PreviewContent>
+                    <WrapPanel VerticalAlignment="Center">
+                        <antd:Switch Margin="0,0,16,0"
+                                     IsChecked="True"
+                                     CheckedChildren="启用"
+                                     UnCheckedChildren="停用" />
+                        <antd:Switch IsLoading="True"
+                                     CheckedChildren="同步中"
+                                     UnCheckedChildren="待处理" />
+                    </WrapPanel>
+                </controls:ComponentDemo.PreviewContent>
+            </controls:ComponentDemo>
+
+            <controls:ComponentDemo Title="InputNumber"
+                                    Description="本轮新增数值输入，支持范围钳制、步进、精度以及前后缀。"
+                                    XamlCode="{x:Static snippets:DataEntrySnippets.InputNumber}">
+                <controls:ComponentDemo.PreviewContent>
+                    <WrapPanel>
+                        <antd:InputNumber Width="180"
+                                          Margin="0,0,16,12"
+                                          Value="128"
+                                          Minimum="0"
+                                          Maximum="999"
+                                          Step="8"
+                                          Prefix="RMB"
+                                          Suffix="CNY" />
+                        <antd:InputNumber Width="160"
+                                          Precision="2"
+                                          Value="3.1415"
+                                          Step="0.25"
+                                          Status="Warning" />
+                    </WrapPanel>
+                </controls:ComponentDemo.PreviewContent>
+            </controls:ComponentDemo>
+
+            <controls:ComponentDemo Title="Slider"
+                                    Description="新增单值 Slider，用来覆盖常见阈值、比例和筛选场景。"
+                                    XamlCode="{x:Static snippets:DataEntrySnippets.Slider}">
+                <controls:ComponentDemo.PreviewContent>
+                    <StackPanel Width="280">
+                        <antd:Slider Minimum="0"
+                                     Maximum="100"
+                                     Value="64" />
+                        <antd:Slider Margin="0,20,0,0"
+                                     Minimum="0"
+                                     Maximum="10"
+                                     Value="4" />
+                    </StackPanel>
+                </controls:ComponentDemo.PreviewContent>
+            </controls:ComponentDemo>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

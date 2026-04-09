@@ -6,57 +6,59 @@ using System.Windows.Media;
 using System.Windows.Media.Effects;
 using System.Windows.Shapes;
 using Vktun.Antd.Wpf;
+using Vktun.Antd.Wpf.Sample.Pages;
 
 namespace Vktun.Antd.Wpf.Sample;
 
 public partial class MainWindow : Window
 {
-    private readonly IMessageService _messageService = new MessageService();
-    private readonly INotificationService _notificationService = new NotificationService();
-    private readonly IModalService _modalService = new ModalService();
     private readonly ResourceDictionary _sceneOverrides = new();
     private readonly List<ThemePreset> _themePresets = CreateThemePresets();
+    private readonly Dictionary<string, UserControl> _pageCache = new();
+    private readonly List<CatalogNavigationItem> _navigationItems = CreateNavigationItems();
 
     public MainWindow()
     {
         InitializeComponent();
 
-        if (Application.Current is not null)
+        if (Application.Current is not null &&
+            !Application.Current.Resources.MergedDictionaries.Contains(_sceneOverrides))
         {
             Application.Current.Resources.MergedDictionaries.Add(_sceneOverrides);
         }
 
-        InitializeThemeGallery();
-        InitializePreviewControls();
-        //ApplyComboBoxVariant(AntdComboBoxVariant.Outlined);
+        InitializeCatalog();
     }
 
-    private void InitializeThemeGallery()
+    private void InitializeCatalog()
     {
         ThemeCountTag.Content = $"{_themePresets.Count} 个预设";
-        ThemePresetListBox.ItemsSource = _themePresets;
+        ThemePresetSelector.ItemsSource = _themePresets;
+        NavigationListBox.ItemsSource = _navigationItems;
 
         var initialIndex = _themePresets.FindIndex(static preset => preset.Kind == ThemePresetKind.Illustration);
-        ThemePresetListBox.SelectedIndex = initialIndex >= 0 ? initialIndex : 0;
-        ApplyPreset(_themePresets[ThemePresetListBox.SelectedIndex]);
+        ThemePresetSelector.SelectedIndex = initialIndex >= 0 ? initialIndex : 0;
+        NavigationListBox.SelectedIndex = 0;
     }
 
-    private void InitializePreviewControls()
+    private void ThemePresetSelector_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
     {
-        PreviewInlineDatePicker.SelectedDate = new DateTime(2026, 4, 3);
-        PreviewSingleDatePicker.SelectedDate = new DateTime(2026, 4, 3);
-        PreviewRangeStartDatePicker.SelectedDate = new DateTime(2026, 4, 1);
-        PreviewRangeEndDatePicker.SelectedDate = new DateTime(2026, 4, 7);
-    }
-
-    private void ThemePresetListBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
-    {
-        if (ThemePresetListBox.SelectedItem is not ThemePreset preset)
+        if (ThemePresetSelector.SelectedItem is not ThemePreset preset)
         {
             return;
         }
 
         ApplyPreset(preset);
+    }
+
+    private void NavigationListBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        if (NavigationListBox.SelectedItem is not CatalogNavigationItem item)
+        {
+            return;
+        }
+
+        NavigateTo(item.Key);
     }
 
     private void ApplyPreset(ThemePreset preset)
@@ -92,18 +94,48 @@ public partial class MainWindow : Window
         PreviewShell.BorderThickness = new Thickness(preset.HardOutline ? 4d : 3d);
         PreviewShell.Effect = CreateShadowEffect(preset.PreviewBorder, preset.Mode == AntdThemeMode.Dark ? 26d : 22d, 6d, preset.Mode == AntdThemeMode.Dark ? 0.28d : 0.16d);
 
-        InfoBannerBorder.BorderBrush = CreateSolidBrush(preset.SurfaceBorder);
-        ApplyPreviewControlChrome(new Thickness(preset.HardOutline ? 3d : 2d));
     }
 
-    private void ApplyPreviewControlChrome(Thickness thickness)
+    private void NavigateTo(string key)
     {
-        ComboBoxVariantSelector.BorderThickness = thickness;
-        PreviewCategoryComboBox.BorderThickness = thickness;
-        PreviewTagComboBox.BorderThickness = thickness;
-        PreviewFruitComboBox.BorderThickness = thickness;
-        PreviewInlineDatePicker.BorderThickness = thickness;
-        PreviewSingleDatePicker.BorderThickness = thickness;
+        if (!_pageCache.TryGetValue(key, out var page))
+        {
+            page = CreatePage(key);
+            _pageCache[key] = page;
+        }
+
+        PageHost.Content = page;
+    }
+
+    private static List<CatalogNavigationItem> CreateNavigationItems()
+    {
+        return
+        [
+            new("overview", "总览", "组件覆盖矩阵、映射规则和本轮新增状态。"),
+            new("general", "通用", "Button、FloatButton、Typography。"),
+            new("layout", "布局", "Divider、Grid、Space、Flex、Layout、Splitter。"),
+            new("navigation", "导航", "Breadcrumb、Dropdown、Menu、Pagination、Steps、Tabs。"),
+            new("data-entry", "数据录入", "Input、Form、DatePicker、InputNumber、Slider 等。"),
+            new("data-display", "数据展示", "Card、Table、Calendar、Segmented、Statistic 等。"),
+            new("feedback", "反馈", "Alert、Drawer、Progress、Message、Modal、Notification。"),
+            new("other", "其他", "ConfigProvider 在 WPF 中的映射方式。"),
+        ];
+    }
+
+    private static UserControl CreatePage(string key)
+    {
+        return key switch
+        {
+            "overview" => new OverviewPage(),
+            "general" => new GeneralPage(),
+            "layout" => new LayoutPage(),
+            "navigation" => new NavigationPage(),
+            "data-entry" => new DataEntryPage(),
+            "data-display" => new DataDisplayPage(),
+            "feedback" => new FeedbackPage(),
+            "other" => new OtherPage(),
+            _ => new OverviewPage(),
+        };
     }
 
     private void ApplySceneOverrides(ThemePreset preset)
@@ -233,62 +265,6 @@ public partial class MainWindow : Window
     private void SetEffectOverride(string key, Color color, double blur, double depth, double opacity)
     {
         _sceneOverrides[key] = CreateShadowEffect(color, blur, depth, opacity);
-    }
-
-    private void ShowSuccessMessageButton_OnClick(object sender, RoutedEventArgs e)
-    {
-        _messageService.Show(this, "主题预设已更新。", MessageKind.Success);
-    }
-
-    private void ShowNotificationButton_OnClick(object sender, RoutedEventArgs e)
-    {
-        _notificationService.Show(this, new NotificationRequest
-        {
-            Title = "预设已切换",
-            Description = "当前示例页已经应用新的背景图案、边框力度与输入控件视觉。",
-            Kind = MessageKind.Info,
-        });
-    }
-
-    private async void ShowModalButton_OnClick(object sender, RoutedEventArgs e)
-    {
-        var result = await _modalService.ShowAsync(this, new ModalRequest
-        {
-            Title = "确认主题演示",
-            Content = new TextBlock
-            {
-                Text = "这个弹窗与 DatePicker、ComboBox 一样，都会跟随当前主题预设的资源覆盖。",
-                TextWrapping = TextWrapping.Wrap,
-                Width = 320,
-            },
-            OkText = "确认",
-            CancelText = "取消",
-        });
-
-        _messageService.Show(this, result == true ? "你确认了这次操作。" : "你关闭了弹窗。", result == true ? MessageKind.Success : MessageKind.Info);
-    }
-
-    private void ComboBoxVariantSelector_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
-    {
-        if (ComboBoxVariantSelector.SelectedItem is not ComboBoxItem { Tag: AntdComboBoxVariant variant })
-        {
-            return;
-        }
-
-        // Skip if controls are not yet initialized
-        if (PreviewCategoryComboBox == null || PreviewTagComboBox == null || PreviewFruitComboBox == null)
-        {
-            return;
-        }
-
-        ApplyComboBoxVariant(variant);
-    }
-
-    private void ApplyComboBoxVariant(AntdComboBoxVariant variant)
-    {
-        ComboBoxAssist.SetVariant(this.PreviewCategoryComboBox, variant);
-        ComboBoxAssist.SetVariant(this.PreviewTagComboBox, variant);
-        ComboBoxAssist.SetVariant(this.PreviewFruitComboBox, variant);
     }
 
     private static Brush CreatePatternBrush(ThemePatternKind patternKind, Color ink, Color accent)
@@ -698,5 +674,6 @@ public partial class MainWindow : Window
         public double PatternOpacity { get; } = patternOpacity;
         public bool HardOutline { get; } = hardOutline;
     }
-}
 
+    private sealed record CatalogNavigationItem(string Key, string Title, string Caption);
+}

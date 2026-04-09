@@ -17,20 +17,12 @@
                                                 Storyboard.TargetProperty="Margin"
                                                 To="22,2,2,2"
                                                 Duration="0:0:0.2" />
-                            <ColorAnimation Storyboard.TargetName="SwitchBorder"
-                                            Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
-                                            To="{DynamicResource {x:Static local:AntdResourceKeys.ColorPrimary}}"
-                                            Duration="0:0:0.2" />
                         </Storyboard>
                         <Storyboard x:Key="UncheckedStoryboard">
                             <ThicknessAnimation Storyboard.TargetName="Thumb"
                                                 Storyboard.TargetProperty="Margin"
                                                 To="2,2,22,2"
                                                 Duration="0:0:0.2" />
-                            <ColorAnimation Storyboard.TargetName="SwitchBorder"
-                                            Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
-                                            To="#BFBFBF"
-                                            Duration="0:0:0.2" />
                         </Storyboard>
                     </ControlTemplate.Resources>
                     <Grid>
@@ -89,16 +81,22 @@
                             <Trigger.ExitActions>
                                 <BeginStoryboard Storyboard="{StaticResource UncheckedStoryboard}" />
                             </Trigger.ExitActions>
+                            <Setter TargetName="SwitchBorder" Property="Background" Value="{DynamicResource {x:Static local:AntdResourceKeys.BrushPrimary}}" />
                             <Setter TargetName="CheckedText" Property="Visibility" Value="Visible" />
                             <Setter TargetName="UncheckedText" Property="Visibility" Value="Collapsed" />
                         </Trigger>
                         <Trigger Property="IsChecked" Value="False">
+                            <Setter TargetName="SwitchBorder" Property="Background" Value="#BFBFBF" />
                             <Setter TargetName="CheckedText" Property="Visibility" Value="Collapsed" />
                             <Setter TargetName="UncheckedText" Property="Visibility" Value="Visible" />
                         </Trigger>
-                        <Trigger Property="IsMouseOver" Value="True">
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsChecked" Value="True" />
+                                <Condition Property="IsMouseOver" Value="True" />
+                            </MultiTrigger.Conditions>
                             <Setter TargetName="SwitchBorder" Property="Background" Value="{DynamicResource {x:Static local:AntdResourceKeys.BrushPrimaryHover}}" />
-                        </Trigger>
+                        </MultiTrigger>
                         <Trigger Property="IsLoading" Value="True">
                             <Setter TargetName="Thumb" Property="Visibility" Value="Collapsed" />
                             <Setter TargetName="LoadingOverlay" Property="Visibility" Value="Visible" />

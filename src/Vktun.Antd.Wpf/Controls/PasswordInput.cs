@@ -9,10 +9,54 @@ namespace Vktun.Antd.Wpf;
 /// </summary>
 public class PasswordInput : Control
 {
+    private PasswordBox? _passwordBox;
+    private bool _isUpdatingFromControl;
+
     static PasswordInput()
     {
         DefaultStyleKeyProperty.OverrideMetadata(typeof(PasswordInput),
             new FrameworkPropertyMetadata(typeof(PasswordInput)));
+    }
+
+    public override void OnApplyTemplate()
+    {
+        base.OnApplyTemplate();
+
+        // Unsubscribe from previous instance if any
+        if (_passwordBox != null)
+        {
+            _passwordBox.PasswordChanged -= OnPasswordBoxPasswordChanged;
+        }
+
+        // Get the PasswordBox from template
+        _passwordBox = GetTemplateChild("PART_PasswordHost") as PasswordBox;
+
+        if (_passwordBox != null)
+        {
+            // Set initial password value
+            _passwordBox.Password = Password;
+            
+            // Subscribe to password changes
+            _passwordBox.PasswordChanged += OnPasswordBoxPasswordChanged;
+        }
+    }
+
+    private void OnPasswordBoxPasswordChanged(object sender, RoutedEventArgs e)
+    {
+        if (_isUpdatingFromControl) return;
+
+        if (_passwordBox != null)
+        {
+            _isUpdatingFromControl = true;
+            try
+            {
+                Password = _passwordBox.Password;
+            }
+            finally
+            {
+                _isUpdatingFromControl = false;
+            }
+        }
     }
 
     /// <summary>
@@ -55,7 +99,16 @@ public class PasswordInput : Control
     /// </summary>
     public static readonly DependencyProperty PasswordProperty =
         DependencyProperty.Register(nameof(Password), typeof(string), typeof(PasswordInput),
-            new PropertyMetadata(string.Empty));
+            new PropertyMetadata(string.Empty, OnPasswordChanged));
+
+    private static void OnPasswordChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    {
+        var control = (PasswordInput)d;
+        if (control._passwordBox != null && !control._isUpdatingFromControl)
+        {
+            control._passwordBox.Password = (string)e.NewValue;
+        }
+    }
 
     /// <summary>
     /// Identifies the <see cref="PasswordChar"/> dependency property.

@@ -18,7 +18,7 @@ public class Checkbox : CheckBox
     /// <summary>
     /// Gets or sets whether the checkbox is in indeterminate state.
     /// </summary>
-    public bool Indeterminate
+    public new bool Indeterminate
     {
         get => (bool)GetValue(IndeterminateProperty);
         set => SetValue(IndeterminateProperty, value);

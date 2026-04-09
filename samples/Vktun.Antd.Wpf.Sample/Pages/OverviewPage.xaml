@@ -1,0 +1,126 @@
+<UserControl x:Class="Vktun.Antd.Wpf.Sample.Pages.OverviewPage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:antd="clr-namespace:Vktun.Antd.Wpf;assembly=Vktun.Antd.Wpf">
+    <ScrollViewer VerticalScrollBarVisibility="Auto"
+                  HorizontalScrollBarVisibility="Disabled">
+        <StackPanel Margin="4,0,4,12">
+            <TextBlock Style="{StaticResource Catalog.PageTitleTextStyle}"
+                       Text="组件覆盖矩阵" />
+            <TextBlock Style="{StaticResource Catalog.PageDescriptionTextStyle}"
+                       Text="目录页按 Ant Design 官方分类组织，同时补齐库里已实现组件、本轮新增控件和明确的 WPF 映射规则。" />
+
+            <WrapPanel Margin="0,18,0,0">
+                <Border Width="220"
+                        Margin="0,0,16,16"
+                        Style="{StaticResource Catalog.CardSurfaceStyle}">
+                    <StackPanel>
+                        <TextBlock FontSize="13"
+                                   Foreground="{DynamicResource Antd.Brush.TextSecondary}"
+                                   Text="已实现" />
+                        <TextBlock Margin="0,8,0,0"
+                                   FontSize="28"
+                                   FontWeight="Bold"
+                                   Text="{Binding ImplementedCount}" />
+                        <TextBlock Margin="0,8,0,0"
+                                   Foreground="{DynamicResource Antd.Brush.TextSecondary}"
+                                   Text="已经在库中可用，并补进 sample 的组件数。" />
+                    </StackPanel>
+                </Border>
+
+                <Border Width="220"
+                        Margin="0,0,16,16"
+                        Style="{StaticResource Catalog.CardSurfaceStyle}">
+                    <StackPanel>
+                        <TextBlock FontSize="13"
+                                   Foreground="{DynamicResource Antd.Brush.TextSecondary}"
+                                   Text="本轮新增" />
+                        <TextBlock Margin="0,8,0,0"
+                                   FontSize="28"
+                                   FontWeight="Bold"
+                                   Text="{Binding AddedCount}" />
+                        <TextBlock Margin="0,8,0,0"
+                                   Foreground="{DynamicResource Antd.Brush.TextSecondary}"
+                                   Text="Flex、Layout、Splitter 等新增的 WPF 兼容组件。" />
+                    </StackPanel>
+                </Border>
+
+                <Border Width="220"
+                        Margin="0,0,16,16"
+                        Style="{StaticResource Catalog.CardSurfaceStyle}">
+                    <StackPanel>
+                        <TextBlock FontSize="13"
+                                   Foreground="{DynamicResource Antd.Brush.TextSecondary}"
+                                   Text="后续候选" />
+                        <TextBlock Margin="0,8,0,0"
+                                   FontSize="28"
+                                   FontWeight="Bold"
+                                   Text="{Binding CandidateCount}" />
+                        <TextBlock Margin="0,8,0,0"
+                                   Foreground="{DynamicResource Antd.Brush.TextSecondary}"
+                                   Text="兼容 WPF 但留到后续批次推进的组件。" />
+                    </StackPanel>
+                </Border>
+            </WrapPanel>
+
+            <Border Style="{StaticResource Catalog.CardSurfaceStyle}">
+                <StackPanel>
+                    <TextBlock FontSize="18"
+                               FontWeight="SemiBold"
+                               Text="映射规则" />
+                    <TextBlock Margin="0,10,0,0"
+                               Foreground="{DynamicResource Antd.Brush.TextSecondary}"
+                               Text="Select 在 sample 中明确映射为 antd:ComboBox；Message、Modal、Notification 映射为服务调用；ConfigProvider 对应 AntdThemeResources + AntdThemeManager。" />
+                </StackPanel>
+            </Border>
+
+            <Border Style="{StaticResource Catalog.CardSurfaceStyle}">
+                <StackPanel>
+                    <Grid Margin="0,0,0,12">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="120" />
+                            <ColumnDefinition Width="150" />
+                            <ColumnDefinition Width="200" />
+                            <ColumnDefinition Width="100" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Style="{StaticResource Catalog.MatrixHeaderTextStyle}" Text="分类" />
+                        <TextBlock Grid.Column="1" Style="{StaticResource Catalog.MatrixHeaderTextStyle}" Text="官方组件" />
+                        <TextBlock Grid.Column="2" Style="{StaticResource Catalog.MatrixHeaderTextStyle}" Text="WPF 映射" />
+                        <TextBlock Grid.Column="3" Style="{StaticResource Catalog.MatrixHeaderTextStyle}" Text="状态" />
+                        <TextBlock Grid.Column="4" Style="{StaticResource Catalog.MatrixHeaderTextStyle}" Text="说明" />
+                    </Grid>
+
+                    <ItemsControl ItemsSource="{Binding CoverageItems}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border Padding="0,10"
+                                        BorderBrush="{DynamicResource Antd.Brush.BorderSecondary}"
+                                        BorderThickness="0,0,0,1">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="120" />
+                                            <ColumnDefinition Width="150" />
+                                            <ColumnDefinition Width="200" />
+                                            <ColumnDefinition Width="100" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Style="{StaticResource Catalog.MatrixBodyTextStyle}" Text="{Binding Category}" />
+                                        <TextBlock Grid.Column="1" Style="{StaticResource Catalog.MatrixBodyTextStyle}" Text="{Binding Component}" />
+                                        <TextBlock Grid.Column="2" Style="{StaticResource Catalog.MatrixBodyTextStyle}" Text="{Binding Mapping}" />
+                                        <antd:Tag Grid.Column="3"
+                                                  Color="{Binding StatusColor}"
+                                                  Content="{Binding Status}" />
+                                        <TextBlock Grid.Column="4"
+                                                   Style="{StaticResource Catalog.MatrixBodyTextStyle}"
+                                                   Text="{Binding Notes}" />
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
+            </Border>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

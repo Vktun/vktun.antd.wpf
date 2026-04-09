@@ -5,21 +5,20 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:antd="clr-namespace:Vktun.Antd.Wpf;assembly=Vktun.Antd.Wpf"
         mc:Ignorable="d"
-        Title="Vktun Antd WPF Sample"
-        Width="1380"
-        Height="900"
-        MinWidth="1220"
-        MinHeight="760"
+        Title="Vktun Antd WPF Catalog"
+        Width="1480"
+        Height="960"
+        MinWidth="1240"
+        MinHeight="780"
         WindowStartupLocation="CenterScreen">
     <Window.Resources>
-        <Style x:Key="ThemePresetListBoxStyle" TargetType="ListBox">
+        <Style x:Key="CatalogNavigationListBoxStyle" TargetType="ListBox">
             <Setter Property="Background" Value="Transparent" />
             <Setter Property="BorderThickness" Value="0" />
             <Setter Property="Padding" Value="0" />
-            <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled" />
         </Style>
 
-        <Style x:Key="ThemePresetListBoxItemStyle" TargetType="ListBoxItem">
+        <Style x:Key="CatalogNavigationListBoxItemStyle" TargetType="ListBoxItem">
             <Setter Property="HorizontalContentAlignment" Value="Stretch" />
             <Setter Property="VerticalContentAlignment" Value="Stretch" />
             <Setter Property="Padding" Value="0" />
@@ -56,20 +55,13 @@
                 </Setter.Value>
             </Setter>
         </Style>
-
-        <Style x:Key="PreviewSectionBorderStyle" TargetType="Border">
-            <Setter Property="Padding" Value="16,14" />
-            <Setter Property="Margin" Value="0,0,0,12" />
-            <Setter Property="CornerRadius" Value="18" />
-            <Setter Property="BorderBrush" Value="{DynamicResource Antd.Brush.BorderSecondary}" />
-            <Setter Property="BorderThickness" Value="2" />
-            <Setter Property="Background" Value="{DynamicResource Antd.Brush.BgContainer}" />
-        </Style>
     </Window.Resources>
 
     <Grid>
         <Border x:Name="WindowBackdrop" />
-        <Rectangle x:Name="PatternOverlay" Opacity="0.22" IsHitTestVisible="False" />
+        <Rectangle x:Name="PatternOverlay"
+                   Opacity="0.18"
+                   IsHitTestVisible="False" />
 
         <Canvas IsHitTestVisible="False">
             <Ellipse x:Name="TopLeftGlow"
@@ -86,10 +78,10 @@
                      Opacity="0.65" />
         </Canvas>
 
-        <Grid Margin="36">
+        <Grid Margin="32">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="280" />
-                <ColumnDefinition Width="18" />
+                <ColumnDefinition Width="300" />
+                <ColumnDefinition Width="20" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
@@ -100,62 +92,60 @@
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
                         <RowDefinition Height="*" />
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
 
                     <StackPanel>
-                        <TextBlock FontSize="24" FontWeight="Bold" Text="主题画廊" />
+                        <TextBlock FontSize="24" FontWeight="Bold" Text="组件目录" />
                         <TextBlock Margin="0,8,0,0"
                                    Foreground="{DynamicResource Antd.Brush.TextSecondary}"
-                                   Text="切换不同预设，检查主题在运行时对控件、弹层与背景氛围的整体影响。"
+                                   Text="按 Ant Design 官方分类组织 sample，同时展示 WPF 映射、主题切换和最小可用片段。"
                                    TextWrapping="Wrap" />
                     </StackPanel>
 
-                    <ListBox x:Name="ThemePresetListBox"
-                             Grid.Row="1"
-                             Margin="0,22,0,18"
-                             Style="{StaticResource ThemePresetListBoxStyle}"
-                             ItemContainerStyle="{StaticResource ThemePresetListBoxItemStyle}"
-                             SelectionChanged="ThemePresetListBox_OnSelectionChanged">
+                    <Border Grid.Row="1"
+                            Margin="0,20,0,18"
+                            Padding="14"
+                            Background="{DynamicResource Antd.Brush.FillSecondary}"
+                            CornerRadius="18">
+                        <StackPanel>
+                            <TextBlock FontWeight="SemiBold" Text="分类导航" />
+                            <TextBlock Margin="0,6,0,0"
+                                       Foreground="{DynamicResource Antd.Brush.TextSecondary}"
+                                       Text="总览页包含组件覆盖矩阵，其余页面按分类拆成独立 UserControl。"
+                                       TextWrapping="Wrap" />
+                        </StackPanel>
+                    </Border>
+
+                    <ListBox x:Name="NavigationListBox"
+                             Grid.Row="2"
+                             Style="{StaticResource CatalogNavigationListBoxStyle}"
+                             ItemContainerStyle="{StaticResource CatalogNavigationListBoxItemStyle}"
+                             SelectionChanged="NavigationListBox_OnSelectionChanged">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*" />
-                                        <ColumnDefinition Width="Auto" />
-                                    </Grid.ColumnDefinitions>
-                                    <StackPanel>
-                                        <TextBlock FontSize="18"
-                                                   FontWeight="SemiBold"
-                                                   Text="{Binding Name}" />
-                                        <TextBlock Margin="0,5,0,0"
-                                                   FontSize="12.5"
-                                                   Foreground="{DynamicResource Antd.Brush.TextSecondary}"
-                                                   Text="{Binding Caption}"
-                                                   TextWrapping="Wrap" />
-                                    </StackPanel>
-                                    <Border Grid.Column="1"
-                                            VerticalAlignment="Top"
-                                            Padding="8,3"
-                                            Background="{DynamicResource Antd.Brush.FillSecondary}"
-                                            CornerRadius="999">
-                                        <TextBlock FontSize="12"
-                                                   FontWeight="SemiBold"
-                                                   Foreground="{DynamicResource Antd.Brush.TextSecondary}"
-                                                   Text="{Binding ModeText}" />
-                                    </Border>
-                                </Grid>
+                                <StackPanel>
+                                    <TextBlock FontSize="18"
+                                               FontWeight="SemiBold"
+                                               Text="{Binding Title}" />
+                                    <TextBlock Margin="0,5,0,0"
+                                               FontSize="12.5"
+                                               Foreground="{DynamicResource Antd.Brush.TextSecondary}"
+                                               Text="{Binding Caption}"
+                                               TextWrapping="Wrap" />
+                                </StackPanel>
                             </DataTemplate>
                         </ListBox.ItemTemplate>
                     </ListBox>
 
-                    <StackPanel Grid.Row="2">
+                    <StackPanel Grid.Row="3">
                         <TextBlock FontSize="16" FontWeight="SemiBold" Text="当前预设" />
                         <TextBlock x:Name="ThemeFooterTextBlock"
                                    Margin="0,8,0,0"
                                    Foreground="{DynamicResource Antd.Brush.TextSecondary}"
-                                   Text="选择左侧预设后，在右侧检查相同控件在不同主题语言下的表现。"
+                                   Text="切换顶部主题预设后，可以直接检查目录页、弹层和代码示例在不同主题下的表现。"
                                    TextWrapping="Wrap" />
                     </StackPanel>
                 </Grid>
@@ -163,7 +153,7 @@
 
             <Border x:Name="PreviewShell"
                     Grid.Column="2"
-                    Padding="30"
+                    Padding="28"
                     CornerRadius="34"
                     BorderThickness="1">
                 <Grid>
@@ -186,302 +176,52 @@
                             <TextBlock x:Name="ThemeHeroDescriptionTextBlock"
                                        Margin="0,10,0,0"
                                        Foreground="{DynamicResource Antd.Brush.TextSecondary}"
-                                       Text="Balanced surfaces, comfortable radius and a clear Ant Design inspired visual rhythm."
+                                       Text="切换主题预设后，右侧目录页中的所有组件、弹层和代码片段区都会随当前资源刷新。"
                                        TextWrapping="Wrap" />
                         </StackPanel>
 
-                        <WrapPanel Grid.Column="1"
-                                   HorizontalAlignment="Right"
-                                   VerticalAlignment="Top">
-                            <antd:Tag x:Name="ThemeCountTag" Margin="0,0,8,8">0 个预设</antd:Tag>
-                            <antd:Tag x:Name="ThemeModeTag" Margin="0,0,8,8">Light</antd:Tag>
-                            <antd:Tag x:Name="ThemePrimaryTag" Margin="0,0,8,8">#1677FF</antd:Tag>
-                            <antd:Tag x:Name="ThemeShapeTag" Margin="0,0,0,8">10px 圆角</antd:Tag>
-                        </WrapPanel>
+                        <StackPanel Grid.Column="1"
+                                    Width="280">
+                            <TextBlock Margin="0,0,0,8"
+                                       FontWeight="SemiBold"
+                                       Text="主题预设" />
+                            <antd:ComboBox x:Name="ThemePresetSelector"
+                                           SelectionChanged="ThemePresetSelector_OnSelectionChanged"
+                                           Size="Small">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackPanel>
+                                            <TextBlock FontWeight="SemiBold"
+                                                       Text="{Binding Name}" />
+                                            <TextBlock FontSize="12"
+                                                       Foreground="{DynamicResource Antd.Brush.TextSecondary}"
+                                                       Text="{Binding Caption}"
+                                                       TextWrapping="Wrap" />
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </antd:ComboBox>
+
+                            <WrapPanel Margin="0,14,0,0"
+                                       HorizontalAlignment="Right">
+                                <antd:Tag x:Name="ThemeCountTag" Margin="0,0,8,8" Content="0 个预设" />
+                                <antd:Tag x:Name="ThemeModeTag" Margin="0,0,8,8" Content="Light" />
+                                <antd:Tag x:Name="ThemePrimaryTag" Margin="0,0,8,8" Content="#1677FF" />
+                                <antd:Tag x:Name="ThemeShapeTag" Margin="0,0,0,8" Content="10px 圆角" />
+                            </WrapPanel>
+                        </StackPanel>
                     </Grid>
 
-                    <ScrollViewer x:Name="PreviewScrollViewer"
-                                  Grid.Row="1"
-                                  Margin="0,24,0,0"
-                                  VerticalScrollBarVisibility="Auto"
-                                  HorizontalScrollBarVisibility="Disabled">
-                        <StackPanel>
-                            <Border x:Name="InfoBannerBorder"
-                                    Style="{StaticResource PreviewSectionBorderStyle}"
-                                    Background="{DynamicResource Antd.Brush.BgSpotlight}">
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*" />
-                                        <ColumnDefinition Width="Auto" />
-                                    </Grid.ColumnDefinitions>
-                                    <StackPanel>
-                                        <TextBlock FontSize="16" FontWeight="SemiBold" Text="主题化输入控件" />
-                                        <TextBlock Margin="0,6,0,0"
-                                                   Foreground="{DynamicResource Antd.Brush.TextSecondary}"
-                                                   Text="这一页重点展示 DatePicker 与 ComboBox 在不同主题下的输入框、交互状态和弹层内容。" />
-                                    </StackPanel>
-                                    <WrapPanel Grid.Column="1" Margin="16,0,0,0">
-                                        <antd:Button Margin="0,0,8,0"
-                                                Content="成功消息"
-                                                Click="ShowSuccessMessageButton_OnClick" />
-                                        <antd:Button Margin="0,0,8,0"
-                                                Content="通知"
-                                                Click="ShowNotificationButton_OnClick" />
-                                        <antd:Button Content="弹窗"
-                                                Click="ShowModalButton_OnClick" />
-                                    </WrapPanel>
-                                </Grid>
-                            </Border>
-
-                            <Border Style="{StaticResource PreviewSectionBorderStyle}">
-                                <StackPanel>
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="*" />
-                                            <ColumnDefinition Width="Auto" />
-                                        </Grid.ColumnDefinitions>
-                                        <StackPanel>
-                                            <TextBlock FontSize="16"
-                                                       FontWeight="SemiBold"
-                                                       Text="ComboBox 样式" />
-                                            <TextBlock Margin="0,6,0,0"
-                                                       Foreground="{DynamicResource Antd.Brush.TextSecondary}"
-                                                       Text="切换共享变体后，再对比下方固定的 Outlined、Filled 与 Borderless 视觉差异。" />
-                                        </StackPanel>
-                                        <antd:Space Grid.Column="1"
-                                                    Orientation="Horizontal"
-                                                    VerticalAlignment="Center"
-                                                    Gap="12">
-                                            <TextBlock VerticalAlignment="Center"
-                                                       Foreground="{DynamicResource Antd.Brush.TextSecondary}"
-                                                       Text="共享变体" />
-                                            <antd:ComboBox x:Name="ComboBoxVariantSelector"
-                                                      Width="140"
-                                                      SelectedIndex="0"
-                                                      SelectionChanged="ComboBoxVariantSelector_OnSelectionChanged"
-                                                      Size="Small">
-                                                <ComboBoxItem Content="Outlined" Tag="{x:Static antd:AntdComboBoxVariant.Outlined}" />
-                                                <ComboBoxItem Content="Filled" Tag="{x:Static antd:AntdComboBoxVariant.Filled}" />
-                                                <ComboBoxItem Content="Borderless" Tag="{x:Static antd:AntdComboBoxVariant.Borderless}" />
-                                            </antd:ComboBox>
-                                        </antd:Space>
-                                    </Grid>
-
-                                    <WrapPanel Margin="0,16,0,14">
-                                        <antd:ComboBox x:Name="PreviewCategoryComboBox" Width="156" Margin="0,0,12,12" SelectedIndex="0">
-                                            <ComboBoxItem Content="Dropdown menus" />
-                                            <ComboBoxItem Content="Theme presets" />
-                                            <ComboBoxItem Content="Runtime switching" />
-                                        </antd:ComboBox>
-                                        <antd:Input Width="136"
-                                                 Margin="0,0,12,12"
-                                                 Text="#1677FF" />
-                                        <antd:ComboBox x:Name="PreviewTagComboBox" Width="240" Margin="0,0,12,12" SelectedIndex="0">
-                                            <ComboBoxItem Content="Apple  x    Banana  x" />
-                                            <ComboBoxItem Content="Lime  x    Orange  x" />
-                                        </antd:ComboBox>
-                                        <DatePicker x:Name="PreviewInlineDatePicker" Width="176" Margin="0,0,12,12" />
-                                        <antd:ComboBox x:Name="PreviewFruitComboBox" Width="340" Margin="0,0,0,12" SelectedIndex="0">
-                                            <ComboBoxItem Content="Apple  x    Banana  x" />
-                                            <ComboBoxItem Content="Cocoa  x    Avocado  x" />
-                                        </antd:ComboBox>
-                                    </WrapPanel>
-
-                                    <WrapPanel Margin="0,0,0,4">
-                                        <StackPanel Width="180" Margin="0,0,12,12">
-                                            <TextBlock Margin="0,0,0,8"
-                                                       Foreground="{DynamicResource Antd.Brush.TextSecondary}"
-                                                       Text="Outlined" />
-                                            <antd:ComboBox Width="180" SelectedIndex="0">
-                                                <ComboBoxItem Content="Ocean Dashboard" />
-                                                <ComboBoxItem Content="Aurora Workspace" />
-                                                <ComboBoxItem Content="Nebula Console" />
-                                            </antd:ComboBox>
-                                        </StackPanel>
-                                        <StackPanel Width="180" Margin="0,0,12,12">
-                                            <TextBlock Margin="0,0,0,8"
-                                                       Foreground="{DynamicResource Antd.Brush.TextSecondary}"
-                                                       Text="Filled" />
-                                            <antd:ComboBox Width="180"
-                                                      SelectedIndex="0"
-                                                      Variant="Filled">
-                                                <ComboBoxItem Content="Ocean Dashboard" />
-                                                <ComboBoxItem Content="Aurora Workspace" />
-                                                <ComboBoxItem Content="Nebula Console" />
-                                            </antd:ComboBox>
-                                        </StackPanel>
-                                        <StackPanel Width="180" Margin="0,0,12,12">
-                                            <TextBlock Margin="0,0,0,8"
-                                                       Foreground="{DynamicResource Antd.Brush.TextSecondary}"
-                                                       Text="Borderless" />
-                                            <antd:ComboBox Width="180"
-                                                      SelectedIndex="0"
-                                                      Variant="Borderless">
-                                                <ComboBoxItem Content="Ocean Dashboard" />
-                                                <ComboBoxItem Content="Aurora Workspace" />
-                                                <ComboBoxItem Content="Nebula Console" />
-                                            </antd:ComboBox>
-                                        </StackPanel>
-                                    </WrapPanel>
-                                </StackPanel>
-                            </Border>
-
-                            <Border Style="{StaticResource PreviewSectionBorderStyle}">
-                                <StackPanel>
-                                    <TextBlock FontSize="16"
-                                               FontWeight="SemiBold"
-                                               Text="DatePicker 样式" />
-                                    <TextBlock Margin="0,6,0,0"
-                                               Foreground="{DynamicResource Antd.Brush.TextSecondary}"
-                                               Text="单日期与范围日期场景都继承了更新后的触发器、弹层外壳和日历内部主题。" />
-                                    <WrapPanel Margin="0,16,0,0">
-                                        <DatePicker x:Name="PreviewSingleDatePicker"
-                                                    Width="168"
-                                                    Margin="0,0,16,12" />
-                                        <Border Width="372"
-                                                Margin="0,0,16,12"
-                                                Padding="12,10"
-                                                Background="{DynamicResource Antd.Brush.BgContainer}"
-                                                BorderBrush="{DynamicResource Antd.Brush.Border}"
-                                                BorderThickness="1"
-                                                CornerRadius="10">
-                                            <Grid>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="*" />
-                                                    <ColumnDefinition Width="Auto" />
-                                                    <ColumnDefinition Width="*" />
-                                                </Grid.ColumnDefinitions>
-                                                <DatePicker x:Name="PreviewRangeStartDatePicker"
-                                                            BorderThickness="0"
-                                                            Background="Transparent" />
-                                                <TextBlock Grid.Column="1"
-                                                           Margin="12,0"
-                                                           VerticalAlignment="Center"
-                                                           Foreground="{DynamicResource Antd.Brush.TextTertiary}"
-                                                           Text="→" />
-                                                <DatePicker x:Name="PreviewRangeEndDatePicker"
-                                                            Grid.Column="2"
-                                                            BorderThickness="0"
-                                                            Background="Transparent" />
-                                            </Grid>
-                                        </Border>
-                                        <DatePicker Width="180"
-                                                    Margin="0,0,0,12"
-                                                    IsEnabled="False"
-                                                    SelectedDate="2026-04-18" />
-                                    </WrapPanel>
-                                </StackPanel>
-                            </Border>
-
-                            <!-- 新增组件展示 - Timeline & Steps -->
-                            <Border Style="{StaticResource PreviewSectionBorderStyle}">
-                                <StackPanel>
-                                    <TextBlock FontSize="16"
-                                               FontWeight="SemiBold"
-                                               Text="Timeline 时间轴" />
-                                    <TextBlock Margin="0,6,0,0"
-                                               Foreground="{DynamicResource Antd.Brush.TextSecondary}"
-                                               Text="用于展示事件的时间顺序，支持自定义颜色和图标。" />
-                                    <antd:Timeline Margin="0,16,0,0">
-                                        <antd:TimelineItem Content="创建项目 2026-03-01"
-                                                           Label="步骤 1"
-                                                           Color="Blue" />
-                                        <antd:TimelineItem Content="完成开发 2026-03-15"
-                                                           Label="步骤 2"
-                                                           Color="Green" />
-                                        <antd:TimelineItem Content="测试通过 2026-04-01"
-                                                           Label="步骤 3"
-                                                           Color="Green" />
-                                        <antd:TimelineItem Content="部署上线 2026-04-06"
-                                                           Label="步骤 4"
-                                                           Color="Gray" />
-                                    </antd:Timeline>
-                                </StackPanel>
-                            </Border>
-
-                            <!-- 新增组件展示 - Steps -->
-                            <Border Style="{StaticResource PreviewSectionBorderStyle}">
-                                <StackPanel>
-                                    <TextBlock FontSize="16"
-                                               FontWeight="SemiBold"
-                                               Text="Steps 步骤条" />
-                                    <TextBlock Margin="0,6,0,0"
-                                               Foreground="{DynamicResource Antd.Brush.TextSecondary}"
-                                               Text="引导用户按步骤完成任务，支持水平/垂直方向。" />
-                                    <antd:Steps Margin="0,16,0,0">
-                                        <antd:Step Title="已完成"
-                                                   Description="这是第一步描述"
-                                                   Status="Finish" />
-                                        <antd:Step Title="进行中"
-                                                   Description="这是当前步骤"
-                                                   Status="Process" />
-                                        <antd:Step Title="待处理"
-                                                   Description="这是待处理步骤"
-                                                   Status="Wait" />
-                                    </antd:Steps>
-                                </StackPanel>
-                            </Border>
-
-                            <!-- 新增组件展示 - Descriptions -->
-                            <Border Style="{StaticResource PreviewSectionBorderStyle}">
-                                <StackPanel>
-                                    <TextBlock FontSize="16"
-                                               FontWeight="SemiBold"
-                                               Text="Descriptions 描述列表" />
-                                    <TextBlock Margin="0,6,0,0"
-                                               Foreground="{DynamicResource Antd.Brush.TextSecondary}"
-                                               Text="用于展示只读信息的列表，支持多列布局。" />
-                                    <antd:Descriptions Margin="0,16,0,0"
-                                                       Title="用户信息"
-                                                       Column="3"
-                                                       Bordered="True">
-                                        <antd:DescriptionItem Label="姓名" Content="张三" />
-                                        <antd:DescriptionItem Label="邮箱" Content="zhangsan@example.com" />
-                                        <antd:DescriptionItem Label="电话" Content="138-0000-0000" />
-                                        <antd:DescriptionItem Label="地址" Content="北京市朝阳区某某街道" Span="3" />
-                                    </antd:Descriptions>
-                                </StackPanel>
-                            </Border>
-
-                            <!-- 新增组件展示 - Alert & Progress -->
-                            <Border Style="{StaticResource PreviewSectionBorderStyle}">
-                                <StackPanel>
-                                    <TextBlock FontSize="16"
-                                               FontWeight="SemiBold"
-                                               Text="Alert 提示 &amp; Progress 进度条" />
-                                    <TextBlock Margin="0,6,0,0"
-                                               Foreground="{DynamicResource Antd.Brush.TextSecondary}"
-                                               Text="信息提示组件，支持多种类型和进度展示。" />
-                                    <StackPanel Margin="0,16,0,0">
-                                        <antd:Alert Type="Success"
-                                                    Message="成功提示"
-                                                    Description="操作已完成"
-                                                    ShowIcon="True"
-                                                    Margin="0,0,0,12" />
-                                        <antd:Alert Type="Warning"
-                                                    Message="警告提示"
-                                                    Description="请注意检查数据"
-                                                    ShowIcon="True"
-                                                    Margin="0,0,0,12" />
-                                        <antd:Alert Type="Error"
-                                                    Message="错误提示"
-                                                    Description="操作失败，请重试"
-                                                    ShowIcon="True"
-                                                    Margin="0,0,0,12" />
-                                        <TextBlock Text="进度条示例" Margin="0,8,0,8" />
-                                        <antd:Progress Percent="70" Margin="0,0,0,8" />
-                                        <antd:Progress Percent="100" Status="Success" Margin="0,0,0,8" />
-                                        <antd:Progress Percent="50" Status="Active" />
-                                    </StackPanel>
-                                </StackPanel>
-                            </Border>
-                        </StackPanel>
-                    </ScrollViewer>
+                    <Border Grid.Row="1"
+                            Margin="0,24,0,0"
+                            Background="{DynamicResource Antd.Brush.BgContainer}"
+                            BorderBrush="{DynamicResource Antd.Brush.BorderSecondary}"
+                            BorderThickness="1"
+                            CornerRadius="24">
+                        <ContentControl x:Name="PageHost" />
+                    </Border>
                 </Grid>
             </Border>
         </Grid>
     </Grid>
 </Window>
-
-
-

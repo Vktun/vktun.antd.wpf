@@ -1,0 +1,182 @@
+<UserControl x:Class="Vktun.Antd.Wpf.Sample.Pages.LayoutPage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:antd="clr-namespace:Vktun.Antd.Wpf;assembly=Vktun.Antd.Wpf"
+             xmlns:controls="clr-namespace:Vktun.Antd.Wpf.Sample.Controls"
+             xmlns:snippets="clr-namespace:Vktun.Antd.Wpf.Sample.Snippets">
+    <ScrollViewer VerticalScrollBarVisibility="Auto"
+                  HorizontalScrollBarVisibility="Disabled">
+        <StackPanel Margin="4,0,4,12">
+            <TextBlock Style="{StaticResource Catalog.PageTitleTextStyle}"
+                       Text="布局" />
+            <TextBlock Style="{StaticResource Catalog.PageDescriptionTextStyle}"
+                       Text="目录壳层和业务页面都依赖布局类组件，所以这一组示例优先展示容器、间距和分栏能力。" />
+
+            <controls:ComponentDemo Title="Divider"
+                                    Description="横向、纵向和带文本分割线都对齐 Ant Design 语义。"
+                                    XamlCode="{x:Static snippets:LayoutSnippets.Divider}">
+                <controls:ComponentDemo.PreviewContent>
+                    <StackPanel>
+                        <WrapPanel VerticalAlignment="Center">
+                            <TextBlock VerticalAlignment="Center" Text="Overview" />
+                            <antd:Divider Margin="12,0"
+                                          Orientation="Vertical" />
+                            <TextBlock VerticalAlignment="Center" Text="Data Display" />
+                        </WrapPanel>
+                        <antd:Divider Margin="0,16,0,16"
+                                      Content="Section"
+                                      TextPlacement="Center" />
+                        <TextBlock Foreground="{DynamicResource Antd.Brush.TextSecondary}"
+                                   Text="分割线常用于表单段落和结果区域。"
+                                   TextWrapping="Wrap" />
+                    </StackPanel>
+                </controls:ComponentDemo.PreviewContent>
+            </controls:ComponentDemo>
+
+            <controls:ComponentDemo Title="Grid (Row / Col)"
+                                    Description="保留 24 栅格布局语义，方便把 Ant Design 的布局经验迁移到 WPF。"
+                                    XamlCode="{x:Static snippets:LayoutSnippets.Grid}">
+                <controls:ComponentDemo.PreviewContent>
+                    <antd:Row Gutter="16">
+                        <antd:Col Span="8">
+                            <Border Height="72"
+                                    Padding="16"
+                                    Background="#D6E4FF"
+                                    CornerRadius="12">
+                                <TextBlock Text="Span 8" />
+                            </Border>
+                        </antd:Col>
+                        <antd:Col Span="8">
+                            <Border Height="72"
+                                    Padding="16"
+                                    Background="#E6F4FF"
+                                    CornerRadius="12">
+                                <TextBlock Text="Span 8" />
+                            </Border>
+                        </antd:Col>
+                        <antd:Col Span="8">
+                            <Border Height="72"
+                                    Padding="16"
+                                    Background="#F0F5FF"
+                                    CornerRadius="12">
+                                <TextBlock Text="Span 8" />
+                            </Border>
+                        </antd:Col>
+                    </antd:Row>
+                </controls:ComponentDemo.PreviewContent>
+            </controls:ComponentDemo>
+
+            <controls:ComponentDemo Title="Space"
+                                    Description="把 sample 和库模板中的统一间距从 SpaceAssist 迁到 antd:Space。"
+                                    XamlCode="{x:Static snippets:LayoutSnippets.Space}">
+                <controls:ComponentDemo.PreviewContent>
+                    <StackPanel>
+                        <antd:Space Orientation="Horizontal" Gap="12">
+                            <antd:Button Content="取消" />
+                            <antd:Button Type="Primary" Content="提交" />
+                            <antd:Tag Color="Blue">Draft</antd:Tag>
+                        </antd:Space>
+                        <antd:Space Margin="0,16,0,0" Gap="10">
+                            <TextBlock Text="版本 1.0.0" />
+                            <TextBlock Text="本轮新增 9 个组件" />
+                            <TextBlock Text="目录页已分类" />
+                        </antd:Space>
+                    </StackPanel>
+                </controls:ComponentDemo.PreviewContent>
+            </controls:ComponentDemo>
+
+            <controls:ComponentDemo Title="Flex"
+                                    Description="新增 Flex 容器，优先覆盖容器级的排列、对齐、换行和间距。"
+                                    XamlCode="{x:Static snippets:LayoutSnippets.Flex}">
+                <controls:ComponentDemo.PreviewContent>
+                    <antd:Flex Gap="12"
+                               Wrap="True"
+                               Justify="Center"
+                               Align="Center">
+                        <Border Width="96" Height="52" Background="#FFF1F0" CornerRadius="14">
+                            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Text="Token" />
+                        </Border>
+                        <Border Width="132" Height="52" Background="#F6FFED" CornerRadius="14">
+                            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Text="Preview" />
+                        </Border>
+                        <Border Width="108" Height="52" Background="#E6F4FF" CornerRadius="14">
+                            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Text="Snippet" />
+                        </Border>
+                        <Border Width="124" Height="52" Background="#FFF7E6" CornerRadius="14">
+                            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Text="Theme" />
+                        </Border>
+                    </antd:Flex>
+                </controls:ComponentDemo.PreviewContent>
+            </controls:ComponentDemo>
+
+            <controls:ComponentDemo Title="Layout"
+                                    Description="新增 Layout 组件族，适合搭建后台页、目录页和带侧栏的内容框架。"
+                                    XamlCode="{x:Static snippets:LayoutSnippets.Layout}"
+                                    PreviewMinHeight="240">
+                <controls:ComponentDemo.PreviewContent>
+                    <Border Height="240"
+                            CornerRadius="16"
+                            BorderBrush="{DynamicResource Antd.Brush.BorderSecondary}"
+                            BorderThickness="1"
+                            ClipToBounds="True">
+                        <antd:Layout>
+                            <antd:LayoutHeader Content="Catalog Header" />
+                            <antd:LayoutSider Width="150">
+                                <StackPanel>
+                                    <TextBlock Margin="0,0,0,8" Text="Overview" />
+                                    <TextBlock Margin="0,0,0,8" Text="Components" />
+                                    <TextBlock Text="Theme" />
+                                </StackPanel>
+                            </antd:LayoutSider>
+                            <antd:LayoutContent>
+                                <StackPanel>
+                                    <TextBlock FontWeight="SemiBold" Text="LayoutContent" />
+                                    <TextBlock Margin="0,8,0,0"
+                                               Foreground="{DynamicResource Antd.Brush.TextSecondary}"
+                                               Text="内容区域会自动填充剩余空间。"
+                                               TextWrapping="Wrap" />
+                                </StackPanel>
+                            </antd:LayoutContent>
+                            <antd:LayoutFooter Content="LayoutFooter" />
+                        </antd:Layout>
+                    </Border>
+                </controls:ComponentDemo.PreviewContent>
+            </controls:ComponentDemo>
+
+            <controls:ComponentDemo Title="Splitter"
+                                    Description="新增 Splitter，围绕双栏可调布局封装 WPF 原生 GridSplitter。"
+                                    XamlCode="{x:Static snippets:LayoutSnippets.Splitter}"
+                                    PreviewMinHeight="200">
+                <controls:ComponentDemo.PreviewContent>
+                    <Grid Height="200">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="2*" />
+                        </Grid.ColumnDefinitions>
+                        <Border Grid.Column="0"
+                                Margin="0,0,12,0"
+                                Background="#F6FFED"
+                                CornerRadius="14">
+                            <TextBlock Margin="16"
+                                       VerticalAlignment="Center"
+                                       Text="Left panel" />
+                        </Border>
+                        <antd:Splitter Grid.Column="1"
+                                       HorizontalAlignment="Stretch"
+                                       ResizeDirection="Columns"
+                                       ResizeBehavior="PreviousAndNext" />
+                        <Border Grid.Column="2"
+                                Margin="12,0,0,0"
+                                Background="#E6F4FF"
+                                CornerRadius="14">
+                            <TextBlock Margin="16"
+                                       VerticalAlignment="Center"
+                                       Text="Right panel" />
+                        </Border>
+                    </Grid>
+                </controls:ComponentDemo.PreviewContent>
+            </controls:ComponentDemo>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

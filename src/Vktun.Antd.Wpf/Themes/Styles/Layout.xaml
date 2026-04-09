@@ -46,42 +46,42 @@
                     </Grid>
                     <ControlTemplate.Triggers>
                         <!-- Orientation Trigger -->
-                        <Trigger Property="Orientation" Value="Vertical">
+                        <DataTrigger Binding="{Binding Orientation, RelativeSource={RelativeSource TemplatedParent}}" Value="Vertical">
                             <Setter TargetName="HorizontalContainer" Property="Visibility" Value="Collapsed" />
                             <Setter TargetName="VerticalLine" Property="Visibility" Value="Visible" />
                             <Setter Property="Height" Value="Auto" />
                             <Setter Property="Width" Value="1" />
-                        </Trigger>
+                        </DataTrigger>
 
                         <!-- Dashed Trigger -->
-                        <Trigger Property="Dashed" Value="True">
+                        <DataTrigger Binding="{Binding Dashed, RelativeSource={RelativeSource TemplatedParent}}" Value="True">
                             <Setter TargetName="LeftLine" Property="BorderBrush" Value="{Binding Background, RelativeSource={RelativeSource TemplatedParent}}" />
                             <Setter TargetName="LeftLine" Property="BorderThickness" Value="0,1,0,1" />
                             <Setter TargetName="LeftLine" Property="Background" Value="Transparent" />
                             <Setter TargetName="RightLine" Property="BorderBrush" Value="{Binding Background, RelativeSource={RelativeSource TemplatedParent}}" />
                             <Setter TargetName="RightLine" Property="BorderThickness" Value="0,1,0,1" />
                             <Setter TargetName="RightLine" Property="Background" Value="Transparent" />
-                        </Trigger>
+                        </DataTrigger>
 
                         <!-- Has Content Trigger -->
-                        <Trigger Property="Content" Value="{x:Null}">
+                        <DataTrigger Binding="{Binding Content, RelativeSource={RelativeSource TemplatedParent}}" Value="{x:Null}">
                             <Setter TargetName="TextPresenter" Property="Visibility" Value="Collapsed" />
                             <Setter TargetName="LeftLine" Property="HorizontalAlignment" Value="Stretch" />
                             <Setter TargetName="RightLine" Property="Visibility" Value="Collapsed" />
-                        </Trigger>
-                        <Trigger Property="Content" Value="">
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Content, RelativeSource={RelativeSource TemplatedParent}}" Value="">
                             <Setter TargetName="TextPresenter" Property="Visibility" Value="Collapsed" />
                             <Setter TargetName="LeftLine" Property="HorizontalAlignment" Value="Stretch" />
                             <Setter TargetName="RightLine" Property="Visibility" Value="Collapsed" />
-                        </Trigger>
+                        </DataTrigger>
 
                         <!-- Text Placement Triggers -->
-                        <Trigger Property="TextPlacement" Value="Left">
+                        <DataTrigger Binding="{Binding TextPlacement, RelativeSource={RelativeSource TemplatedParent}}" Value="Left">
                             <Setter TargetName="LeftLine" Property="Width" Value="50" />
-                        </Trigger>
-                        <Trigger Property="TextPlacement" Value="Right">
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding TextPlacement, RelativeSource={RelativeSource TemplatedParent}}" Value="Right">
                             <Setter TargetName="RightLine" Property="Width" Value="50" />
-                        </Trigger>
+                        </DataTrigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
@@ -127,16 +127,16 @@
                                           Visibility="Visible" />
                     </StackPanel>
                     <ControlTemplate.Triggers>
-                        <Trigger Property="Icon" Value="{x:Null}">
+                        <DataTrigger Binding="{Binding Icon, RelativeSource={RelativeSource TemplatedParent}}" Value="{x:Null}">
                             <Setter TargetName="IconPresenter" Property="Visibility" Value="Collapsed" />
-                        </Trigger>
-                        <Trigger Property="IsLast" Value="True">
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding IsLast, RelativeSource={RelativeSource TemplatedParent}}" Value="True">
                             <Setter TargetName="SeparatorPresenter" Property="Visibility" Value="Collapsed" />
                             <Setter TargetName="HeaderPresenter" Property="TextElement.Foreground" Value="{DynamicResource Antd.Brush.Text}" />
-                        </Trigger>
-                        <Trigger Property="IsLast" Value="False">
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding IsLast, RelativeSource={RelativeSource TemplatedParent}}" Value="False">
                             <Setter TargetName="HeaderPresenter" Property="TextElement.Foreground" Value="{DynamicResource Antd.Brush.TextSecondary}" />
-                        </Trigger>
+                        </DataTrigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
@@ -221,18 +221,18 @@
                                 Visibility="Visible" />
                     </StackPanel>
                     <ControlTemplate.Triggers>
-                        <Trigger Property="IsExpanded" Value="True">
+                        <DataTrigger Binding="{Binding IsExpanded, RelativeSource={RelativeSource TemplatedParent}}" Value="True">
                             <Setter TargetName="ContentBorder" Property="Visibility" Value="Visible" />
                             <Setter TargetName="ExpandIcon" Property="RenderTransform">
                                 <Setter.Value>
                                     <RotateTransform Angle="90" />
                                 </Setter.Value>
                             </Setter>
-                        </Trigger>
-                        <Trigger Property="Disabled" Value="True">
-                            <Setter TargetName="HeaderBorder" Property="Cursor" Value="Not-allowed" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Disabled, RelativeSource={RelativeSource TemplatedParent}}" Value="True">
+                            <Setter TargetName="HeaderBorder" Property="Cursor" Value="No" />
                             <Setter TargetName="HeaderBorder" Property="Opacity" Value="0.5" />
-                        </Trigger>
+                        </DataTrigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>

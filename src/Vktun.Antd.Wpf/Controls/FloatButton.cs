@@ -27,7 +27,7 @@ public class FloatButton : Button
     /// <summary>
     /// Identifies the <see cref="Icon"/> dependency property.
     /// </summary>
-    public static readonly DependencyProperty IconProperty =
+    public new static readonly DependencyProperty IconProperty =
         DependencyProperty.Register(nameof(Icon), typeof(object), typeof(FloatButton), new PropertyMetadata(null));
 
     /// <summary>
@@ -75,7 +75,7 @@ public class FloatButton : Button
     /// <summary>
     /// Gets or sets the icon content.
     /// </summary>
-    public object? Icon
+    public new object? Icon
     {
         get => GetValue(IconProperty);
         set => SetValue(IconProperty, value);

@@ -42,12 +42,12 @@ internal sealed class ModalDialogWindow : Window
 
         var closeButton = new Button
         {
-            Content = "¡Á",
+            Content = "Ã—",
             Width = 36d,
             Height = 36d,
             HorizontalAlignment = HorizontalAlignment.Right,
+            Type = AntdButtonType.Text,
         };
-        ButtonAssist.SetType(closeButton, AntdButtonType.Text);
         closeButton.Click += (_, _) => CloseWith(null);
 
         var header = new Grid();
@@ -63,12 +63,12 @@ internal sealed class ModalDialogWindow : Window
             TextWrapping = TextWrapping.Wrap,
         };
 
-        var footer = new StackPanel
+        var footer = new Space
         {
             Orientation = Orientation.Horizontal,
             HorizontalAlignment = HorizontalAlignment.Right,
+            Gap = 8d,
         };
-        SpaceAssist.SetGap(footer, 8d);
 
         if (request.ShowCancel)
         {
@@ -85,13 +85,15 @@ internal sealed class ModalDialogWindow : Window
         {
             Content = request.OkText,
             MinWidth = 88d,
+            Type = AntdButtonType.Primary,
         };
-        ButtonAssist.SetType(okButton, AntdButtonType.Primary);
         okButton.Click += (_, _) => CloseWith(true);
         footer.Children.Add(okButton);
 
-        var stack = new StackPanel();
-        SpaceAssist.SetGap(stack, 18d);
+        var stack = new Space
+        {
+            Gap = 18d,
+        };
         stack.Children.Add(header);
         stack.Children.Add(bodyContent);
         stack.Children.Add(footer);
