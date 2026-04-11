@@ -3,6 +3,9 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Media3D;
+using WpfCalendar = System.Windows.Controls.Calendar;
 
 namespace Vktun.Antd.Wpf;
 
@@ -24,12 +27,12 @@ public enum AntdDatePickerMode
 [TemplatePart(Name = "PART_TextBox", Type = typeof(TextBox))]
 [TemplatePart(Name = "PART_Button", Type = typeof(Button))]
 [TemplatePart(Name = "PART_ClearButton", Type = typeof(Button))]
-[TemplatePart(Name = "PART_Calendar", Type = typeof(Calendar))]
+[TemplatePart(Name = "PART_Calendar", Type = typeof(WpfCalendar))]
 [TemplatePart(Name = "PART_Popup", Type = typeof(Popup))]
 public class DatePicker : Control
 {
     private TextBox? _textBox;
-    private Calendar? _calendar;
+    private WpfCalendar? _calendar;
     private Popup? _popup;
     private Button? _toggleButton;
     private Button? _clearButton;
@@ -66,7 +69,7 @@ public class DatePicker : Control
     /// </summary>
     public static readonly DependencyProperty PlaceholderProperty =
         DependencyProperty.Register(nameof(Placeholder), typeof(string), typeof(DatePicker),
-            new PropertyMetadata("请选择日期"));
+            new PropertyMetadata("\u8BF7\u9009\u62E9\u65E5\u671F"));
 
     /// <summary>
     /// Identifies the <see cref="Format"/> dependency property.
@@ -268,7 +271,7 @@ public class DatePicker : Control
         base.OnApplyTemplate();
 
         _textBox = GetTemplateChild("PART_TextBox") as TextBox;
-        _calendar = GetTemplateChild("PART_Calendar") as Calendar;
+        _calendar = GetTemplateChild("PART_Calendar") as WpfCalendar;
         _popup = GetTemplateChild("PART_Popup") as Popup;
         _toggleButton = GetTemplateChild("PART_Button") as Button;
         _clearButton = GetTemplateChild("PART_ClearButton") as Button;
@@ -312,6 +315,57 @@ public class DatePicker : Control
     public void Clear()
     {
         Value = null;
+    }
+
+    /// <inheritdoc />
+    protected override void OnPreviewMouseLeftButtonDown(MouseButtonEventArgs e)
+    {
+        base.OnPreviewMouseLeftButtonDown(e);
+
+        if (!IsEnabled || IsDropDownOpen || e.Handled)
+        {
+            return;
+        }
+
+        if (IsSourceWithin(e.OriginalSource as DependencyObject, _toggleButton) ||
+            IsSourceWithin(e.OriginalSource as DependencyObject, _clearButton))
+        {
+            return;
+        }
+
+        OpenDropDown();
+    }
+
+    /// <inheritdoc />
+    protected override void OnPreviewKeyDown(KeyEventArgs e)
+    {
+        base.OnPreviewKeyDown(e);
+
+        if (!IsEnabled)
+        {
+            return;
+        }
+
+        if (e.Key == Key.Escape && IsDropDownOpen)
+        {
+            IsDropDownOpen = false;
+            e.Handled = true;
+            return;
+        }
+
+        if (e.Key == Key.F4 || (e.Key == Key.Down && (Keyboard.Modifiers & ModifierKeys.Alt) == ModifierKeys.Alt))
+        {
+            if (IsDropDownOpen)
+            {
+                IsDropDownOpen = false;
+            }
+            else
+            {
+                OpenDropDown();
+            }
+
+            e.Handled = true;
+        }
     }
 
     private static void OnValueChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -392,13 +446,13 @@ public class DatePicker : Control
             return;
         }
 
-        if (_calendar is not null)
+        if (IsDropDownOpen)
         {
-            _calendar.DisplayDate = Value ?? DisplayDate;
-            _calendar.SelectedDate = Value;
+            IsDropDownOpen = false;
+            return;
         }
 
-        IsDropDownOpen = !IsDropDownOpen;
+        OpenDropDown();
     }
 
     private void OnClearButtonClick(object sender, RoutedEventArgs e)
@@ -437,6 +491,43 @@ public class DatePicker : Control
         return value?.ToString(Format) ?? string.Empty;
     }
 
+    private void OpenDropDown()
+    {
+        if (_calendar is not null)
+        {
+            _calendar.DisplayDate = Value ?? DisplayDate;
+            _calendar.SelectedDate = Value;
+        }
+
+        IsDropDownOpen = true;
+    }
+
+    private static bool IsSourceWithin(DependencyObject? source, DependencyObject? target)
+    {
+        if (source is null || target is null)
+        {
+            return false;
+        }
+
+        var current = source;
+        while (current is not null)
+        {
+            if (ReferenceEquals(current, target))
+            {
+                return true;
+            }
+
+            current = current switch
+            {
+                Visual visual => VisualTreeHelper.GetParent(visual),
+                Visual3D visual3D => VisualTreeHelper.GetParent(visual3D),
+                _ => LogicalTreeHelper.GetParent(current),
+            };
+        }
+
+        return false;
+    }
+
     private void RaiseValueChangedEvent()
     {
         RaiseEvent(new RoutedEventArgs(ValueChangedEvent, this));
@@ -448,14 +539,37 @@ public class DatePicker : Control
 /// </summary>
 [TemplatePart(Name = "PART_StartTextBox", Type = typeof(TextBox))]
 [TemplatePart(Name = "PART_EndTextBox", Type = typeof(TextBox))]
-[TemplatePart(Name = "PART_Calendar", Type = typeof(Calendar))]
+[TemplatePart(Name = "PART_Button", Type = typeof(Button))]
+[TemplatePart(Name = "PART_Calendar", Type = typeof(WpfCalendar))]
 [TemplatePart(Name = "PART_Popup", Type = typeof(Popup))]
 public class RangePicker : Control
 {
+    private Popup? _popup;
+    private WpfCalendar? _calendar;
+    private Button? _toggleButton;
+    private bool _isSyncingPopup;
+    private bool _isSelectingEnd;
+
     static RangePicker()
     {
         DefaultStyleKeyProperty.OverrideMetadata(typeof(RangePicker), new FrameworkPropertyMetadata(typeof(RangePicker)));
     }
+
+    /// <summary>
+    /// Gets or sets whether the popup calendar is open.
+    /// </summary>
+    public bool IsDropDownOpen
+    {
+        get => (bool)GetValue(IsDropDownOpenProperty);
+        set => SetValue(IsDropDownOpenProperty, value);
+    }
+
+    /// <summary>
+    /// Identifies the <see cref="IsDropDownOpen"/> dependency property.
+    /// </summary>
+    public static readonly DependencyProperty IsDropDownOpenProperty =
+        DependencyProperty.Register(nameof(IsDropDownOpen), typeof(bool), typeof(RangePicker),
+            new PropertyMetadata(false, OnIsDropDownOpenChanged));
 
     /// <summary>
     /// Gets or sets the start date.
@@ -471,7 +585,7 @@ public class RangePicker : Control
     /// </summary>
     public static readonly DependencyProperty StartValueProperty =
         DependencyProperty.Register(nameof(StartValue), typeof(DateTime?), typeof(RangePicker),
-            new PropertyMetadata(null));
+            new PropertyMetadata(null, OnStartValueChanged));
 
     /// <summary>
     /// Gets or sets the end date.
@@ -487,7 +601,7 @@ public class RangePicker : Control
     /// </summary>
     public static readonly DependencyProperty EndValueProperty =
         DependencyProperty.Register(nameof(EndValue), typeof(DateTime?), typeof(RangePicker),
-            new PropertyMetadata(null));
+            new PropertyMetadata(null, OnEndValueChanged));
 
     /// <summary>
     /// Gets or sets the placeholder text for start date.
@@ -503,7 +617,7 @@ public class RangePicker : Control
     /// </summary>
     public static readonly DependencyProperty StartPlaceholderProperty =
         DependencyProperty.Register(nameof(StartPlaceholder), typeof(string), typeof(RangePicker),
-            new PropertyMetadata("开始日期"));
+            new PropertyMetadata("\u5F00\u59CB\u65E5\u671F"));
 
     /// <summary>
     /// Gets or sets the placeholder text for end date.
@@ -519,7 +633,7 @@ public class RangePicker : Control
     /// </summary>
     public static readonly DependencyProperty EndPlaceholderProperty =
         DependencyProperty.Register(nameof(EndPlaceholder), typeof(string), typeof(RangePicker),
-            new PropertyMetadata("结束日期"));
+            new PropertyMetadata("\u7ED3\u675F\u65E5\u671F"));
 
     /// <summary>
     /// Gets or sets the date format string.
@@ -551,7 +665,7 @@ public class RangePicker : Control
     /// </summary>
     public static readonly DependencyProperty IsDisabledProperty =
         DependencyProperty.Register(nameof(IsDisabled), typeof(bool), typeof(RangePicker),
-            new PropertyMetadata(false));
+            new PropertyMetadata(false, OnIsDisabledChanged));
 
     /// <summary>
     /// Gets or sets the size of the picker.
@@ -592,5 +706,320 @@ public class RangePicker : Control
     {
         StartValue = null;
         EndValue = null;
+        IsDropDownOpen = false;
+        _isSelectingEnd = false;
+    }
+
+    /// <inheritdoc />
+    public override void OnApplyTemplate()
+    {
+        if (_calendar is not null)
+        {
+            _calendar.SelectedDatesChanged -= OnCalendarSelectedDatesChanged;
+        }
+
+        if (_popup is not null)
+        {
+            _popup.Opened -= OnPopupOpened;
+            _popup.Closed -= OnPopupClosed;
+        }
+
+        if (_toggleButton is not null)
+        {
+            _toggleButton.Click -= OnToggleButtonClick;
+        }
+
+        base.OnApplyTemplate();
+
+        _popup = GetTemplateChild("PART_Popup") as Popup;
+        _calendar = GetTemplateChild("PART_Calendar") as WpfCalendar;
+        _toggleButton = GetTemplateChild("PART_Button") as Button;
+
+        EnsurePopupAndCalendar();
+
+        if (_calendar is not null)
+        {
+            _calendar.SelectionMode = CalendarSelectionMode.SingleDate;
+            _calendar.SelectedDatesChanged += OnCalendarSelectedDatesChanged;
+            UpdateCalendarDisplay();
+        }
+
+        if (_popup is not null)
+        {
+            _popup.Opened += OnPopupOpened;
+            _popup.Closed += OnPopupClosed;
+            _popup.IsOpen = IsDropDownOpen;
+        }
+
+        if (_toggleButton is not null)
+        {
+            _toggleButton.Click += OnToggleButtonClick;
+        }
+    }
+
+    /// <inheritdoc />
+    protected override void OnPreviewMouseLeftButtonDown(MouseButtonEventArgs e)
+    {
+        base.OnPreviewMouseLeftButtonDown(e);
+
+        if (!IsEnabled || IsDropDownOpen || e.Handled)
+        {
+            return;
+        }
+
+        if (IsSourceWithin(e.OriginalSource as DependencyObject, _toggleButton))
+        {
+            return;
+        }
+
+        OpenDropDown();
+    }
+
+    /// <inheritdoc />
+    protected override void OnPreviewKeyDown(KeyEventArgs e)
+    {
+        base.OnPreviewKeyDown(e);
+
+        if (!IsEnabled)
+        {
+            return;
+        }
+
+        if (e.Key == Key.Escape && IsDropDownOpen)
+        {
+            IsDropDownOpen = false;
+            e.Handled = true;
+            return;
+        }
+
+        if (e.Key == Key.F4 || (e.Key == Key.Down && (Keyboard.Modifiers & ModifierKeys.Alt) == ModifierKeys.Alt))
+        {
+            if (IsDropDownOpen)
+            {
+                IsDropDownOpen = false;
+            }
+            else
+            {
+                OpenDropDown();
+            }
+
+            e.Handled = true;
+        }
+    }
+
+    private static void OnStartValueChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    {
+        if (d is not RangePicker picker)
+        {
+            return;
+        }
+
+        if (picker.StartValue.HasValue && picker.EndValue.HasValue && picker.StartValue.Value > picker.EndValue.Value)
+        {
+            picker.SetCurrentValue(EndValueProperty, picker.StartValue);
+        }
+
+        picker.UpdateCalendarDisplay();
+    }
+
+    private static void OnEndValueChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    {
+        if (d is not RangePicker picker)
+        {
+            return;
+        }
+
+        if (picker.StartValue.HasValue && picker.EndValue.HasValue && picker.EndValue.Value < picker.StartValue.Value)
+        {
+            picker.SetCurrentValue(StartValueProperty, picker.EndValue);
+        }
+
+        picker.UpdateCalendarDisplay();
+    }
+
+    private static void OnIsDropDownOpenChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    {
+        if (d is RangePicker picker && picker._popup is not null && !picker._isSyncingPopup)
+        {
+            picker._popup.IsOpen = picker.IsDropDownOpen;
+        }
+    }
+
+    private static void OnIsDisabledChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    {
+        if (d is RangePicker picker)
+        {
+            picker.IsEnabled = !picker.IsDisabled;
+        }
+    }
+
+    private void OnToggleButtonClick(object sender, RoutedEventArgs e)
+    {
+        if (!IsEnabled)
+        {
+            return;
+        }
+
+        if (IsDropDownOpen)
+        {
+            IsDropDownOpen = false;
+            return;
+        }
+
+        OpenDropDown();
+    }
+
+    private void OnPopupOpened(object? sender, EventArgs e)
+    {
+        _isSyncingPopup = true;
+        try
+        {
+            SetCurrentValue(IsDropDownOpenProperty, true);
+        }
+        finally
+        {
+            _isSyncingPopup = false;
+        }
+    }
+
+    private void OnPopupClosed(object? sender, EventArgs e)
+    {
+        _isSyncingPopup = true;
+        try
+        {
+            SetCurrentValue(IsDropDownOpenProperty, false);
+        }
+        finally
+        {
+            _isSyncingPopup = false;
+        }
+    }
+
+    private void OnCalendarSelectedDatesChanged(object? sender, SelectionChangedEventArgs e)
+    {
+        if (_calendar?.SelectedDate is not DateTime selectedDate)
+        {
+            return;
+        }
+
+        if (!_isSelectingEnd)
+        {
+            SetCurrentValue(StartValueProperty, selectedDate);
+            SetCurrentValue(EndValueProperty, null);
+            _isSelectingEnd = true;
+            return;
+        }
+
+        if (StartValue is null)
+        {
+            SetCurrentValue(StartValueProperty, selectedDate);
+            return;
+        }
+
+        if (selectedDate < StartValue.Value)
+        {
+            SetCurrentValue(EndValueProperty, StartValue);
+            SetCurrentValue(StartValueProperty, selectedDate);
+        }
+        else
+        {
+            SetCurrentValue(EndValueProperty, selectedDate);
+        }
+
+        _isSelectingEnd = false;
+        IsDropDownOpen = false;
+    }
+
+    private void OpenDropDown()
+    {
+        _isSelectingEnd = StartValue.HasValue && !EndValue.HasValue;
+        UpdateCalendarDisplay();
+        IsDropDownOpen = true;
+    }
+
+    private void UpdateCalendarDisplay()
+    {
+        if (_calendar is null)
+        {
+            return;
+        }
+
+        var anchorDate = EndValue ?? StartValue ?? DateTime.Today;
+        _calendar.DisplayDate = anchorDate;
+        _calendar.SelectedDate = EndValue ?? StartValue;
+    }
+
+    private void EnsurePopupAndCalendar()
+    {
+        _calendar ??= new WpfCalendar
+        {
+            SelectionMode = CalendarSelectionMode.SingleDate,
+            Margin = new Thickness(8),
+            Width = 270,
+            BorderThickness = new Thickness(0),
+        };
+
+        if (_popup is null)
+        {
+            _popup = new Popup
+            {
+                PlacementTarget = this,
+                Placement = PlacementMode.Bottom,
+                StaysOpen = false,
+                AllowsTransparency = true,
+                PopupAnimation = PopupAnimation.Fade,
+                Child = CreatePopupContainer(_calendar),
+            };
+
+            return;
+        }
+
+        if (_popup.Child is null)
+        {
+            _popup.Child = CreatePopupContainer(_calendar);
+        }
+    }
+
+    private static Border CreatePopupContainer(WpfCalendar calendar)
+    {
+        var border = new Border
+        {
+            Margin = new Thickness(0, 8, 0, 0),
+            Padding = new Thickness(10),
+            BorderThickness = new Thickness(1),
+            CornerRadius = new CornerRadius(8),
+            Child = calendar,
+        };
+
+        border.SetResourceReference(Border.BackgroundProperty, "Antd.Brush.BgElevated");
+        border.SetResourceReference(Border.BorderBrushProperty, "Antd.Brush.BorderSecondary");
+        border.SetResourceReference(UIElement.EffectProperty, "Antd.Shadow.Popup");
+        return border;
+    }
+
+    private static bool IsSourceWithin(DependencyObject? source, DependencyObject? target)
+    {
+        if (source is null || target is null)
+        {
+            return false;
+        }
+
+        var current = source;
+        while (current is not null)
+        {
+            if (ReferenceEquals(current, target))
+            {
+                return true;
+            }
+
+            current = current switch
+            {
+                Visual visual => VisualTreeHelper.GetParent(visual),
+                Visual3D visual3D => VisualTreeHelper.GetParent(visual3D),
+                _ => LogicalTreeHelper.GetParent(current),
+            };
+        }
+
+        return false;
     }
 }

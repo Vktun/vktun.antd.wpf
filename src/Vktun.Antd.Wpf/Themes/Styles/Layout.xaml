@@ -244,4 +244,22 @@
         <Setter Property="HorizontalAlignment" Value="{Binding Align, RelativeSource={RelativeSource Self}}" />
     </Style>
 
+    <!-- Grid (Row / Col) Styles -->
+    <Style TargetType="{x:Type local:Row}">
+        <Setter Property="ClipToBounds" Value="False" />
+    </Style>
+
+    <Style TargetType="{x:Type local:Col}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type local:Col}">
+                    <ContentPresenter ContentSource="Content"
+                                      Margin="{TemplateBinding Padding}"
+                                      HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                      VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
 </ResourceDictionary>

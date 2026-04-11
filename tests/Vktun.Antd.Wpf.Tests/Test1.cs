@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
@@ -205,6 +206,53 @@ public class AntdThemeTests
     }
 
     [TestMethod]
+    public void Popconfirm_ShouldOpenOnTriggerClick_AndRaiseConfirmWhenConfirmed()
+    {
+        WpfTestHost.Run(() =>
+        {
+            InitializeThemeResources();
+
+            var popconfirm = new Popconfirm
+            {
+                Title = "Confirm delete?",
+                Content = new Button { Content = "Delete" },
+            };
+
+            var window = CreateWindow(popconfirm);
+
+            try
+            {
+                window.Show();
+                popconfirm.ApplyTemplate();
+                WpfTestHost.Pump();
+
+                popconfirm.IsOpen.Should().BeFalse();
+
+                InvokePopconfirmPreviewMouseDown(popconfirm);
+                WpfTestHost.Pump();
+
+                popconfirm.IsOpen.Should().BeTrue();
+
+                var confirmed = false;
+                popconfirm.Confirm += (_, _) => confirmed = true;
+
+                var confirmButton = popconfirm.Template.FindName("PART_ConfirmButton", popconfirm)
+                    .Should().BeOfType<Button>()
+                    .Subject;
+                confirmButton.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent, confirmButton));
+                WpfTestHost.Pump();
+
+                confirmed.Should().BeTrue();
+                popconfirm.IsOpen.Should().BeFalse();
+            }
+            finally
+            {
+                window.Close();
+            }
+        });
+    }
+
+    [TestMethod]
     public void DatePickerTemplate_ShouldExposePopupAndCalendarPartsAndReactToThemeSwitch()
     {
         WpfTestHost.Run(() =>
@@ -361,6 +409,52 @@ public class AntdThemeTests
     }
 
     [TestMethod]
+    public void FloatButton_ShouldAttachToOverlayHostWhenGlobalInsideContentPresenter()
+    {
+        WpfTestHost.Run(() =>
+        {
+            Application.Current!.Resources = new ResourceDictionary();
+            Application.Current.Resources.MergedDictionaries.Add(new AntdThemeResources());
+
+            var floatButton = new FloatButton
+            {
+                IsGlobal = true,
+            };
+
+            var presenter = new ContentPresenter
+            {
+                Content = floatButton,
+            };
+
+            var window = new Window
+            {
+                Content = new Grid
+                {
+                    Children =
+                    {
+                        presenter,
+                    },
+                },
+                Width = 600,
+                Height = 400,
+            };
+
+            window.Show();
+            WpfTestHost.Pump();
+
+            OverlayHost.Get(window).Should().NotBeNull();
+            presenter.Content.Should().BeNull();
+            ((Grid)window.Content).Children.Count.Should().BeGreaterThan(1);
+
+            floatButton.IsGlobal = false;
+            WpfTestHost.Pump();
+
+            presenter.Content.Should().BeSameAs(floatButton);
+            window.Close();
+        });
+    }
+
+    [TestMethod]
     public void Pagination_ShouldClampCurrentPageToPageCount()
     {
         WpfTestHost.Run(() =>
@@ -420,6 +514,51 @@ public class AntdThemeTests
 
                 inputNumber.Value = -2d;
                 inputNumber.Value.Should().Be(0d);
+            }
+            finally
+            {
+                window.Close();
+            }
+        });
+    }
+
+    [TestMethod]
+    public void InputNumber_SpinnerButtons_ShouldAdjustValue()
+    {
+        WpfTestHost.Run(() =>
+        {
+            InitializeThemeResources();
+
+            var inputNumber = new InputNumber
+            {
+                Width = 180,
+                Minimum = 0,
+                Maximum = 10,
+                Step = 0.5,
+                Value = 1.5,
+            };
+
+            var window = CreateWindow(inputNumber);
+
+            try
+            {
+                window.Show();
+                inputNumber.ApplyTemplate();
+                WpfTestHost.Pump();
+
+                var textBox = inputNumber.Template.FindName("PART_TextBox", inputNumber).Should().BeOfType<TextBox>().Subject;
+                var upButton = inputNumber.Template.FindName("PART_UpButton", inputNumber).Should().BeAssignableTo<ButtonBase>().Subject;
+                var downButton = inputNumber.Template.FindName("PART_DownButton", inputNumber).Should().BeAssignableTo<ButtonBase>().Subject;
+
+                upButton.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent, upButton));
+                inputNumber.Value.Should().Be(2d);
+
+                downButton.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent, downButton));
+                inputNumber.Value.Should().Be(1.5d);
+
+                textBox.Text = "4";
+                upButton.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent, upButton));
+                inputNumber.Value.Should().Be(4.5d);
             }
             finally
             {
@@ -651,6 +790,51 @@ public class AntdThemeTests
         });
     }
 
+    [TestMethod]
+    public void Tabs_ShouldSelectFirstEnabledPane_WhenItemsAssigned()
+    {
+        WpfTestHost.Run(() =>
+        {
+            var designPane = new TabPane { Key = "design", Header = "Design" };
+            var codePane = new TabPane { Key = "code", Header = "Code" };
+
+            var tabs = new Tabs
+            {
+                Items = new ObservableCollection<TabPane> { designPane, codePane },
+            };
+
+            tabs.SelectedIndex.Should().Be(0);
+            tabs.SelectedKey.Should().Be("design");
+            tabs.SelectedItem.Should().BeSameAs(designPane);
+            designPane.IsSelected.Should().BeTrue();
+            codePane.IsSelected.Should().BeFalse();
+        });
+    }
+
+    [TestMethod]
+    public void Tabs_SelectTabCommand_ShouldSwitchSelection()
+    {
+        WpfTestHost.Run(() =>
+        {
+            var designPane = new TabPane { Key = "design", Header = "Design" };
+            var codePane = new TabPane { Key = "code", Header = "Code" };
+
+            var tabs = new Tabs
+            {
+                Items = new ObservableCollection<TabPane> { designPane, codePane },
+            };
+
+            tabs.SelectTabCommand.CanExecute(codePane).Should().BeTrue();
+            tabs.SelectTabCommand.Execute(codePane);
+
+            tabs.SelectedIndex.Should().Be(1);
+            tabs.SelectedKey.Should().Be("code");
+            tabs.SelectedItem.Should().BeSameAs(codePane);
+            designPane.IsSelected.Should().BeFalse();
+            codePane.IsSelected.Should().BeTrue();
+        });
+    }
+
     private static Window CreateWindow(object content, double width = 420, double height = 280)
     {
         return new Window
@@ -690,6 +874,20 @@ public class AntdThemeTests
         onMouseLeftButtonDown!.Invoke(toggle, new object[] { args });
     }
 
+    private static void InvokePopconfirmPreviewMouseDown(Popconfirm popconfirm)
+    {
+        var onPreviewMouseLeftButtonDown = typeof(Popconfirm).GetMethod("OnPreviewMouseLeftButtonDown", BindingFlags.Instance | BindingFlags.NonPublic);
+        onPreviewMouseLeftButtonDown.Should().NotBeNull();
+
+        var args = new MouseButtonEventArgs(Mouse.PrimaryDevice, Environment.TickCount, MouseButton.Left)
+        {
+            RoutedEvent = UIElement.PreviewMouseLeftButtonDownEvent,
+            Source = popconfirm,
+        };
+
+        onPreviewMouseLeftButtonDown!.Invoke(popconfirm, new object[] { args });
+    }
+
     private static IEnumerable<T> FindVisualChildren<T>(DependencyObject root)
         where T : DependencyObject
     {
@@ -709,5 +907,3 @@ public class AntdThemeTests
         }
     }
 }
-
-

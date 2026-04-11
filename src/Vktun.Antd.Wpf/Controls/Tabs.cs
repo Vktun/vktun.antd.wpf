@@ -1,6 +1,12 @@
+using System;
+using System.Collections.Specialized;
 using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Animation;
+using System.Windows.Threading;
 
 namespace Vktun.Antd.Wpf;
 
@@ -101,6 +107,14 @@ public class TabPane : HeaderedContentControl
 /// </summary>
 public class Tabs : Control
 {
+    private bool _isSynchronizingSelection;
+    private FrameworkElement? _tabContentHost;
+    private ItemsControl? _tabHeadersItemsControl;
+    private Border? _activeIndicator;
+    private TranslateTransform? _activeIndicatorTransform;
+    private double _indicatorX = double.NaN;
+    private double _indicatorWidth = double.NaN;
+
     static Tabs()
     {
         DefaultStyleKeyProperty.OverrideMetadata(typeof(Tabs),
@@ -112,7 +126,7 @@ public class Tabs : Control
     /// </summary>
     public static readonly DependencyProperty ItemsProperty =
         DependencyProperty.Register(nameof(Items), typeof(ObservableCollection<TabPane>), typeof(Tabs),
-            new PropertyMetadata(null));
+            new PropertyMetadata(null, OnItemsChanged));
 
     /// <summary>
     /// Identifies the <see cref="SelectedKey"/> dependency property.
@@ -126,7 +140,14 @@ public class Tabs : Control
     /// </summary>
     public static readonly DependencyProperty SelectedIndexProperty =
         DependencyProperty.Register(nameof(SelectedIndex), typeof(int), typeof(Tabs),
-            new PropertyMetadata(0, OnSelectedIndexChanged));
+            new PropertyMetadata(-1, OnSelectedIndexChanged));
+
+    /// <summary>
+    /// Identifies the <see cref="SelectedItem"/> dependency property.
+    /// </summary>
+    public static readonly DependencyProperty SelectedItemProperty =
+        DependencyProperty.Register(nameof(SelectedItem), typeof(TabPane), typeof(Tabs),
+            new PropertyMetadata(null));
 
     /// <summary>
     /// Identifies the <see cref="Type"/> dependency property.
@@ -222,6 +243,39 @@ public class Tabs : Control
     public Tabs()
     {
         Items = new ObservableCollection<TabPane>();
+        SelectTabCommand = new RelayCommand(
+            parameter => SelectTab(parameter as TabPane),
+            parameter => parameter is TabPane pane && !pane.IsDisabled);
+        SizeChanged += OnTabsSizeChanged;
+        Loaded += OnTabsLoaded;
+    }
+
+    /// <inheritdoc />
+    public override void OnApplyTemplate()
+    {
+        if (_tabHeadersItemsControl is not null)
+        {
+            _tabHeadersItemsControl.LayoutUpdated -= OnTabHeadersLayoutUpdated;
+        }
+
+        base.OnApplyTemplate();
+
+        _tabContentHost = GetTemplateChild("PART_TabContent") as FrameworkElement;
+        _tabHeadersItemsControl = GetTemplateChild("PART_TabHeadersItemsControl") as ItemsControl;
+        _activeIndicator = GetTemplateChild("PART_ActiveIndicator") as Border;
+        _activeIndicatorTransform = _activeIndicator?.RenderTransform as TranslateTransform;
+        if (_activeIndicator is not null && _activeIndicatorTransform is null)
+        {
+            _activeIndicatorTransform = new TranslateTransform();
+            _activeIndicator.RenderTransform = _activeIndicatorTransform;
+        }
+
+        if (_tabHeadersItemsControl is not null)
+        {
+            _tabHeadersItemsControl.LayoutUpdated += OnTabHeadersLayoutUpdated;
+        }
+
+        Dispatcher.BeginInvoke(new Action(() => UpdateActiveIndicator(false)), DispatcherPriority.Loaded);
     }
 
     /// <summary>
@@ -249,6 +303,15 @@ public class Tabs : Control
     {
         get => (int)GetValue(SelectedIndexProperty);
         set => SetValue(SelectedIndexProperty, value);
+    }
+
+    /// <summary>
+    /// Gets the currently selected tab pane.
+    /// </summary>
+    public TabPane? SelectedItem
+    {
+        get => (TabPane?)GetValue(SelectedItemProperty);
+        private set => SetValue(SelectedItemProperty, value);
     }
 
     /// <summary>
@@ -342,6 +405,11 @@ public class Tabs : Control
     }
 
     /// <summary>
+    /// Gets the command used by tab headers to switch selection.
+    /// </summary>
+    public ICommand SelectTabCommand { get; }
+
+    /// <summary>
     /// Occurs when a new tab is added.
     /// </summary>
     public event RoutedEventHandler TabAdded
@@ -380,30 +448,427 @@ public class Tabs : Control
         tabs.UpdateSelectionByIndex((int)e.NewValue);
     }
 
+    private static void OnItemsChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    {
+        var tabs = (Tabs)d;
+
+        if (e.OldValue is ObservableCollection<TabPane> oldItems)
+        {
+            oldItems.CollectionChanged -= tabs.OnItemsCollectionChanged;
+        }
+
+        if (e.NewValue is ObservableCollection<TabPane> newItems)
+        {
+            newItems.CollectionChanged += tabs.OnItemsCollectionChanged;
+        }
+
+        tabs.CoerceSelectionAfterItemsChanged();
+    }
+
+    private void OnItemsCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
+    {
+        CoerceSelectionAfterItemsChanged();
+    }
+
     private void UpdateSelectionByKey(string? key)
     {
-        if (Items == null || key == null) return;
+        if (_isSynchronizingSelection)
+        {
+            return;
+        }
+
+        if (Items == null || Items.Count == 0)
+        {
+            ClearSelectionState();
+            return;
+        }
+
+        if (string.IsNullOrWhiteSpace(key))
+        {
+            CoerceSelectionAfterItemsChanged();
+            return;
+        }
 
         for (int i = 0; i < Items.Count; i++)
         {
-            Items[i].IsSelected = Items[i].Key == key;
-            if (Items[i].IsSelected)
+            if (Items[i].Key == key)
             {
-                SelectedIndex = i;
+                SelectByIndex(i, true);
+                return;
             }
         }
     }
 
     private void UpdateSelectionByIndex(int index)
     {
-        if (Items == null || index < 0 || index >= Items.Count) return;
+        if (_isSynchronizingSelection)
+        {
+            return;
+        }
+
+        if (Items == null || Items.Count == 0)
+        {
+            ClearSelectionState();
+            return;
+        }
+
+        if (index < 0 || index >= Items.Count)
+        {
+            CoerceSelectionAfterItemsChanged();
+            return;
+        }
+
+        SelectByIndex(index, true);
+    }
+
+    private void SelectTab(TabPane? pane)
+    {
+        if (pane is null || pane.IsDisabled || Items == null)
+        {
+            return;
+        }
+
+        var index = Items.IndexOf(pane);
+        if (index < 0)
+        {
+            return;
+        }
+
+        SelectByIndex(index, true);
+    }
+
+    private void SelectByIndex(int index, bool raiseEvent)
+    {
+        if (Items == null || index < 0 || index >= Items.Count)
+        {
+            return;
+        }
+
+        if (Items[index].IsDisabled)
+        {
+            var fallbackIndex = FindFirstEnabledIndex();
+            if (fallbackIndex < 0)
+            {
+                ClearSelectionState();
+                return;
+            }
+
+            index = fallbackIndex;
+        }
+
+        var selectedPane = Items[index];
+        var changed = !ReferenceEquals(SelectedItem, selectedPane);
+
+        _isSynchronizingSelection = true;
+        try
+        {
+            for (int i = 0; i < Items.Count; i++)
+            {
+                Items[i].IsSelected = i == index;
+            }
+
+            if (SelectedIndex != index)
+            {
+                SetCurrentValue(SelectedIndexProperty, index);
+            }
+
+            if (!Equals(SelectedKey, selectedPane.Key))
+            {
+                SetCurrentValue(SelectedKeyProperty, selectedPane.Key);
+            }
+
+            if (!ReferenceEquals(SelectedItem, selectedPane))
+            {
+                SetCurrentValue(SelectedItemProperty, selectedPane);
+            }
+        }
+        finally
+        {
+            _isSynchronizingSelection = false;
+        }
+
+        if (raiseEvent && changed)
+        {
+            StartContentTransition();
+            UpdateActiveIndicator(true);
+            RaiseEvent(new TabSelectedRoutedEventArgs(TabSelectedEvent, this, selectedPane, index));
+            return;
+        }
+
+        UpdateActiveIndicator(false);
+    }
+
+    private void StartContentTransition()
+    {
+        if (!Animated || _tabContentHost is null)
+        {
+            return;
+        }
+
+        if (_tabContentHost.RenderTransform is not TranslateTransform translateTransform)
+        {
+            translateTransform = new TranslateTransform();
+            _tabContentHost.RenderTransform = translateTransform;
+        }
+
+        var duration = TimeSpan.FromMilliseconds(220);
+        var easing = new CubicEase { EasingMode = EasingMode.EaseOut };
+
+        _tabContentHost.BeginAnimation(OpacityProperty, new DoubleAnimation(0, 1, duration)
+        {
+            EasingFunction = easing,
+        });
+
+        translateTransform.BeginAnimation(TranslateTransform.YProperty, new DoubleAnimation(6, 0, duration)
+        {
+            EasingFunction = easing,
+        });
+    }
+
+    private void CoerceSelectionAfterItemsChanged()
+    {
+        if (Items == null || Items.Count == 0)
+        {
+            ClearSelectionState();
+            return;
+        }
+
+        if (SelectedItem is not null)
+        {
+            var currentItemIndex = Items.IndexOf(SelectedItem);
+            if (currentItemIndex >= 0 && !Items[currentItemIndex].IsDisabled)
+            {
+                SelectByIndex(currentItemIndex, false);
+                return;
+            }
+        }
+
+        if (!string.IsNullOrWhiteSpace(SelectedKey))
+        {
+            for (int i = 0; i < Items.Count; i++)
+            {
+                if (Items[i].Key == SelectedKey && !Items[i].IsDisabled)
+                {
+                    SelectByIndex(i, false);
+                    return;
+                }
+            }
+        }
+
+        if (SelectedIndex >= 0 && SelectedIndex < Items.Count && !Items[SelectedIndex].IsDisabled)
+        {
+            SelectByIndex(SelectedIndex, false);
+            return;
+        }
+
+        var firstEnabledIndex = FindFirstEnabledIndex();
+        if (firstEnabledIndex >= 0)
+        {
+            SelectByIndex(firstEnabledIndex, false);
+            return;
+        }
+
+        ClearSelectionState();
+    }
+
+    private int FindFirstEnabledIndex()
+    {
+        if (Items == null)
+        {
+            return -1;
+        }
 
         for (int i = 0; i < Items.Count; i++)
         {
-            Items[i].IsSelected = i == index;
+            if (!Items[i].IsDisabled)
+            {
+                return i;
+            }
         }
 
-        SelectedKey = Items[index].Key;
+        return -1;
+    }
+
+    private void ClearSelectionState()
+    {
+        if (Items is not null)
+        {
+            for (int i = 0; i < Items.Count; i++)
+            {
+                Items[i].IsSelected = false;
+            }
+        }
+
+        _isSynchronizingSelection = true;
+        try
+        {
+            if (SelectedIndex != -1)
+            {
+                SetCurrentValue(SelectedIndexProperty, -1);
+            }
+
+            if (SelectedKey is not null)
+            {
+                SetCurrentValue(SelectedKeyProperty, null);
+            }
+
+            if (SelectedItem is not null)
+            {
+                SetCurrentValue(SelectedItemProperty, null);
+            }
+        }
+        finally
+        {
+            _isSynchronizingSelection = false;
+        }
+
+        ResetActiveIndicator();
+    }
+
+    private void OnTabsLoaded(object sender, RoutedEventArgs e)
+    {
+        UpdateActiveIndicator(false);
+    }
+
+    private void OnTabsSizeChanged(object sender, SizeChangedEventArgs e)
+    {
+        UpdateActiveIndicator(false);
+    }
+
+    private void OnTabHeadersLayoutUpdated(object? sender, EventArgs e)
+    {
+        UpdateActiveIndicator(false);
+    }
+
+    private void UpdateActiveIndicator(bool animate)
+    {
+        if (_activeIndicator is null || _activeIndicatorTransform is null || _tabHeadersItemsControl is null)
+        {
+            return;
+        }
+
+        if (SelectedItem is null)
+        {
+            ResetActiveIndicator();
+            return;
+        }
+
+        var selectedButton = FindHeaderButtonForPane(SelectedItem);
+        if (selectedButton is null || selectedButton.ActualWidth <= 0 || selectedButton.ActualHeight <= 0)
+        {
+            return;
+        }
+
+        if (_activeIndicator.Parent is not Visual indicatorHost)
+        {
+            return;
+        }
+
+        var targetRect = selectedButton.TransformToAncestor(indicatorHost)
+            .TransformBounds(new Rect(0, 0, selectedButton.ActualWidth, selectedButton.ActualHeight));
+        var targetWidth = Math.Max(20, targetRect.Width - 12);
+        var targetX = targetRect.Left + (targetRect.Width - targetWidth) / 2;
+
+        if (!Animated || !animate || double.IsNaN(_indicatorX) || double.IsNaN(_indicatorWidth))
+        {
+            _activeIndicator.BeginAnimation(FrameworkElement.WidthProperty, null);
+            _activeIndicatorTransform.BeginAnimation(TranslateTransform.XProperty, null);
+            _activeIndicator.Width = targetWidth;
+            _activeIndicatorTransform.X = targetX;
+            _activeIndicator.Opacity = 0.95;
+            _indicatorX = targetX;
+            _indicatorWidth = targetWidth;
+            return;
+        }
+
+        if (Math.Abs(_indicatorX - targetX) < 0.5 && Math.Abs(_indicatorWidth - targetWidth) < 0.5)
+        {
+            return;
+        }
+
+        var duration = TimeSpan.FromMilliseconds(260);
+        var easing = new CubicEase { EasingMode = EasingMode.EaseOut };
+        _activeIndicator.Opacity = 0.95;
+
+        _activeIndicator.BeginAnimation(FrameworkElement.WidthProperty, new DoubleAnimation(_indicatorWidth, targetWidth, duration)
+        {
+            EasingFunction = easing,
+        });
+
+        _activeIndicatorTransform.BeginAnimation(TranslateTransform.XProperty, new DoubleAnimation(_indicatorX, targetX, duration)
+        {
+            EasingFunction = easing,
+        });
+
+        _indicatorX = targetX;
+        _indicatorWidth = targetWidth;
+    }
+
+    private void ResetActiveIndicator()
+    {
+        if (_activeIndicator is null || _activeIndicatorTransform is null)
+        {
+            return;
+        }
+
+        _activeIndicator.BeginAnimation(FrameworkElement.WidthProperty, null);
+        _activeIndicatorTransform.BeginAnimation(TranslateTransform.XProperty, null);
+        _activeIndicator.Width = 0;
+        _activeIndicatorTransform.X = 0;
+        _activeIndicator.Opacity = 0;
+        _indicatorX = double.NaN;
+        _indicatorWidth = double.NaN;
+    }
+
+    private Button? FindHeaderButtonForPane(TabPane pane)
+    {
+        return FindVisualChildByDataContext<Button>(_tabHeadersItemsControl, pane);
+    }
+
+    private static T? FindVisualChildByDataContext<T>(DependencyObject? root, object dataContext)
+        where T : FrameworkElement
+    {
+        if (root is null)
+        {
+            return null;
+        }
+
+        var childCount = VisualTreeHelper.GetChildrenCount(root);
+        for (var i = 0; i < childCount; i++)
+        {
+            var child = VisualTreeHelper.GetChild(root, i);
+            if (child is T match && ReferenceEquals(match.DataContext, dataContext))
+            {
+                return match;
+            }
+
+            var nested = FindVisualChildByDataContext<T>(child, dataContext);
+            if (nested is not null)
+            {
+                return nested;
+            }
+        }
+
+        return null;
+    }
+
+    private sealed class RelayCommand(Action<object?> execute, Predicate<object?> canExecute) : ICommand
+    {
+        public event EventHandler? CanExecuteChanged
+        {
+            add => CommandManager.RequerySuggested += value;
+            remove => CommandManager.RequerySuggested -= value;
+        }
+
+        public bool CanExecute(object? parameter)
+        {
+            return canExecute(parameter);
+        }
+
+        public void Execute(object? parameter)
+        {
+            execute(parameter);
+        }
     }
 }
 

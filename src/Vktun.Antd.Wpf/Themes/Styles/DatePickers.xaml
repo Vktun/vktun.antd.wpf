@@ -618,17 +618,18 @@
 
     <!-- Ant Design RangePicker Style -->
     <Style TargetType="{x:Type local:RangePicker}">
-        <Setter Property="FocusVisualStyle" Value="{DynamicResource Antd.FocusVisualStyle}" />
-        <Setter Property="Foreground" Value="{DynamicResource {x:Static local:AntdResourceKeys.BrushText}}" />
-        <Setter Property="Background" Value="{DynamicResource {x:Static local:AntdResourceKeys.BrushBgContainer}}" />
-        <Setter Property="BorderBrush" Value="{DynamicResource {x:Static local:AntdResourceKeys.BrushBorder}}" />
-        <Setter Property="BorderThickness" Value="1" />
-        <Setter Property="Height" Value="32" />
-        <Setter Property="Padding" Value="12,0" />
-        <Setter Property="FontSize" Value="14" />
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="{x:Type local:RangePicker}">
+    <Setter Property="FocusVisualStyle" Value="{DynamicResource Antd.FocusVisualStyle}" />
+    <Setter Property="Foreground" Value="{DynamicResource {x:Static local:AntdResourceKeys.BrushText}}" />
+    <Setter Property="Background" Value="{DynamicResource {x:Static local:AntdResourceKeys.BrushBgContainer}}" />
+    <Setter Property="BorderBrush" Value="{DynamicResource {x:Static local:AntdResourceKeys.BrushBorder}}" />
+    <Setter Property="BorderThickness" Value="1" />
+    <Setter Property="Height" Value="32" />
+    <Setter Property="Padding" Value="12,0" />
+    <Setter Property="FontSize" Value="14" />
+    <Setter Property="Template">
+        <Setter.Value>
+            <ControlTemplate TargetType="{x:Type local:RangePicker}">
+                <Grid>
                     <Border x:Name="Border"
                             Background="{TemplateBinding Background}"
                             BorderBrush="{TemplateBinding BorderBrush}"
@@ -640,58 +641,132 @@
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
-                            <TextBlock x:Name="StartPlaceholder"
-                                       Grid.Column="0"
-                                       Text="{TemplateBinding StartPlaceholder}"
-                                       Foreground="{DynamicResource {x:Static local:AntdResourceKeys.BrushTextTertiary}}"
-                                       VerticalAlignment="Center" />
-                            <TextBlock x:Name="StartValue"
-                                       Grid.Column="0"
-                                       Text="{Binding StartValue, RelativeSource={RelativeSource TemplatedParent}, StringFormat={TemplateBinding Format}}"
-                                       Foreground="{TemplateBinding Foreground}"
-                                       VerticalAlignment="Center"
-                                       Visibility="Collapsed" />
+
+                            <Grid Grid.Column="0">
+                                <TextBox x:Name="PART_StartTextBox"
+                                         IsReadOnly="True"
+                                         IsHitTestVisible="False"
+                                         Background="Transparent"
+                                         BorderThickness="0"
+                                         Padding="0"
+                                         Visibility="Visible"
+                                         Text="{Binding StartValue, RelativeSource={RelativeSource TemplatedParent}, StringFormat={}{0:yyyy-MM-dd}}"
+                                         Foreground="{TemplateBinding Foreground}"
+                                         VerticalContentAlignment="Center" />
+                                <TextBlock x:Name="StartPlaceholder"
+                                           IsHitTestVisible="False"
+                                           VerticalAlignment="Center"
+                                           Visibility="Collapsed"
+                                           Foreground="{DynamicResource {x:Static local:AntdResourceKeys.BrushTextTertiary}}"
+                                           Text="{TemplateBinding StartPlaceholder}" />
+                            </Grid>
+
                             <TextBlock Grid.Column="1"
-                                       Text=" ~ "
-                                       Foreground="{DynamicResource {x:Static local:AntdResourceKeys.BrushTextTertiary}}"
-                                       VerticalAlignment="Center" />
-                            <TextBlock x:Name="EndPlaceholder"
-                                       Grid.Column="2"
-                                       Text="{TemplateBinding EndPlaceholder}"
-                                       Foreground="{DynamicResource {x:Static local:AntdResourceKeys.BrushTextTertiary}}"
-                                       VerticalAlignment="Center" />
-                            <TextBlock x:Name="EndValue"
-                                       Grid.Column="2"
-                                       Text="{Binding EndValue, RelativeSource={RelativeSource TemplatedParent}, StringFormat={TemplateBinding Format}}"
-                                       Foreground="{TemplateBinding Foreground}"
+                                       Margin="12,0"
                                        VerticalAlignment="Center"
-                                       Visibility="Collapsed" />
+                                       Foreground="{DynamicResource {x:Static local:AntdResourceKeys.BrushTextTertiary}}"
+                                       Text="~" />
+
+                            <Grid Grid.Column="2">
+                                <TextBox x:Name="PART_EndTextBox"
+                                         IsReadOnly="True"
+                                         IsHitTestVisible="False"
+                                         Background="Transparent"
+                                         BorderThickness="0"
+                                         Padding="0"
+                                         Visibility="Visible"
+                                         Text="{Binding EndValue, RelativeSource={RelativeSource TemplatedParent}, StringFormat={}{0:yyyy-MM-dd}}"
+                                         Foreground="{TemplateBinding Foreground}"
+                                         VerticalContentAlignment="Center" />
+                                <TextBlock x:Name="EndPlaceholder"
+                                           IsHitTestVisible="False"
+                                           VerticalAlignment="Center"
+                                           Visibility="Collapsed"
+                                           Foreground="{DynamicResource {x:Static local:AntdResourceKeys.BrushTextTertiary}}"
+                                           Text="{TemplateBinding EndPlaceholder}" />
+                            </Grid>
+
+                            <Button x:Name="PART_Button"
+                                    Grid.Column="3"
+                                    Width="24"
+                                    Height="24"
+                                    Margin="8,0,0,0"
+                                    Style="{DynamicResource Antd.DatePicker.TriggerButtonStyle}">
+                                <Grid Width="14" Height="14">
+                                    <Rectangle RadiusX="2"
+                                               RadiusY="2"
+                                               StrokeThickness="1"
+                                               Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" />
+                                    <Line X1="0" Y1="4" X2="14" Y2="4"
+                                          StrokeThickness="1"
+                                          Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" />
+                                    <Line X1="4" Y1="0" X2="4" Y2="4"
+                                          StrokeThickness="1"
+                                          Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" />
+                                    <Line X1="10" Y1="0" X2="10" Y2="4"
+                                          StrokeThickness="1"
+                                          Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" />
+                                </Grid>
+                            </Button>
                         </Grid>
                     </Border>
-                    <ControlTemplate.Triggers>
-                        <DataTrigger Binding="{Binding StartValue, RelativeSource={RelativeSource Self}}" Value="{x:Null}">
-                            <Setter TargetName="StartPlaceholder" Property="Visibility" Value="Visible" />
-                            <Setter TargetName="StartValue" Property="Visibility" Value="Collapsed" />
-                        </DataTrigger>
-                        <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource {x:Static local:AntdResourceKeys.BrushPrimaryHover}}" />
-                        </Trigger>
-                        <Trigger Property="IsDisabled" Value="True">
-                            <Setter Property="Opacity" Value="0.56" />
-                            <Setter Property="Cursor" Value="Arrow" />
-                        </Trigger>
-                        <Trigger Property="Size" Value="Small">
-                            <Setter Property="Height" Value="24" />
-                            <Setter Property="FontSize" Value="12" />
-                        </Trigger>
-                        <Trigger Property="Size" Value="Large">
-                            <Setter Property="Height" Value="40" />
-                            <Setter Property="FontSize" Value="16" />
-                        </Trigger>
-                    </ControlTemplate.Triggers>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
+
+                    <Popup x:Name="PART_Popup"
+                           IsOpen="{TemplateBinding IsDropDownOpen}"
+                           PlacementTarget="{Binding ElementName=Border}"
+                           Placement="Bottom"
+                           StaysOpen="False"
+                           AllowsTransparency="True"
+                           PopupAnimation="Fade">
+                        <Border x:Name="PART_PopupBorder"
+                                Margin="0,8,0,0"
+                                Padding="10"
+                                Background="{DynamicResource {x:Static local:AntdResourceKeys.BrushBgContainer}}"
+                                BorderBrush="{DynamicResource {x:Static local:AntdResourceKeys.BrushBorderSecondary}}"
+                                BorderThickness="1"
+                                CornerRadius="8"
+                                Effect="{DynamicResource {x:Static local:AntdResourceKeys.ShadowPopup}}">
+                            <local:Calendar x:Name="PART_Calendar"
+                                            Width="270"
+                                            Background="Transparent"
+                                            BorderThickness="0" />
+                        </Border>
+                    </Popup>
+                </Grid>
+                <ControlTemplate.Triggers>
+                    <DataTrigger Binding="{Binding StartValue, RelativeSource={RelativeSource TemplatedParent}}" Value="{x:Null}">
+                        <Setter TargetName="PART_StartTextBox" Property="Visibility" Value="Collapsed" />
+                        <Setter TargetName="StartPlaceholder" Property="Visibility" Value="Visible" />
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding EndValue, RelativeSource={RelativeSource TemplatedParent}}" Value="{x:Null}">
+                        <Setter TargetName="PART_EndTextBox" Property="Visibility" Value="Collapsed" />
+                        <Setter TargetName="EndPlaceholder" Property="Visibility" Value="Visible" />
+                    </DataTrigger>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource {x:Static local:AntdResourceKeys.BrushPrimaryHover}}" />
+                    </Trigger>
+                    <Trigger Property="IsDropDownOpen" Value="True">
+                        <Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource {x:Static local:AntdResourceKeys.BrushPrimaryHover}}" />
+                        <Setter TargetName="PART_PopupBorder" Property="BorderBrush" Value="{DynamicResource {x:Static local:AntdResourceKeys.BrushPrimaryHover}}" />
+                    </Trigger>
+                    <Trigger Property="IsDisabled" Value="True">
+                        <Setter Property="Opacity" Value="0.56" />
+                        <Setter Property="Cursor" Value="Arrow" />
+                    </Trigger>
+                    <Trigger Property="Size" Value="Small">
+                        <Setter Property="Height" Value="24" />
+                        <Setter Property="FontSize" Value="12" />
+                    </Trigger>
+                    <Trigger Property="Size" Value="Large">
+                        <Setter Property="Height" Value="40" />
+                        <Setter Property="FontSize" Value="16" />
+                    </Trigger>
+                </ControlTemplate.Triggers>
+            </ControlTemplate>
+        </Setter.Value>
+    </Setter>
+</Style>
 </ResourceDictionary>
+

@@ -2,6 +2,7 @@ using System;
 using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 
 namespace Vktun.Antd.Wpf;
@@ -10,13 +11,13 @@ namespace Vktun.Antd.Wpf;
 /// Represents a numeric input with stepper controls.
 /// </summary>
 [TemplatePart(Name = "PART_TextBox", Type = typeof(TextBox))]
-[TemplatePart(Name = "PART_UpButton", Type = typeof(Button))]
-[TemplatePart(Name = "PART_DownButton", Type = typeof(Button))]
+[TemplatePart(Name = "PART_UpButton", Type = typeof(ButtonBase))]
+[TemplatePart(Name = "PART_DownButton", Type = typeof(ButtonBase))]
 public class InputNumber : Control
 {
     private TextBox? _textBox;
-    private Button? _upButton;
-    private Button? _downButton;
+    private ButtonBase? _upButton;
+    private ButtonBase? _downButton;
 
     /// <summary>
     /// Identifies the <see cref="Value"/> dependency property.
@@ -194,19 +195,19 @@ public class InputNumber : Control
 
         if (_upButton is not null)
         {
-            _upButton.Click -= OnUpButtonClick;
+            _upButton.RemoveHandler(ButtonBase.ClickEvent, new RoutedEventHandler(OnUpButtonClick));
         }
 
         if (_downButton is not null)
         {
-            _downButton.Click -= OnDownButtonClick;
+            _downButton.RemoveHandler(ButtonBase.ClickEvent, new RoutedEventHandler(OnDownButtonClick));
         }
 
         base.OnApplyTemplate();
 
         _textBox = GetTemplateChild("PART_TextBox") as TextBox;
-        _upButton = GetTemplateChild("PART_UpButton") as Button;
-        _downButton = GetTemplateChild("PART_DownButton") as Button;
+        _upButton = GetTemplateChild("PART_UpButton") as ButtonBase;
+        _downButton = GetTemplateChild("PART_DownButton") as ButtonBase;
 
         if (_textBox is not null)
         {
@@ -217,12 +218,12 @@ public class InputNumber : Control
 
         if (_upButton is not null)
         {
-            _upButton.Click += OnUpButtonClick;
+            _upButton.AddHandler(ButtonBase.ClickEvent, new RoutedEventHandler(OnUpButtonClick), true);
         }
 
         if (_downButton is not null)
         {
-            _downButton.Click += OnDownButtonClick;
+            _downButton.AddHandler(ButtonBase.ClickEvent, new RoutedEventHandler(OnDownButtonClick), true);
         }
     }
 
@@ -269,12 +270,16 @@ public class InputNumber : Control
 
     private void OnUpButtonClick(object sender, RoutedEventArgs e)
     {
+        CommitText();
         Increment();
+        e.Handled = true;
     }
 
     private void OnDownButtonClick(object sender, RoutedEventArgs e)
     {
+        CommitText();
         Decrement();
+        e.Handled = true;
     }
 
     private void OnTextBoxLostFocus(object sender, RoutedEventArgs e)

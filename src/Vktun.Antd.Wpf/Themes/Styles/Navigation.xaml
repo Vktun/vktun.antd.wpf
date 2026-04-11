@@ -151,6 +151,23 @@
         </Setter>
     </Style>
 
+    <Style x:Key="Antd.Pagination.SizeSelectorStyle"
+           TargetType="{x:Type local:ComboBox}"
+           BasedOn="{StaticResource {x:Type local:ComboBox}}">
+        <Setter Property="Width" Value="124" />
+        <Setter Property="MinHeight" Value="36" />
+        <Setter Property="HorizontalContentAlignment" Value="Left" />
+    </Style>
+
+    <Style x:Key="Antd.Pagination.QuickJumpInputStyle"
+           TargetType="{x:Type local:Input}"
+           BasedOn="{StaticResource {x:Type local:Input}}">
+        <Setter Property="Width" Value="64" />
+        <Setter Property="MinHeight" Value="36" />
+        <Setter Property="Padding" Value="0" />
+        <Setter Property="HorizontalContentAlignment" Value="Center" />
+    </Style>
+
     <Style TargetType="{x:Type local:Pagination}">
         <Setter Property="Template">
             <Setter.Value>
@@ -208,30 +225,32 @@
                             </Button>
                         </local:Space>
 
-                        <ComboBox x:Name="PageSizeSelector"
-                                  Width="110"
-                                  MinHeight="36"
-                                  VerticalAlignment="Center"
-                                  ItemsSource="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=PageSizeOptions}"
-                                  SelectedItem="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=PageSize, Mode=TwoWay}">
-                            <ComboBox.ItemTemplate>
+                        <local:ComboBox x:Name="PageSizeSelector"
+                                        Style="{StaticResource Antd.Pagination.SizeSelectorStyle}"
+                                        VerticalAlignment="Center"
+                                        ItemsSource="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=PageSizeOptions}"
+                                        SelectedItem="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=PageSize, Mode=TwoWay}">
+                            <local:ComboBox.ItemTemplate>
                                 <DataTemplate>
-                                    <TextBlock Text="{Binding}" />
+                                    <TextBlock Text="{Binding StringFormat={}{0} &#x6761;/&#x9875;}" />
                                 </DataTemplate>
-                            </ComboBox.ItemTemplate>
-                        </ComboBox>
+                            </local:ComboBox.ItemTemplate>
+                        </local:ComboBox>
 
                         <local:Space x:Name="QuickJumperPanel"
                                      Orientation="Horizontal"
                                      VerticalAlignment="Center"
                                      Gap="8">
-                            <TextBlock VerticalAlignment="Center" Text="跳至" />
-                            <TextBox x:Name="PART_QuickJumperTextBox"
-                                     Width="52"
-                                     Padding="0"
-                                     HorizontalContentAlignment="Center"
-                                     Text="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=QuickJumpText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                            <TextBlock VerticalAlignment="Center" Text="页" />
+                            <TextBlock VerticalAlignment="Center"
+                                       Foreground="{DynamicResource Antd.Brush.TextSecondary}"
+                                       Text="&#x8DF3;&#x81F3;" />
+                            <local:Input x:Name="PART_QuickJumperTextBox"
+                                         Style="{StaticResource Antd.Pagination.QuickJumpInputStyle}"
+                                         MaxLength="9"
+                                         Text="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=QuickJumpText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                            <TextBlock VerticalAlignment="Center"
+                                       Foreground="{DynamicResource Antd.Brush.TextSecondary}"
+                                       Text="&#x9875;" />
                         </local:Space>
                     </local:Space>
                     <ControlTemplate.Triggers>
@@ -453,27 +472,68 @@
         <Setter Property="Background" Value="Transparent" />
         <Setter Property="BorderBrush" Value="Transparent" />
         <Setter Property="BorderThickness" Value="0" />
-        <Setter Property="Foreground" Value="{DynamicResource Antd.Brush.Text}" />
-        <Setter Property="Padding" Value="12,8" />
+        <Setter Property="Foreground" Value="{DynamicResource Antd.Brush.TextSecondary}" />
+        <Setter Property="Padding" Value="14,10,14,10" />
+        <Setter Property="Margin" Value="0,0,8,0" />
         <Setter Property="Cursor" Value="Hand" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
-                    <Border x:Name="Root"
-                            Background="{TemplateBinding Background}"
-                            BorderBrush="{TemplateBinding BorderBrush}"
-                            BorderThickness="{TemplateBinding BorderThickness}"
-                            Padding="{TemplateBinding Padding}"
-                            CornerRadius="4">
-                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
-                    </Border>
+                    <Grid>
+                        <Border x:Name="Root"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                Padding="{TemplateBinding Padding}"
+                                CornerRadius="4">
+                            <Grid>
+                                <Border x:Name="HoverLayer"
+                                        Background="{DynamicResource Antd.Brush.FillSecondary}"
+                                        CornerRadius="4"
+                                        Opacity="0" />
+                                <ContentPresenter x:Name="HeaderPresenter"
+                                                  HorizontalAlignment="Center"
+                                                  VerticalAlignment="Center"
+                                                  RenderTransformOrigin="0.5,0.5">
+                                    <ContentPresenter.RenderTransform>
+                                        <TranslateTransform Y="0" />
+                                    </ContentPresenter.RenderTransform>
+                                </ContentPresenter>
+                            </Grid>
+                        </Border>
+                    </Grid>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="Root" Property="Background" Value="{DynamicResource Antd.Brush.FillSecondary}" />
+                            <Setter Property="Foreground" Value="{DynamicResource Antd.Brush.Text}" />
+                            <Trigger.EnterActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetName="HoverLayer"
+                                                         Storyboard.TargetProperty="Opacity"
+                                                         To="1"
+                                                         Duration="0:0:0.12" />
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.EnterActions>
+                            <Trigger.ExitActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetName="HoverLayer"
+                                                         Storyboard.TargetProperty="Opacity"
+                                                         To="0"
+                                                         Duration="0:0:0.16" />
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.ExitActions>
                         </Trigger>
-                        <Trigger Property="Tag" Value="Selected">
+                        <DataTrigger Binding="{Binding IsSelected}" Value="True">
                             <Setter Property="Foreground" Value="{DynamicResource Antd.Brush.Primary}" />
-                        </Trigger>
+                            <Setter Property="FontWeight" Value="SemiBold" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding IsDisabled}" Value="True">
+                            <Setter Property="IsEnabled" Value="False" />
+                            <Setter Property="Opacity" Value="0.5" />
+                        </DataTrigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
@@ -504,11 +564,11 @@
                                     <ColumnDefinition Width="*" />
                                     <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
-                                <StackPanel x:Name="TabsList"
-                                            Grid.Column="0"
-                                            Orientation="Horizontal"
-                                            Margin="16,0">
-                                    <ItemsControl ItemsSource="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Items}">
+                                <Grid x:Name="TabsList"
+                                      Grid.Column="0"
+                                      Margin="16,0">
+                                    <ItemsControl x:Name="PART_TabHeadersItemsControl"
+                                                  ItemsSource="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Items}">
                                         <ItemsControl.ItemsPanel>
                                             <ItemsPanelTemplate>
                                                 <StackPanel Orientation="Horizontal" />
@@ -519,17 +579,25 @@
                                                 <Button x:Name="TabButton"
                                                         Style="{StaticResource Antd.TabButtonStyle}"
                                                         Content="{Binding Header}"
-                                                        Tag="Normal">
-                                                    <Button.Triggers>
-                                        <DataTrigger Binding="{Binding IsSelected}" Value="True">
-                                            <Setter TargetName="TabButton" Property="Tag" Value="Selected" />
-                                        </DataTrigger>
-                                    </Button.Triggers>
-                                                </Button>
+                                                        Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:Tabs}}, Path=SelectTabCommand}"
+                                                        CommandParameter="{Binding}" />
                                             </DataTemplate>
                                         </ItemsControl.ItemTemplate>
                                     </ItemsControl>
-                                </StackPanel>
+                                    <Border x:Name="PART_ActiveIndicator"
+                                            Width="0"
+                                            Height="2"
+                                            Margin="0,0,0,-1"
+                                            HorizontalAlignment="Left"
+                                            VerticalAlignment="Bottom"
+                                            Background="{DynamicResource Antd.Brush.Primary}"
+                                            CornerRadius="1"
+                                            Opacity="0.95">
+                                        <Border.RenderTransform>
+                                            <TranslateTransform X="0" />
+                                        </Border.RenderTransform>
+                                    </Border>
+                                </Grid>
                                 <ContentPresenter x:Name="ExtraPresenter"
                                                   Grid.Column="2"
                                                   Margin="16,0"
@@ -537,9 +605,13 @@
                             </Grid>
                         </Border>
                         <!-- Tab Content -->
-                        <Border x:Name="TabContent"
+                        <Border x:Name="PART_TabContent"
                                 Grid.Row="1"
-                                Background="{TemplateBinding Background}">
+                                Background="{TemplateBinding Background}"
+                                RenderTransformOrigin="0.5,0.5">
+                            <Border.RenderTransform>
+                                <TranslateTransform Y="0" />
+                            </Border.RenderTransform>
                             <ContentPresenter Content="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=SelectedItem}" />
                         </Border>
                     </Grid>
@@ -549,7 +621,7 @@
                         </Trigger>
                         <Trigger Property="Position" Value="Bottom">
                             <Setter TargetName="TabBar" Property="Grid.Row" Value="1" />
-                            <Setter TargetName="TabContent" Property="Grid.Row" Value="0" />
+                            <Setter TargetName="PART_TabContent" Property="Grid.Row" Value="0" />
                         </Trigger>
                         <Trigger Property="Extra" Value="{x:Null}">
                             <Setter TargetName="ExtraPresenter" Property="Visibility" Value="Collapsed" />
@@ -560,7 +632,3 @@
         </Setter>
     </Style>
 </ResourceDictionary>
-
-
-
-

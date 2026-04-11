@@ -1,6 +1,7 @@
 using System;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace Vktun.Antd.Wpf;
 
@@ -258,13 +259,32 @@ public class FloatButton : Button
     {
         public static IParentSite? Create(FloatButton button)
         {
-            return button.Parent switch
+            if (TryCreate(button.Parent, button, out var site))
+            {
+                return site;
+            }
+
+            var visualParent = VisualTreeHelper.GetParent(button);
+            if (!ReferenceEquals(visualParent, button.Parent) && TryCreate(visualParent, button, out site))
+            {
+                return site;
+            }
+
+            return null;
+        }
+
+        private static bool TryCreate(DependencyObject? parent, FloatButton button, out IParentSite? site)
+        {
+            site = parent switch
             {
                 Panel panel when panel.Children.Contains(button) => new PanelSite(panel, panel.Children.IndexOf(button)),
                 Decorator decorator when ReferenceEquals(decorator.Child, button) => new DecoratorSite(decorator),
                 ContentControl contentControl when ReferenceEquals(contentControl.Content, button) => new ContentControlSite(contentControl),
+                ContentPresenter contentPresenter when ReferenceEquals(contentPresenter.Content, button) => new ContentPresenterSite(contentPresenter),
                 _ => null,
             };
+
+            return site is not null;
         }
     }
 
@@ -321,6 +341,22 @@ public class FloatButton : Button
         public void Restore(FloatButton button)
         {
             contentControl.Content = button;
+        }
+    }
+
+    private sealed class ContentPresenterSite(ContentPresenter contentPresenter) : IParentSite
+    {
+        public void Remove(FloatButton button)
+        {
+            if (ReferenceEquals(contentPresenter.Content, button))
+            {
+                contentPresenter.Content = null;
+            }
+        }
+
+        public void Restore(FloatButton button)
+        {
+            contentPresenter.Content = button;
         }
     }
 }

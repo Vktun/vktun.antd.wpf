@@ -1,6 +1,8 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
+using System.Windows.Input;
+using System.Windows.Threading;
 
 namespace Vktun.Antd.Wpf;
 
@@ -9,6 +11,7 @@ namespace Vktun.Antd.Wpf;
 /// </summary>
 [TemplatePart(Name = "PART_ConfirmButton", Type = typeof(Button))]
 [TemplatePart(Name = "PART_CancelButton", Type = typeof(Button))]
+[TemplatePart(Name = "PART_Popup", Type = typeof(Popup))]
 public class Popconfirm : ContentControl
 {
     static Popconfirm()
@@ -18,6 +21,8 @@ public class Popconfirm : ContentControl
 
     private Button? _confirmButton;
     private Button? _cancelButton;
+    private Popup? _popup;
+    private bool _isPopupClosing;
 
     /// <summary>
     /// Gets or sets the title text.
@@ -161,6 +166,11 @@ public class Popconfirm : ContentControl
     {
         base.OnApplyTemplate();
 
+        if (_popup != null)
+        {
+            _popup.Closed -= OnPopupClosed;
+        }
+
         if (_confirmButton != null)
         {
             _confirmButton.Click -= OnConfirmClick;
@@ -171,8 +181,14 @@ public class Popconfirm : ContentControl
             _cancelButton.Click -= OnCancelClick;
         }
 
+        _popup = GetTemplateChild("PART_Popup") as Popup;
         _confirmButton = GetTemplateChild("PART_ConfirmButton") as Button;
         _cancelButton = GetTemplateChild("PART_CancelButton") as Button;
+
+        if (_popup != null)
+        {
+            _popup.Closed += OnPopupClosed;
+        }
 
         if (_confirmButton != null)
         {
@@ -185,6 +201,23 @@ public class Popconfirm : ContentControl
         }
     }
 
+    protected override void OnPreviewMouseLeftButtonDown(MouseButtonEventArgs e)
+    {
+        base.OnPreviewMouseLeftButtonDown(e);
+
+        if (e.Handled || _isPopupClosing)
+        {
+            return;
+        }
+
+        e.Handled = true;
+        var targetIsOpen = !IsOpen;
+        Dispatcher.BeginInvoke(() =>
+        {
+            IsOpen = targetIsOpen;
+        }, DispatcherPriority.Input);
+    }
+
     private void OnConfirmClick(object sender, RoutedEventArgs e)
     {
         IsOpen = false;
@@ -195,6 +228,16 @@ public class Popconfirm : ContentControl
     {
         IsOpen = false;
         RaiseEvent(new RoutedEventArgs(CancelEvent, this));
+    }
+
+    private void OnPopupClosed(object? sender, EventArgs e)
+    {
+        SetCurrentValue(IsOpenProperty, false);
+        _isPopupClosing = true;
+        Dispatcher.BeginInvoke(() =>
+        {
+            _isPopupClosing = false;
+        }, DispatcherPriority.Background);
     }
 
     /// <summary>
