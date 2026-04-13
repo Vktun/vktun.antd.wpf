@@ -835,6 +835,39 @@ public class AntdThemeTests
         });
     }
 
+    [TestMethod]
+    public void Tabs_ResetActiveIndicator_ShouldReplaceFrozenTranslateTransform()
+    {
+        WpfTestHost.Run(() =>
+        {
+            var frozenTransform = new TranslateTransform(12, 0);
+            frozenTransform.Freeze();
+            var indicator = new Border
+            {
+                Width = 20,
+                Opacity = 0.95,
+                RenderTransform = frozenTransform,
+            };
+            var tabs = new Tabs();
+            var activeIndicatorField = typeof(Tabs).GetField("_activeIndicator", BindingFlags.Instance | BindingFlags.NonPublic);
+            activeIndicatorField.Should().NotBeNull();
+            activeIndicatorField!.SetValue(tabs, indicator);
+            var activeIndicatorTransformField = typeof(Tabs).GetField("_activeIndicatorTransform", BindingFlags.Instance | BindingFlags.NonPublic);
+            activeIndicatorTransformField.Should().NotBeNull();
+            activeIndicatorTransformField!.SetValue(tabs, frozenTransform);
+            var resetActiveIndicator = typeof(Tabs).GetMethod("ResetActiveIndicator", BindingFlags.Instance | BindingFlags.NonPublic);
+            resetActiveIndicator.Should().NotBeNull();
+
+            resetActiveIndicator!.Invoke(tabs, null);
+
+            var transform = indicator.RenderTransform.Should().BeOfType<TranslateTransform>().Subject;
+            transform.IsFrozen.Should().BeFalse();
+            transform.X.Should().Be(0);
+            indicator.Width.Should().Be(0);
+            indicator.Opacity.Should().Be(0);
+        });
+    }
+
     private static Window CreateWindow(object content, double width = 420, double height = 280)
     {
         return new Window

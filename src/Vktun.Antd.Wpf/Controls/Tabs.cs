@@ -263,12 +263,9 @@ public class Tabs : Control
         _tabContentHost = GetTemplateChild("PART_TabContent") as FrameworkElement;
         _tabHeadersItemsControl = GetTemplateChild("PART_TabHeadersItemsControl") as ItemsControl;
         _activeIndicator = GetTemplateChild("PART_ActiveIndicator") as Border;
-        _activeIndicatorTransform = _activeIndicator?.RenderTransform as TranslateTransform;
-        if (_activeIndicator is not null && _activeIndicatorTransform is null)
-        {
-            _activeIndicatorTransform = new TranslateTransform();
-            _activeIndicator.RenderTransform = _activeIndicatorTransform;
-        }
+        _activeIndicatorTransform = _activeIndicator is null
+            ? null
+            : EnsureMutableTranslateTransform(_activeIndicator);
 
         if (_tabHeadersItemsControl is not null)
         {
@@ -605,11 +602,7 @@ public class Tabs : Control
             return;
         }
 
-        if (_tabContentHost.RenderTransform is not TranslateTransform translateTransform)
-        {
-            translateTransform = new TranslateTransform();
-            _tabContentHost.RenderTransform = translateTransform;
-        }
+        var translateTransform = EnsureMutableTranslateTransform(_tabContentHost);
 
         var duration = TimeSpan.FromMilliseconds(220);
         var easing = new CubicEase { EasingMode = EasingMode.EaseOut };
@@ -747,6 +740,8 @@ public class Tabs : Control
             return;
         }
 
+        _activeIndicatorTransform = EnsureMutableTranslateTransform(_activeIndicator);
+
         if (SelectedItem is null)
         {
             ResetActiveIndicator();
@@ -811,6 +806,8 @@ public class Tabs : Control
             return;
         }
 
+        _activeIndicatorTransform = EnsureMutableTranslateTransform(_activeIndicator);
+
         _activeIndicator.BeginAnimation(FrameworkElement.WidthProperty, null);
         _activeIndicatorTransform.BeginAnimation(TranslateTransform.XProperty, null);
         _activeIndicator.Width = 0;
@@ -818,6 +815,20 @@ public class Tabs : Control
         _activeIndicator.Opacity = 0;
         _indicatorX = double.NaN;
         _indicatorWidth = double.NaN;
+    }
+
+    private static TranslateTransform EnsureMutableTranslateTransform(FrameworkElement element)
+    {
+        if (element.RenderTransform is TranslateTransform { IsFrozen: false } transform)
+        {
+            return transform;
+        }
+
+        var mutableTransform = element.RenderTransform is TranslateTransform frozenTransform
+            ? frozenTransform.CloneCurrentValue()
+            : new TranslateTransform();
+        element.RenderTransform = mutableTransform;
+        return mutableTransform;
     }
 
     private Button? FindHeaderButtonForPane(TabPane pane)

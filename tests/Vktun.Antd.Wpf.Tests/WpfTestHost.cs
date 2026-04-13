@@ -9,25 +9,29 @@ namespace Vktun.Antd.Wpf.Tests;
 internal static class WpfTestHost
 {
     private static readonly Lazy<Dispatcher> SharedDispatcher = new(CreateDispatcher, LazyThreadSafetyMode.ExecutionAndPublication);
+    private static readonly object SyncRoot = new();
 
     public static void Run(Action action)
     {
-        Exception? exception = null;
-        SharedDispatcher.Value.Invoke(() =>
+        lock (SyncRoot)
         {
-            try
+            Exception? exception = null;
+            SharedDispatcher.Value.Invoke(() =>
             {
-                action();
-            }
-            catch (Exception ex)
-            {
-                exception = ex;
-            }
-        });
+                try
+                {
+                    action();
+                }
+                catch (Exception ex)
+                {
+                    exception = ex;
+                }
+            });
 
-        if (exception is not null)
-        {
-            ExceptionDispatchInfo.Capture(exception).Throw();
+            if (exception is not null)
+            {
+                ExceptionDispatchInfo.Capture(exception).Throw();
+            }
         }
     }
 
@@ -51,7 +55,10 @@ internal static class WpfTestHost
         {
             try
             {
-                _ = new Application();
+                _ = new Application
+                {
+                    ShutdownMode = ShutdownMode.OnExplicitShutdown,
+                };
                 dispatcher = Dispatcher.CurrentDispatcher;
                 ready.Set();
                 Dispatcher.Run();

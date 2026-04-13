@@ -117,6 +117,28 @@
                             <Setter TargetName="RootBorder" Property="BorderBrush" Value="{DynamicResource {x:Static local:AntdResourceKeys.BrushError}}" />
                             <Setter Property="Foreground" Value="{DynamicResource {x:Static local:AntdResourceKeys.BrushError}}" />
                         </Trigger>
+                        <!-- 在 Primary 类型下，状态色只用于语义强调，不应覆盖用于主按钮的高对比度白字。 -->
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="Type" Value="Primary" />
+                                <Condition Property="Status" Value="Success" />
+                            </MultiTrigger.Conditions>
+                            <Setter Property="Foreground" Value="{DynamicResource {x:Static local:AntdResourceKeys.BrushWhite}}" />
+                        </MultiTrigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="Type" Value="Primary" />
+                                <Condition Property="Status" Value="Warning" />
+                            </MultiTrigger.Conditions>
+                            <Setter Property="Foreground" Value="{DynamicResource {x:Static local:AntdResourceKeys.BrushWhite}}" />
+                        </MultiTrigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="Type" Value="Primary" />
+                                <Condition Property="Status" Value="Error" />
+                            </MultiTrigger.Conditions>
+                            <Setter Property="Foreground" Value="{DynamicResource {x:Static local:AntdResourceKeys.BrushWhite}}" />
+                        </MultiTrigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
