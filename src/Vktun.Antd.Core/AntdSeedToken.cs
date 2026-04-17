@@ -1,6 +1,4 @@
-﻿using System.Windows.Media;
-
-namespace Vktun.Antd.Wpf;
+namespace Vktun.Antd;
 
 /// <summary>
 /// Defines the seed values used to derive semantic theme resources.
@@ -10,22 +8,22 @@ public sealed class AntdSeedToken
     /// <summary>
     /// Gets or sets the primary brand color.
     /// </summary>
-    public Color PrimaryColor { get; init; } = (Color)ColorConverter.ConvertFromString("#1677FF");
+    public AntdColor PrimaryColor { get; init; } = AntdColor.Parse("#1677FF");
 
     /// <summary>
     /// Gets or sets the success color.
     /// </summary>
-    public Color SuccessColor { get; init; } = (Color)ColorConverter.ConvertFromString("#52C41A");
+    public AntdColor SuccessColor { get; init; } = AntdColor.Parse("#52C41A");
 
     /// <summary>
     /// Gets or sets the warning color.
     /// </summary>
-    public Color WarningColor { get; init; } = (Color)ColorConverter.ConvertFromString("#FAAD14");
+    public AntdColor WarningColor { get; init; } = AntdColor.Parse("#FAAD14");
 
     /// <summary>
     /// Gets or sets the error color.
     /// </summary>
-    public Color ErrorColor { get; init; } = (Color)ColorConverter.ConvertFromString("#FF4D4F");
+    public AntdColor ErrorColor { get; init; } = AntdColor.Parse("#FF4D4F");
 
     /// <summary>
     /// Gets or sets the base font size.

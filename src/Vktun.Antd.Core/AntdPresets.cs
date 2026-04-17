@@ -1,9 +1,7 @@
-using System.Windows.Media;
-
-namespace Vktun.Antd.Wpf;
+namespace Vktun.Antd;
 
 /// <summary>
-/// Provides predefined theme presets and colors for Ant Design WPF.
+/// Provides predefined theme presets and colors for Vktun.Antd.
 /// </summary>
 public static class AntdPresets
 {
@@ -12,70 +10,19 @@ public static class AntdPresets
     /// </summary>
     public static class Colors
     {
-        /// <summary>
-        /// Ant Design default blue (#1677FF).
-        /// </summary>
-        public static Color AntdBlue => ParseColor("#1677FF");
-
-        /// <summary>
-        /// Aliyun orange (#FF6A00).
-        /// </summary>
-        public static Color AliyunOrange => ParseColor("#FF6A00");
-
-        /// <summary>
-        /// WeChat green (#07C160).
-        /// </summary>
-        public static Color WeChatGreen => ParseColor("#07C160");
-
-        /// <summary>
-        /// Geek blue (#2F54EB).
-        /// </summary>
-        public static Color GeekBlue => ParseColor("#2F54EB");
-
-        /// <summary>
-        /// Golden (#D48806).
-        /// </summary>
-        public static Color Golden => ParseColor("#D48806");
-
-        /// <summary>
-        /// Magenta (#EB2F96).
-        /// </summary>
-        public static Color Magenta => ParseColor("#EB2F96");
-
-        /// <summary>
-        /// Purple (#722ED1).
-        /// </summary>
-        public static Color Purple => ParseColor("#722ED1");
-
-        /// <summary>
-        /// Volcano (#FA541C).
-        /// </summary>
-        public static Color Volcano => ParseColor("#FA541C");
-
-        /// <summary>
-        /// Cyan (#13C2C2).
-        /// </summary>
-        public static Color Cyan => ParseColor("#13C2C2");
-
-        /// <summary>
-        /// Lime (#A0D911).
-        /// </summary>
-        public static Color Lime => ParseColor("#A0D911");
-
-        /// <summary>
-        /// Green success color (#52C41A).
-        /// </summary>
-        public static Color Success => ParseColor("#52C41A");
-
-        /// <summary>
-        /// Yellow warning color (#FAAD14).
-        /// </summary>
-        public static Color Warning => ParseColor("#FAAD14");
-
-        /// <summary>
-        /// Red error color (#FF4D4F).
-        /// </summary>
-        public static Color Error => ParseColor("#FF4D4F");
+        public static AntdColor AntdBlue => AntdColor.Parse("#1677FF");
+        public static AntdColor AliyunOrange => AntdColor.Parse("#FF6A00");
+        public static AntdColor WeChatGreen => AntdColor.Parse("#07C160");
+        public static AntdColor GeekBlue => AntdColor.Parse("#2F54EB");
+        public static AntdColor Golden => AntdColor.Parse("#D48806");
+        public static AntdColor Magenta => AntdColor.Parse("#EB2F96");
+        public static AntdColor Purple => AntdColor.Parse("#722ED1");
+        public static AntdColor Volcano => AntdColor.Parse("#FA541C");
+        public static AntdColor Cyan => AntdColor.Parse("#13C2C2");
+        public static AntdColor Lime => AntdColor.Parse("#A0D911");
+        public static AntdColor Success => AntdColor.Parse("#52C41A");
+        public static AntdColor Warning => AntdColor.Parse("#FAAD14");
+        public static AntdColor Error => AntdColor.Parse("#FF4D4F");
     }
 
     /// <summary>
@@ -226,16 +173,13 @@ public static class AntdPresets
         ControlHeightLarge = 48d,
         BorderRadius = 8d
     };
-
-    private static Color ParseColor(string hex)
-    {
-        return (Color)ColorConverter.ConvertFromString(hex);
-    }
 }
 
 /// <summary>
 /// Represents a complete theme configuration with mode and seed token.
 /// </summary>
+/// <param name="Mode">The theme mode.</param>
+/// <param name="Seed">The seed token.</param>
 public record AntdThemeConfiguration(AntdThemeMode Mode, AntdSeedToken Seed);
 
 /// <summary>

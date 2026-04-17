@@ -1,6 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
+    <ProjectReference Include="..\..\src\Vktun.Antd.Core\Vktun.Antd.Core.csproj" />
     <ProjectReference Include="..\..\src\Vktun.Antd.Wpf\Vktun.Antd.Wpf.csproj" />
   </ItemGroup>
 

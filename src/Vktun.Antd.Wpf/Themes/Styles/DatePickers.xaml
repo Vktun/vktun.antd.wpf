@@ -1,6 +1,7 @@
 <ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:local="clr-namespace:Vktun.Antd.Wpf"
+                    xmlns:core="clr-namespace:Vktun.Antd;assembly=Vktun.Antd.Core"
                     xmlns:sys="clr-namespace:System;assembly=mscorlib">
     <Style x:Key="Antd.InputBaseStyle" TargetType="Control">
         <Setter Property="FocusVisualStyle" Value="{DynamicResource Antd.FocusVisualStyle}" />
@@ -508,9 +509,9 @@
     <!-- Ant Design DatePicker Style -->
     <Style TargetType="{x:Type local:DatePicker}">
         <Setter Property="FocusVisualStyle" Value="{DynamicResource Antd.FocusVisualStyle}" />
-        <Setter Property="Foreground" Value="{DynamicResource {x:Static local:AntdResourceKeys.BrushText}}" />
-        <Setter Property="Background" Value="{DynamicResource {x:Static local:AntdResourceKeys.BrushBgContainer}}" />
-        <Setter Property="BorderBrush" Value="{DynamicResource {x:Static local:AntdResourceKeys.BrushBorder}}" />
+        <Setter Property="Foreground" Value="{DynamicResource {x:Static core:AntdResourceKeys.BrushText}}" />
+        <Setter Property="Background" Value="{DynamicResource {x:Static core:AntdResourceKeys.BrushBgContainer}}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource {x:Static core:AntdResourceKeys.BrushBorder}}" />
         <Setter Property="BorderThickness" Value="1" />
         <Setter Property="Height" Value="32" />
         <Setter Property="Padding" Value="12,0" />
@@ -533,7 +534,7 @@
                                 <TextBlock x:Name="PlaceholderText"
                                            Grid.Column="0"
                                            Text="{TemplateBinding Placeholder}"
-                                           Foreground="{DynamicResource {x:Static local:AntdResourceKeys.BrushTextTertiary}}"
+                                           Foreground="{DynamicResource {x:Static core:AntdResourceKeys.BrushTextTertiary}}"
                                            VerticalAlignment="Center"
                                            IsHitTestVisible="False" />
                                 <TextBlock x:Name="ValueText"
@@ -551,7 +552,7 @@
                                     <Path Width="10"
                                           Height="10"
                                           Data="M 6 6 L 18 18 M 18 6 L 6 18"
-                                          Stroke="{DynamicResource {x:Static local:AntdResourceKeys.BrushTextTertiary}}"
+                                          Stroke="{DynamicResource {x:Static core:AntdResourceKeys.BrushTextTertiary}}"
                                           StrokeThickness="2"
                                           Stretch="Uniform" />
                                 </local:Button>
@@ -560,7 +561,7 @@
                                       Width="14"
                                       Height="14"
                                       Data="M 8 2 v 2 M 16 2 v 2 M 3 8 h 18 M 5 4 h 14 a 2 2 0 0 1 2 2 v 14 a 2 2 0 0 1 -2 2 H 5 a 2 2 0 0 1 -2 -2 V 6 a 2 2 0 0 1 2 -2 z"
-                                      Stroke="{DynamicResource {x:Static local:AntdResourceKeys.BrushTextTertiary}}"
+                                      Stroke="{DynamicResource {x:Static core:AntdResourceKeys.BrushTextTertiary}}"
                                       StrokeThickness="1.5"
                                       Stretch="Uniform"
                                       Fill="Transparent" />
@@ -572,11 +573,11 @@
                                StaysOpen="False"
                                AllowsTransparency="True"
                                PopupAnimation="Fade">
-                            <Border Background="{DynamicResource {x:Static local:AntdResourceKeys.BrushBgContainer}}"
-                                    BorderBrush="{DynamicResource {x:Static local:AntdResourceKeys.BrushBorderSecondary}}"
+                            <Border Background="{DynamicResource {x:Static core:AntdResourceKeys.BrushBgContainer}}"
+                                    BorderBrush="{DynamicResource {x:Static core:AntdResourceKeys.BrushBorderSecondary}}"
                                     BorderThickness="1"
                                     CornerRadius="8"
-                                    Effect="{DynamicResource {x:Static local:AntdResourceKeys.ShadowPopup}}">
+                                    Effect="{DynamicResource {x:Static core:AntdResourceKeys.ShadowPopup}}">
                                 <Calendar x:Name="PART_Calendar"
                                           SelectionMode="SingleDate"
                                           Margin="8" />
@@ -596,7 +597,7 @@
                             <Setter TargetName="ValueText" Property="Visibility" Value="Visible" />
                         </Trigger>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource {x:Static local:AntdResourceKeys.BrushPrimaryHover}}" />
+                            <Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource {x:Static core:AntdResourceKeys.BrushPrimaryHover}}" />
                         </Trigger>
                         <Trigger Property="IsDisabled" Value="True">
                             <Setter Property="Opacity" Value="0.56" />
@@ -619,9 +620,9 @@
     <!-- Ant Design RangePicker Style -->
     <Style TargetType="{x:Type local:RangePicker}">
     <Setter Property="FocusVisualStyle" Value="{DynamicResource Antd.FocusVisualStyle}" />
-    <Setter Property="Foreground" Value="{DynamicResource {x:Static local:AntdResourceKeys.BrushText}}" />
-    <Setter Property="Background" Value="{DynamicResource {x:Static local:AntdResourceKeys.BrushBgContainer}}" />
-    <Setter Property="BorderBrush" Value="{DynamicResource {x:Static local:AntdResourceKeys.BrushBorder}}" />
+    <Setter Property="Foreground" Value="{DynamicResource {x:Static core:AntdResourceKeys.BrushText}}" />
+    <Setter Property="Background" Value="{DynamicResource {x:Static core:AntdResourceKeys.BrushBgContainer}}" />
+    <Setter Property="BorderBrush" Value="{DynamicResource {x:Static core:AntdResourceKeys.BrushBorder}}" />
     <Setter Property="BorderThickness" Value="1" />
     <Setter Property="Height" Value="32" />
     <Setter Property="Padding" Value="12,0" />
@@ -659,14 +660,14 @@
                                            IsHitTestVisible="False"
                                            VerticalAlignment="Center"
                                            Visibility="Collapsed"
-                                           Foreground="{DynamicResource {x:Static local:AntdResourceKeys.BrushTextTertiary}}"
+                                           Foreground="{DynamicResource {x:Static core:AntdResourceKeys.BrushTextTertiary}}"
                                            Text="{TemplateBinding StartPlaceholder}" />
                             </Grid>
 
                             <TextBlock Grid.Column="1"
                                        Margin="12,0"
                                        VerticalAlignment="Center"
-                                       Foreground="{DynamicResource {x:Static local:AntdResourceKeys.BrushTextTertiary}}"
+                                       Foreground="{DynamicResource {x:Static core:AntdResourceKeys.BrushTextTertiary}}"
                                        Text="~" />
 
                             <Grid Grid.Column="2">
@@ -684,7 +685,7 @@
                                            IsHitTestVisible="False"
                                            VerticalAlignment="Center"
                                            Visibility="Collapsed"
-                                           Foreground="{DynamicResource {x:Static local:AntdResourceKeys.BrushTextTertiary}}"
+                                           Foreground="{DynamicResource {x:Static core:AntdResourceKeys.BrushTextTertiary}}"
                                            Text="{TemplateBinding EndPlaceholder}" />
                             </Grid>
 
@@ -723,11 +724,11 @@
                         <Border x:Name="PART_PopupBorder"
                                 Margin="0,8,0,0"
                                 Padding="10"
-                                Background="{DynamicResource {x:Static local:AntdResourceKeys.BrushBgContainer}}"
-                                BorderBrush="{DynamicResource {x:Static local:AntdResourceKeys.BrushBorderSecondary}}"
+                                Background="{DynamicResource {x:Static core:AntdResourceKeys.BrushBgContainer}}"
+                                BorderBrush="{DynamicResource {x:Static core:AntdResourceKeys.BrushBorderSecondary}}"
                                 BorderThickness="1"
                                 CornerRadius="8"
-                                Effect="{DynamicResource {x:Static local:AntdResourceKeys.ShadowPopup}}">
+                                Effect="{DynamicResource {x:Static core:AntdResourceKeys.ShadowPopup}}">
                             <local:Calendar x:Name="PART_Calendar"
                                             Width="270"
                                             Background="Transparent"
@@ -745,11 +746,11 @@
                         <Setter TargetName="EndPlaceholder" Property="Visibility" Value="Visible" />
                     </DataTrigger>
                     <Trigger Property="IsMouseOver" Value="True">
-                        <Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource {x:Static local:AntdResourceKeys.BrushPrimaryHover}}" />
+                        <Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource {x:Static core:AntdResourceKeys.BrushPrimaryHover}}" />
                     </Trigger>
                     <Trigger Property="IsDropDownOpen" Value="True">
-                        <Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource {x:Static local:AntdResourceKeys.BrushPrimaryHover}}" />
-                        <Setter TargetName="PART_PopupBorder" Property="BorderBrush" Value="{DynamicResource {x:Static local:AntdResourceKeys.BrushPrimaryHover}}" />
+                        <Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource {x:Static core:AntdResourceKeys.BrushPrimaryHover}}" />
+                        <Setter TargetName="PART_PopupBorder" Property="BorderBrush" Value="{DynamicResource {x:Static core:AntdResourceKeys.BrushPrimaryHover}}" />
                     </Trigger>
                     <Trigger Property="IsDisabled" Value="True">
                         <Setter Property="Opacity" Value="0.56" />

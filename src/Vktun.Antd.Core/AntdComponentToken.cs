@@ -1,4 +1,4 @@
-﻿namespace Vktun.Antd.Wpf;
+namespace Vktun.Antd;
 
 internal sealed record AntdComponentToken(
     double BorderRadiusSmall,

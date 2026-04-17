@@ -1,35 +1,33 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <!-- 基础配置 -->
-    <TargetFramework>net8.0-windows</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
-    <UseWPF>true</UseWPF>
     <ImplicitUsings>enable</ImplicitUsings>
 
-    <!-- NuGet 包配置 -->
-    <PackageId>Vktun.Antd.Wpf</PackageId>
+    <PackageId>Vktun.Antd.Avalonia</PackageId>
     <Version>1.0.0</Version>
     <Authors>Vktun</Authors>
     <Company>Vktun</Company>
-    <Description>Ant Design inspired WPF UI component library built on the shared Vktun.Antd token system. Supports Light/Dark/Compact modes and provides rich UI components.</Description>
-    <PackageTags>WPF;UI;AntDesign;Theme;Components;Material;DarkMode;Token</PackageTags>
+    <Description>Ant Design inspired Avalonia UI component library built on the shared Vktun.Antd token system.</Description>
+    <PackageTags>Avalonia;UI;AntDesign;Theme;Components;DarkMode;Token</PackageTags>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageProjectUrl>https://github.com/vktun/vktun.antd</PackageProjectUrl>
     <RepositoryUrl>https://github.com/vktun/vktun.antd</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
 
-    <!-- 构建配置 -->
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Vktun.Antd.Core\Vktun.Antd.Core.csproj" />
+    <PackageReference Include="Avalonia" Version="11.3.2" />
+  </ItemGroup>
 
-    <!-- NuGet 包文件 -->
+  <ItemGroup>
+    <ProjectReference Include="..\Vktun.Antd.Core\Vktun.Antd.Core.csproj" />
     <None Include="..\..\README.md" Pack="true" PackagePath="\" Condition="Exists('..\..\README.md')" />
   </ItemGroup>
 

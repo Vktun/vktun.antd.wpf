@@ -1,4 +1,4 @@
-namespace Vktun.Antd.Wpf;
+namespace Vktun.Antd;
 
 /// <summary>
 /// Represents semantic button variants.

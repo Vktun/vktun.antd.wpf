@@ -43,7 +43,7 @@ public class AntdThemeTests
             var themeResources = new AntdThemeResources();
             Application.Current.Resources.MergedDictionaries.Add(themeResources);
 
-            AntdThemeManager.Current.Apply(Application.Current, AntdThemeMode.Dark, new AntdSeedToken { PrimaryColor = Colors.HotPink });
+            AntdThemeManager.Current.Apply(Application.Current, AntdThemeMode.Dark, new AntdSeedToken { PrimaryColor = AntdColor.FromRgb(255, 105, 180) });
 
             themeResources.Theme.Should().Be(AntdThemeMode.Dark);
             ((SolidColorBrush)themeResources[AntdResourceKeys.BrushPrimary]).Color.Should().Be(Colors.HotPink);

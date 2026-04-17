@@ -1,6 +1,7 @@
 <ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:local="clr-namespace:Vktun.Antd.Wpf">
+                    xmlns:local="clr-namespace:Vktun.Antd.Wpf"
+                    xmlns:core="clr-namespace:Vktun.Antd;assembly=Vktun.Antd.Core">
 
     <!-- Timeline Styles -->
     <Style TargetType="{x:Type local:TimelineItem}">
@@ -483,11 +484,11 @@
                             <!-- Required asterisk -->
                             <TextBlock x:Name="RequiredMark"
                                        Text="*"
-                                       Foreground="{DynamicResource {x:Static local:AntdResourceKeys.BrushError}}"
+                                       Foreground="{DynamicResource {x:Static core:AntdResourceKeys.BrushError}}"
                                        Margin="0,0,4,0"
                                        Visibility="Collapsed" />
                             <TextBlock Text="{TemplateBinding Label}"
-                                       Foreground="{DynamicResource {x:Static local:AntdResourceKeys.BrushText}}" />
+                                       Foreground="{DynamicResource {x:Static core:AntdResourceKeys.BrushText}}" />
                         </StackPanel>
                         <!-- Content -->
                         <Grid Grid.Column="1">
@@ -511,7 +512,7 @@
                                 <TextBlock x:Name="MessageText"
                                            Text="{TemplateBinding ErrorMessage}"
                                            FontSize="12"
-                                           Foreground="{DynamicResource {x:Static local:AntdResourceKeys.BrushTextSecondary}}" />
+                                           Foreground="{DynamicResource {x:Static core:AntdResourceKeys.BrushTextSecondary}}" />
                             </StackPanel>
                         </Grid>
                     </Grid>
@@ -520,13 +521,13 @@
                             <Setter TargetName="RequiredMark" Property="Visibility" Value="Visible" />
                         </Trigger>
                         <Trigger Property="ValidateStatus" Value="Error">
-                            <Setter TargetName="MessageText" Property="Foreground" Value="{DynamicResource {x:Static local:AntdResourceKeys.BrushError}}" />
+                            <Setter TargetName="MessageText" Property="Foreground" Value="{DynamicResource {x:Static core:AntdResourceKeys.BrushError}}" />
                         </Trigger>
                         <Trigger Property="ValidateStatus" Value="Warning">
-                            <Setter TargetName="MessageText" Property="Foreground" Value="{DynamicResource {x:Static local:AntdResourceKeys.BrushWarning}}" />
+                            <Setter TargetName="MessageText" Property="Foreground" Value="{DynamicResource {x:Static core:AntdResourceKeys.BrushWarning}}" />
                         </Trigger>
                         <Trigger Property="ValidateStatus" Value="Success">
-                            <Setter TargetName="MessageText" Property="Foreground" Value="{DynamicResource {x:Static local:AntdResourceKeys.BrushSuccess}}" />
+                            <Setter TargetName="MessageText" Property="Foreground" Value="{DynamicResource {x:Static core:AntdResourceKeys.BrushSuccess}}" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>

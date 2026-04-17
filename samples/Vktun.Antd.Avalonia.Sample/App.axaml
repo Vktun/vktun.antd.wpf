@@ -1,0 +1,12 @@
+<Application x:Class="Vktun.Antd.Avalonia.Sample.App"
+             xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:antd="clr-namespace:Vktun.Antd.Avalonia;assembly=Vktun.Antd.Avalonia">
+  <Application.Styles>
+    <FluentTheme />
+  </Application.Styles>
+
+  <Application.Resources>
+    <antd:AntdThemeResources Theme="Light" />
+  </Application.Resources>
+</Application>

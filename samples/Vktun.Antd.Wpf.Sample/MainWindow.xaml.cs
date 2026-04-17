@@ -74,7 +74,7 @@ public partial class MainWindow : Window
         ThemeHeroTitleTextBlock.Text = preset.Name;
         ThemeHeroDescriptionTextBlock.Text = preset.Description;
         ThemeModeTag.Content = preset.ModeText;
-        ThemePrimaryTag.Content = ToHexRgb(preset.Seed.PrimaryColor);
+        ThemePrimaryTag.Content = preset.Seed.PrimaryColor.ToHex();
         ThemeShapeTag.Content = $"{preset.Seed.BorderRadius:0}px 圆角";
         ThemeFooterTextBlock.Text = preset.FooterHint;
 
@@ -150,13 +150,13 @@ public partial class MainWindow : Window
                 SetBrushOverride(AntdResourceKeys.BrushTextTertiary, ParseColor("#988C85"));
                 SetBrushOverride(AntdResourceKeys.BrushBgContainer, ParseColor("#FFFDFC"));
                 SetBrushOverride(AntdResourceKeys.BrushBgElevated, ParseColor("#FFF8F8"));
-                SetBrushOverride(AntdResourceKeys.BrushBgSpotlight, Mix(preset.Seed.PrimaryColor, Colors.White, 0.84d));
+                SetBrushOverride(AntdResourceKeys.BrushBgSpotlight, Mix(ToWpfColor(preset.Seed.PrimaryColor), Colors.White, 0.84d));
                 SetBrushOverride(AntdResourceKeys.BrushFillSecondary, ParseColor("#E8F2FF"));
                 SetBrushOverride(AntdResourceKeys.BrushFillTertiary, ParseColor("#DDEBFA"));
                 SetBrushOverride(AntdResourceKeys.BrushFillQuaternary, ParseColor("#F7EFE9"));
                 SetBrushOverride(AntdResourceKeys.BrushBorder, ParseColor("#363130"));
                 SetBrushOverride(AntdResourceKeys.BrushBorderSecondary, ParseColor("#45403D"));
-                SetBrushOverride(AntdResourceKeys.BrushFocusOutline, Mix(preset.Seed.PrimaryColor, Colors.White, 0.35d));
+                SetBrushOverride(AntdResourceKeys.BrushFocusOutline, Mix(ToWpfColor(preset.Seed.PrimaryColor), Colors.White, 0.35d));
                 SetBrushOverride(AntdResourceKeys.BrushTagDefaultBackground, ParseColor("#F0F6FF"));
                 SetBrushOverride(AntdResourceKeys.BrushTagDefaultForeground, ParseColor("#2F2A28"));
                 SetEffectOverride(AntdResourceKeys.ShadowCard, ParseColor("#171212"), 12d, 2d, 0.18d);
@@ -206,7 +206,7 @@ public partial class MainWindow : Window
                 SetBrushOverride(AntdResourceKeys.BrushTextTertiary, ParseColor("#87A1B2"));
                 SetBrushOverride(AntdResourceKeys.BrushBgContainer, ParseColor("#F9FDFF"));
                 SetBrushOverride(AntdResourceKeys.BrushBgElevated, ParseColor("#F4FBFF"));
-                SetBrushOverride(AntdResourceKeys.BrushBgSpotlight, Mix(preset.Seed.PrimaryColor, Colors.White, 0.9d));
+                SetBrushOverride(AntdResourceKeys.BrushBgSpotlight, Mix(ToWpfColor(preset.Seed.PrimaryColor), Colors.White, 0.9d));
                 SetBrushOverride(AntdResourceKeys.BrushFillSecondary, ParseColor("#EEF8FF"));
                 SetBrushOverride(AntdResourceKeys.BrushFillTertiary, ParseColor("#E1F1FC"));
                 SetBrushOverride(AntdResourceKeys.BrushFillQuaternary, ParseColor("#D7EBFA"));
@@ -234,7 +234,7 @@ public partial class MainWindow : Window
                 SetEffectOverride(AntdResourceKeys.ShadowModal, ParseColor("#000000"), 32d, 8d, 0.36d);
                 break;
             case ThemeSceneKind.Material:
-                SetBrushOverride(AntdResourceKeys.BrushBgSpotlight, Mix(preset.Seed.PrimaryColor, Colors.White, 0.9d));
+                SetBrushOverride(AntdResourceKeys.BrushBgSpotlight, Mix(ToWpfColor(preset.Seed.PrimaryColor), Colors.White, 0.9d));
                 SetBrushOverride(AntdResourceKeys.BrushFillSecondary, ParseColor("#F2F0FF"));
                 SetBrushOverride(AntdResourceKeys.BrushFillTertiary, ParseColor("#E8E4FF"));
                 SetBrushOverride(AntdResourceKeys.BrushBorder, ParseColor("#7B7FEA"));
@@ -504,10 +504,10 @@ public partial class MainWindow : Window
     {
         return new AntdSeedToken
         {
-            PrimaryColor = ParseColor(primary),
-            SuccessColor = ParseColor(success),
-            WarningColor = ParseColor(warning),
-            ErrorColor = ParseColor(error),
+            PrimaryColor = AntdColor.Parse(primary),
+            SuccessColor = AntdColor.Parse(success),
+            WarningColor = AntdColor.Parse(warning),
+            ErrorColor = AntdColor.Parse(error),
             BorderRadius = borderRadius,
             FontSizeBase = fontSizeBase,
             ControlHeightSmall = Math.Max(28d, controlHeightMiddle - 8d),
@@ -574,6 +574,11 @@ public partial class MainWindow : Window
     private static string ToHexRgb(Color color)
     {
         return $"#{color.R:X2}{color.G:X2}{color.B:X2}";
+    }
+
+    private static Color ToWpfColor(AntdColor color)
+    {
+        return Color.FromArgb(color.A, color.R, color.G, color.B);
     }
 
     private static Color Mix(Color source, Color target, double targetWeight)

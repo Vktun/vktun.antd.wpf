@@ -1,6 +1,7 @@
 <ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:local="clr-namespace:Vktun.Antd.Wpf">
+                    xmlns:local="clr-namespace:Vktun.Antd.Wpf"
+                    xmlns:core="clr-namespace:Vktun.Antd;assembly=Vktun.Antd.Core">
 
     <!-- Drawer Styles -->
     <Style TargetType="{x:Type local:Drawer}">
@@ -468,13 +469,13 @@
                                StaysOpen="False"
                                AllowsTransparency="True"
                                PopupAnimation="Fade">
-                            <Border Background="{DynamicResource {x:Static local:AntdResourceKeys.BrushBgContainer}}"
-                                    BorderBrush="{DynamicResource {x:Static local:AntdResourceKeys.BrushBorderSecondary}}"
+                            <Border Background="{DynamicResource {x:Static core:AntdResourceKeys.BrushBgContainer}}"
+                                    BorderBrush="{DynamicResource {x:Static core:AntdResourceKeys.BrushBorderSecondary}}"
                                     BorderThickness="1"
                                     CornerRadius="8"
                                     Padding="16"
                                     MaxWidth="320"
-                                    Effect="{DynamicResource {x:Static local:AntdResourceKeys.ShadowPopup}}">
+                                    Effect="{DynamicResource {x:Static core:AntdResourceKeys.ShadowPopup}}">
                                 <StackPanel>
                                     <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
                                         <!-- Warning Icon -->
@@ -489,7 +490,7 @@
                                               Visibility="Collapsed" />
                                         <TextBlock Text="{TemplateBinding Title}"
                                                    FontSize="14"
-                                                   Foreground="{DynamicResource {x:Static local:AntdResourceKeys.BrushText}}"
+                                                   Foreground="{DynamicResource {x:Static core:AntdResourceKeys.BrushText}}"
                                                    TextWrapping="Wrap"
                                                    VerticalAlignment="Center" />
                                     </StackPanel>

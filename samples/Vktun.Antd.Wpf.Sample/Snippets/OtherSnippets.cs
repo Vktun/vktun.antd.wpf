@@ -15,7 +15,7 @@ public static class OtherSnippets
     public static string ThemeManager => """
 var seed = new AntdSeedToken
 {
-    PrimaryColor = Colors.CornflowerBlue,
+    PrimaryColor = AntdColor.Parse("#6495ED"),
     BorderRadius = 12,
 };
 

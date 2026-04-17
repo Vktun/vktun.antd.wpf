@@ -1,14 +1,30 @@
-﻿namespace Vktun.Antd.Wpf;
+namespace Vktun.Antd;
 
 /// <summary>
 /// Contains the shared resource keys exposed by the library.
 /// </summary>
 public static class AntdResourceKeys
 {
+    /// <summary>
+    /// The primary color resource key.
+    /// </summary>
     public const string ColorPrimary = "Antd.Color.Primary";
+
+    /// <summary>
+    /// The success color resource key.
+    /// </summary>
     public const string ColorSuccess = "Antd.Color.Success";
+
+    /// <summary>
+    /// The warning color resource key.
+    /// </summary>
     public const string ColorWarning = "Antd.Color.Warning";
+
+    /// <summary>
+    /// The error color resource key.
+    /// </summary>
     public const string ColorError = "Antd.Color.Error";
+
     public const string BrushPrimary = "Antd.Brush.Primary";
     public const string BrushPrimaryHover = "Antd.Brush.PrimaryHover";
     public const string BrushPrimaryActive = "Antd.Brush.PrimaryActive";
