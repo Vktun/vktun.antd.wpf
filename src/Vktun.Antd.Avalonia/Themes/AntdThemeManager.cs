@@ -21,7 +21,8 @@ public sealed class AntdThemeManager : IAntdThemeManager
     {
         ArgumentNullException.ThrowIfNull(application);
 
-        var resources = application.Resources.MergedDictionaries
+        var resources = application.Resources as AntdThemeResources
+            ?? application.Resources.MergedDictionaries
             .OfType<AntdThemeResources>()
             .FirstOrDefault();
 

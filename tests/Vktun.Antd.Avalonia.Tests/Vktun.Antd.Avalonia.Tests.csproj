@@ -15,6 +15,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\Vktun.Antd.Core\Vktun.Antd.Core.csproj" />
     <ProjectReference Include="..\..\src\Vktun.Antd.Avalonia\Vktun.Antd.Avalonia.csproj" />
+    <ProjectReference Include="..\..\samples\Vktun.Antd.Avalonia.Sample\Vktun.Antd.Avalonia.Sample.csproj" />
     <Using Include="Microsoft.VisualStudio.TestTools.UnitTesting" />
   </ItemGroup>
 

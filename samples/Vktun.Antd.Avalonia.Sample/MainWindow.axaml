@@ -21,7 +21,7 @@
                      FontSize="24"
                      FontWeight="SemiBold"
                      Foreground="{DynamicResource Antd.Brush.Text}" />
-          <TextBlock Text="Avalonia 侧复刻 WPF Catalog、主题预设和同名控件 API。"
+          <TextBlock Text="Avalonia 侧按 WPF Catalog 的控件、主题预设和同名 API 展示。"
                      TextWrapping="Wrap"
                      Foreground="{DynamicResource Antd.Brush.TextSecondary}" />
         </StackPanel>
@@ -106,7 +106,9 @@
                 Background="{DynamicResource Antd.Brush.BgLayout}"
                 BorderBrush="{DynamicResource Antd.Brush.BorderSecondary}"
                 BorderThickness="1">
-          <ContentControl x:Name="PageHost" />
+          <ContentControl x:Name="PageHost"
+                          HorizontalAlignment="Stretch"
+                          VerticalAlignment="Stretch" />
         </Border>
       </Grid>
     </Border>

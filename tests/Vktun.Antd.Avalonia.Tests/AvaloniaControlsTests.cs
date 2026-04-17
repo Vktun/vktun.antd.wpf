@@ -187,6 +187,22 @@ public sealed class AvaloniaControlsTests
     }
 
     [TestMethod]
+    public void ThemeManager_ShouldUpdateRootThemeResources()
+    {
+        var application = new Application
+        {
+            Resources = new AntdThemeResources(),
+        };
+
+        AntdThemeManager.Current.Apply(application, AntdThemeMode.Dark, new AntdSeedToken { PrimaryColor = AntdColor.Parse("#FF69B4") });
+
+        var themeResources = application.Resources.Should().BeOfType<AntdThemeResources>().Subject;
+        themeResources.Theme.Should().Be(AntdThemeMode.Dark);
+        var brush = application.Resources[AntdResourceKeys.BrushPrimary].Should().BeOfType<SolidColorBrush>().Subject;
+        brush.Color.Should().Be(Color.FromRgb(255, 105, 180));
+    }
+
+    [TestMethod]
     public void OverlayServices_ShouldAttachHostAndCompleteModalTasks()
     {
         var root = new global::Avalonia.Controls.Grid();
