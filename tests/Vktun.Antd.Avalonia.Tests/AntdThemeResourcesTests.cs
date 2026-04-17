@@ -15,6 +15,7 @@ public sealed class AntdThemeResourcesTests
 
         resources.ContainsKey(AntdResourceKeys.BrushPrimary).Should().BeTrue();
         resources.ContainsKey(AntdResourceKeys.ControlHeightMiddle).Should().BeTrue();
+        resources.ContainsKey(AntdResourceKeys.ShadowPopup).Should().BeTrue();
         resources[AntdResourceKeys.BrushPrimary].Should().BeOfType<SolidColorBrush>();
     }
 

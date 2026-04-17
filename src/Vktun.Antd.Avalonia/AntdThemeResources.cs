@@ -1,5 +1,6 @@
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Media;
 
 namespace Vktun.Antd.Avalonia;
 
@@ -101,6 +102,9 @@ public sealed class AntdThemeResources : ResourceDictionary
         this[AntdResourceKeys.PaddingSm] = tokens.PaddingSm;
         this[AntdResourceKeys.PaddingMd] = tokens.PaddingMd;
         this[AntdResourceKeys.PaddingLg] = tokens.PaddingLg;
+        this[AntdResourceKeys.ShadowCard] = CreateShadow(tokens.ColorText, 0.10d, 0d, 6d, 16d);
+        this[AntdResourceKeys.ShadowPopup] = CreateShadow(tokens.ColorText, 0.14d, 0d, 8d, 24d);
+        this[AntdResourceKeys.ShadowModal] = CreateShadow(tokens.ColorText, 0.18d, 0d, 12d, 32d);
     }
 
     private void AddColor(string key, AntdColor color)
@@ -111,5 +115,16 @@ public sealed class AntdThemeResources : ResourceDictionary
     private void AddBrush(string key, AntdColor color)
     {
         this[key] = AntdColorHelper.Brush(color);
+    }
+
+    private static BoxShadows CreateShadow(AntdColor color, double opacity, double offsetX, double offsetY, double blur)
+    {
+        return new BoxShadows(new BoxShadow
+        {
+            Color = Color.FromArgb((byte)Math.Clamp(opacity * 255d, 0d, 255d), color.R, color.G, color.B),
+            OffsetX = offsetX,
+            OffsetY = offsetY,
+            Blur = blur,
+        });
     }
 }

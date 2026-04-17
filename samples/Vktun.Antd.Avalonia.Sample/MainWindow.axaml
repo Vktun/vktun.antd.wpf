@@ -1,38 +1,114 @@
 <Window x:Class="Vktun.Antd.Avalonia.Sample.MainWindow"
         xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Width="960"
-        Height="640"
-        Title="Vktun.Antd Avalonia Sample"
+        xmlns:antd="clr-namespace:Vktun.Antd.Avalonia;assembly=Vktun.Antd.Avalonia"
+        Width="1180"
+        Height="760"
+        MinWidth="1040"
+        MinHeight="680"
+        Title="Vktun.Antd Avalonia Catalog"
         Background="{DynamicResource Antd.Brush.BgLayout}">
-  <Grid RowDefinitions="Auto,*" Margin="24" RowSpacing="20">
-    <StackPanel Spacing="8">
-      <TextBlock Text="Vktun.Antd Avalonia"
-                 FontSize="28"
-                 FontWeight="SemiBold"
-                 Foreground="{DynamicResource Antd.Brush.Text}" />
-      <TextBlock Text="Shared token resources are loaded through AntdThemeResources."
-                 Foreground="{DynamicResource Antd.Brush.TextSecondary}" />
-    </StackPanel>
-
-    <Border Grid.Row="1"
+  <Grid Margin="28" ColumnDefinitions="280,20,*">
+    <Border x:Name="ThemeRail"
+            Padding="20"
+            CornerRadius="{DynamicResource Antd.BorderRadius.Lg}"
             Background="{DynamicResource Antd.Brush.BgContainer}"
             BorderBrush="{DynamicResource Antd.Brush.BorderSecondary}"
-            BorderThickness="1"
+            BorderThickness="1">
+      <Grid RowDefinitions="Auto,Auto,*">
+        <StackPanel Spacing="8">
+          <TextBlock Text="组件目录"
+                     FontSize="24"
+                     FontWeight="SemiBold"
+                     Foreground="{DynamicResource Antd.Brush.Text}" />
+          <TextBlock Text="Avalonia 侧复刻 WPF Catalog、主题预设和同名控件 API。"
+                     TextWrapping="Wrap"
+                     Foreground="{DynamicResource Antd.Brush.TextSecondary}" />
+        </StackPanel>
+
+        <StackPanel Grid.Row="1" Margin="0,20,0,18" Spacing="8">
+          <TextBlock Text="主题预设"
+                     FontWeight="SemiBold"
+                     Foreground="{DynamicResource Antd.Brush.Text}" />
+          <ComboBox x:Name="ThemePresetSelector"
+                    SelectionChanged="ThemePresetSelector_OnSelectionChanged"
+                    HorizontalAlignment="Stretch">
+            <ComboBox.ItemTemplate>
+              <DataTemplate>
+                <StackPanel>
+                  <TextBlock Text="{Binding Name}" FontWeight="SemiBold" />
+                  <TextBlock Text="{Binding Caption}"
+                             FontSize="12"
+                             TextWrapping="Wrap"
+                             Foreground="{DynamicResource Antd.Brush.TextSecondary}" />
+                </StackPanel>
+              </DataTemplate>
+            </ComboBox.ItemTemplate>
+          </ComboBox>
+        </StackPanel>
+
+        <ListBox x:Name="NavigationListBox"
+                 Grid.Row="2"
+                 Background="Transparent"
+                 BorderThickness="0"
+                 SelectionChanged="NavigationListBox_OnSelectionChanged">
+          <ListBox.ItemTemplate>
+            <DataTemplate>
+              <StackPanel Margin="0,6">
+                <TextBlock Text="{Binding Title}"
+                           FontSize="16"
+                           FontWeight="SemiBold" />
+                <TextBlock Text="{Binding Caption}"
+                           FontSize="12"
+                           TextWrapping="Wrap"
+                           Foreground="{DynamicResource Antd.Brush.TextSecondary}" />
+              </StackPanel>
+            </DataTemplate>
+          </ListBox.ItemTemplate>
+        </ListBox>
+      </Grid>
+    </Border>
+
+    <Border x:Name="PreviewShell"
+            Grid.Column="2"
+            Padding="24"
             CornerRadius="{DynamicResource Antd.BorderRadius.Lg}"
-            Padding="24">
-      <StackPanel Spacing="16">
-        <TextBlock Text="Light theme baseline"
-                   FontSize="{DynamicResource Antd.FontSize.Large}"
-                   Foreground="{DynamicResource Antd.Brush.Text}" />
-        <Button Content="Primary action"
-                HorizontalAlignment="Left"
-                Background="{DynamicResource Antd.Brush.Primary}"
-                Foreground="{DynamicResource Antd.Brush.White}" />
-        <TextBlock Text="The first Avalonia surface is intentionally small; controls can be ported component by component on top of this theme layer."
-                   TextWrapping="Wrap"
-                   Foreground="{DynamicResource Antd.Brush.TextSecondary}" />
-      </StackPanel>
+            Background="{DynamicResource Antd.Brush.BgContainer}"
+            BorderBrush="{DynamicResource Antd.Brush.BorderSecondary}"
+            BorderThickness="1">
+      <Grid RowDefinitions="Auto,*">
+        <Grid ColumnDefinitions="*,Auto">
+          <StackPanel Spacing="8">
+            <TextBlock x:Name="ThemeHeroTitleTextBlock"
+                       Text="Default Light"
+                       FontSize="32"
+                       FontWeight="SemiBold"
+                       Foreground="{DynamicResource Antd.Brush.Text}" />
+            <TextBlock x:Name="ThemeHeroDescriptionTextBlock"
+                       Text="切换主题预设后，Catalog 中的控件资源会随 AntdThemeResources 刷新。"
+                       TextWrapping="Wrap"
+                       Foreground="{DynamicResource Antd.Brush.TextSecondary}" />
+          </StackPanel>
+
+          <WrapPanel Grid.Column="1"
+                     HorizontalAlignment="Right"
+                     VerticalAlignment="Top">
+            <antd:Tag x:Name="ThemeModeTag" Margin="0,0,8,8" Content="Light" />
+            <antd:Tag x:Name="ThemePrimaryTag" Margin="0,0,8,8" Content="#1677FF" />
+            <antd:Tag x:Name="ThemeShapeTag" Margin="0,0,0,8" Content="10px" />
+          </WrapPanel>
+        </Grid>
+
+        <Border Grid.Row="1"
+                Margin="0,22,0,0"
+                Padding="18"
+                CornerRadius="{DynamicResource Antd.BorderRadius.Lg}"
+                Background="{DynamicResource Antd.Brush.BgLayout}"
+                BorderBrush="{DynamicResource Antd.Brush.BorderSecondary}"
+                BorderThickness="1">
+          <ContentControl x:Name="PageHost" />
+        </Border>
+      </Grid>
     </Border>
   </Grid>
 </Window>

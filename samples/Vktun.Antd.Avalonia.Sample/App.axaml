@@ -4,6 +4,7 @@
              xmlns:antd="clr-namespace:Vktun.Antd.Avalonia;assembly=Vktun.Antd.Avalonia">
   <Application.Styles>
     <FluentTheme />
+    <StyleInclude Source="avares://Vktun.Antd.Avalonia/Themes/Generic.axaml" />
   </Application.Styles>
 
   <Application.Resources>
