@@ -1,0 +1,106 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:antd="using:Vktun.Antd.Avalonia">
+
+  <Style Selector="antd|Button">
+    <Setter Property="MinHeight" Value="{DynamicResource Antd.Control.Height.Md}" />
+    <Setter Property="Padding" Value="16,0" />
+    <Setter Property="Background" Value="{DynamicResource Antd.Brush.BgContainer}" />
+    <Setter Property="Foreground" Value="{DynamicResource Antd.Brush.Text}" />
+    <Setter Property="BorderBrush" Value="{DynamicResource Antd.Brush.Border}" />
+    <Setter Property="BorderThickness" Value="1" />
+    <Setter Property="HorizontalContentAlignment" Value="Center" />
+    <Setter Property="VerticalContentAlignment" Value="Center" />
+  </Style>
+
+  <Style Selector="antd|Button:pointerover">
+    <Setter Property="Background" Value="{DynamicResource Antd.Brush.FillSecondary}" />
+    <Setter Property="BorderBrush" Value="{DynamicResource Antd.Brush.PrimaryHover}" />
+  </Style>
+
+  <Style Selector="antd|Button:pressed">
+    <Setter Property="Background" Value="{DynamicResource Antd.Brush.FillTertiary}" />
+    <Setter Property="BorderBrush" Value="{DynamicResource Antd.Brush.PrimaryActive}" />
+  </Style>
+
+  <Style Selector="antd|Tag">
+    <Setter Property="Padding" Value="8,2" />
+    <Setter Property="Background" Value="{DynamicResource Antd.Brush.TagDefaultBackground}" />
+    <Setter Property="Foreground" Value="{DynamicResource Antd.Brush.TagDefaultForeground}" />
+    <Setter Property="BorderBrush" Value="{DynamicResource Antd.Brush.BorderSecondary}" />
+    <Setter Property="BorderThickness" Value="1" />
+  </Style>
+
+  <Style Selector="antd|Badge">
+    <Setter Property="Background" Value="{DynamicResource Antd.Brush.BadgeBackground}" />
+    <Setter Property="Foreground" Value="{DynamicResource Antd.Brush.White}" />
+  </Style>
+
+  <Style Selector="antd|Card">
+    <Setter Property="Padding" Value="18" />
+    <Setter Property="Background" Value="{DynamicResource Antd.Brush.BgContainer}" />
+    <Setter Property="BorderBrush" Value="{DynamicResource Antd.Brush.BorderSecondary}" />
+    <Setter Property="BorderThickness" Value="1" />
+  </Style>
+
+  <Style Selector="antd|Alert">
+    <Setter Property="Padding" Value="12" />
+    <Setter Property="Background" Value="{DynamicResource Antd.Brush.BgSpotlight}" />
+    <Setter Property="Foreground" Value="{DynamicResource Antd.Brush.Text}" />
+    <Setter Property="BorderBrush" Value="{DynamicResource Antd.Brush.BorderSecondary}" />
+    <Setter Property="BorderThickness" Value="1" />
+  </Style>
+
+  <Style Selector="antd|Input">
+    <Setter Property="MinHeight" Value="{DynamicResource Antd.Control.Height.Md}" />
+    <Setter Property="Padding" Value="10,0" />
+    <Setter Property="Background" Value="{DynamicResource Antd.Brush.BgContainer}" />
+    <Setter Property="Foreground" Value="{DynamicResource Antd.Brush.Text}" />
+    <Setter Property="BorderBrush" Value="{DynamicResource Antd.Brush.Border}" />
+    <Setter Property="BorderThickness" Value="1" />
+  </Style>
+
+  <Style Selector="antd|PasswordInput">
+    <Setter Property="MinHeight" Value="{DynamicResource Antd.Control.Height.Md}" />
+    <Setter Property="Padding" Value="10,0" />
+    <Setter Property="Background" Value="{DynamicResource Antd.Brush.BgContainer}" />
+    <Setter Property="Foreground" Value="{DynamicResource Antd.Brush.Text}" />
+    <Setter Property="BorderBrush" Value="{DynamicResource Antd.Brush.Border}" />
+    <Setter Property="BorderThickness" Value="1" />
+  </Style>
+
+  <Style Selector="antd|ComboBox">
+    <Setter Property="MinHeight" Value="{DynamicResource Antd.Control.Height.Md}" />
+    <Setter Property="Background" Value="{DynamicResource Antd.Brush.BgContainer}" />
+    <Setter Property="Foreground" Value="{DynamicResource Antd.Brush.Text}" />
+    <Setter Property="BorderBrush" Value="{DynamicResource Antd.Brush.Border}" />
+    <Setter Property="BorderThickness" Value="1" />
+  </Style>
+
+  <Style Selector="antd|Switch">
+    <Setter Property="Width" Value="52" />
+    <Setter Property="Height" Value="28" />
+    <Setter Property="Background" Value="{DynamicResource Antd.Brush.FillQuaternary}" />
+  </Style>
+
+  <Style Selector="antd|Progress">
+    <Setter Property="MinHeight" Value="12" />
+  </Style>
+
+  <Style Selector="antd|Pagination">
+    <Setter Property="MinHeight" Value="{DynamicResource Antd.Control.Height.Md}" />
+  </Style>
+
+  <Style Selector="antd|Tabs">
+    <Setter Property="MinHeight" Value="{DynamicResource Antd.Control.Height.Md}" />
+  </Style>
+
+  <Style Selector="antd|Skeleton">
+    <Setter Property="MinHeight" Value="48" />
+    <Setter Property="Background" Value="{DynamicResource Antd.Brush.FillSecondary}" />
+  </Style>
+
+  <Style Selector="antd|Spin">
+    <Setter Property="Foreground" Value="{DynamicResource Antd.Brush.Primary}" />
+  </Style>
+</Styles>

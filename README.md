@@ -70,3 +70,37 @@ Avalonia 当前先提供共享 token 到 Avalonia `ResourceDictionary` 的映射
 dotnet build Vktun.Antd.slnx
 dotnet test Vktun.Antd.slnx
 ```
+
+## Avalonia component catalog usage
+
+Load the shared token resources and the Avalonia component styles in `App.axaml`:
+
+```xml
+<Application.Styles>
+  <FluentTheme />
+  <StyleInclude Source="avares://Vktun.Antd.Avalonia/Themes/Generic.axaml" />
+</Application.Styles>
+
+<Application.Resources>
+  <antd:AntdThemeResources Theme="Light" />
+</Application.Resources>
+```
+
+Switch theme resources at runtime:
+
+```csharp
+AntdThemeManager.Current.Apply(Application.Current!, AntdThemeMode.Dark);
+AntdThemeManager.Current.Apply(Application.Current!, AntdThemeMode.Light, new AntdSeedToken
+{
+    PrimaryColor = AntdColor.Parse("#13C2C2"),
+});
+```
+
+Use the Avalonia controls with the same Ant Design semantic API shape as the WPF package:
+
+```xml
+<antd:Button Content="Primary" Type="Primary" />
+<antd:Input Watermark="Email" Prefix="@" Status="Success" />
+<antd:Switch IsChecked="True" />
+<antd:Tag Color="Success">Ready</antd:Tag>
+```
