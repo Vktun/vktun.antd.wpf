@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Globalization;
@@ -47,6 +48,58 @@ public class AntdThemeTests
 
             themeResources.Theme.Should().Be(AntdThemeMode.Dark);
             ((SolidColorBrush)themeResources[AntdResourceKeys.BrushPrimary]).Color.Should().Be(Colors.HotPink);
+        });
+    }
+
+    [TestMethod]
+    public void GeekPreset_ShouldKeepBodyTextDistinctFromPrimaryAccent()
+    {
+        WpfTestHost.Run(() =>
+        {
+            Application.Current!.Resources = new ResourceDictionary();
+            Application.Current.Resources.MergedDictionaries.Add(new AntdThemeResources());
+            Application.Current.Resources.MergedDictionaries.Add(new ResourceDictionary
+            {
+                Source = new Uri("/Vktun.Antd.Wpf.Sample;component/Resources/CatalogResources.xaml", UriKind.Relative),
+            });
+
+            var window = new Vktun.Antd.Wpf.Sample.MainWindow();
+
+            try
+            {
+                var themePresetsField = typeof(Vktun.Antd.Wpf.Sample.MainWindow).GetField("_themePresets", BindingFlags.Instance | BindingFlags.NonPublic);
+                themePresetsField.Should().NotBeNull();
+
+                var geekPreset = ((IEnumerable)themePresetsField!.GetValue(window)!)
+                    .Cast<object>()
+                    .First(static preset =>
+                    {
+                        var kind = preset.GetType().GetProperty("Kind", BindingFlags.Instance | BindingFlags.Public);
+                        return string.Equals(kind?.GetValue(preset)?.ToString(), "Geek", StringComparison.Ordinal);
+                    });
+
+                var applyPresetMethod = typeof(Vktun.Antd.Wpf.Sample.MainWindow).GetMethod("ApplyPreset", BindingFlags.Instance | BindingFlags.NonPublic);
+                applyPresetMethod.Should().NotBeNull();
+                applyPresetMethod!.Invoke(window, [geekPreset]);
+
+                var bodyText = ((SolidColorBrush)Application.Current.Resources[AntdResourceKeys.BrushText]).Color;
+                var secondaryText = ((SolidColorBrush)Application.Current.Resources[AntdResourceKeys.BrushTextSecondary]).Color;
+                var tertiaryText = ((SolidColorBrush)Application.Current.Resources[AntdResourceKeys.BrushTextTertiary]).Color;
+                var primary = ((SolidColorBrush)Application.Current.Resources[AntdResourceKeys.BrushPrimary]).Color;
+                var defaultTagText = ((SolidColorBrush)Application.Current.Resources[AntdResourceKeys.BrushTagDefaultForeground]).Color;
+
+                bodyText.Should().Be(Color.FromRgb(0xE7, 0xF5, 0xE5));
+                secondaryText.Should().Be(Color.FromRgb(0xA7, 0xB9, 0xA3));
+                tertiaryText.Should().Be(Color.FromRgb(0x6D, 0x81, 0x6A));
+                defaultTagText.Should().Be(Color.FromRgb(0xD8, 0xEF, 0xD4));
+                bodyText.Should().NotBe(primary);
+                secondaryText.Should().NotBe(primary);
+                tertiaryText.Should().NotBe(primary);
+            }
+            finally
+            {
+                window.Close();
+            }
         });
     }
 
@@ -832,6 +885,44 @@ public class AntdThemeTests
             tabs.SelectedItem.Should().BeSameAs(codePane);
             designPane.IsSelected.Should().BeFalse();
             codePane.IsSelected.Should().BeTrue();
+        });
+    }
+
+    [TestMethod]
+    public void Tabs_ShouldRenderSelectedPaneContent_WhenPaneContentIsVisual()
+    {
+        WpfTestHost.Run(() =>
+        {
+            InitializeThemeResources();
+
+            var designContent = new TextBlock { Text = "Design content" };
+            var codeContent = new TextBlock { Text = "Code content" };
+            var designPane = new TabPane { Key = "design", Header = "Design", Content = designContent };
+            var codePane = new TabPane { Key = "code", Header = "Code", Content = codeContent };
+
+            var tabs = new Tabs
+            {
+                Items = new ObservableCollection<TabPane> { designPane, codePane },
+                SelectedIndex = 0,
+                Width = 360,
+                Height = 220,
+            };
+
+            var window = CreateWindow(tabs, width: 420, height: 280);
+
+            try
+            {
+                window.Show();
+                tabs.ApplyTemplate();
+                WpfTestHost.Pump();
+
+                tabs.SelectedItem.Should().BeSameAs(designPane);
+                FindVisualChildren<TextBlock>(tabs).Any(textBlock => textBlock.Text == "Design content").Should().BeTrue();
+            }
+            finally
+            {
+                window.Close();
+            }
         });
     }
 

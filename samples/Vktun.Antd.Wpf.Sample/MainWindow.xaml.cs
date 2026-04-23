@@ -164,9 +164,9 @@ public partial class MainWindow : Window
                 SetEffectOverride(AntdResourceKeys.ShadowModal, ParseColor("#171212"), 28d, 8d, 0.26d);
                 break;
             case ThemeSceneKind.Cyber:
-                SetBrushOverride(AntdResourceKeys.BrushText, ParseColor("#74FF63"));
-                SetBrushOverride(AntdResourceKeys.BrushTextSecondary, ParseColor("#54D84A"));
-                SetBrushOverride(AntdResourceKeys.BrushTextTertiary, ParseColor("#2FAE38"));
+                SetBrushOverride(AntdResourceKeys.BrushText, ParseColor("#E7F5E5"));
+                SetBrushOverride(AntdResourceKeys.BrushTextSecondary, ParseColor("#A7B9A3"));
+                SetBrushOverride(AntdResourceKeys.BrushTextTertiary, ParseColor("#6D816A"));
                 SetBrushOverride(AntdResourceKeys.BrushBgBase, ParseColor("#050805"));
                 SetBrushOverride(AntdResourceKeys.BrushBgContainer, ParseColor("#0B0E0B"));
                 SetBrushOverride(AntdResourceKeys.BrushBgElevated, ParseColor("#111411"));
@@ -178,7 +178,7 @@ public partial class MainWindow : Window
                 SetBrushOverride(AntdResourceKeys.BrushBorderSecondary, ParseColor("#2A8F2D"));
                 SetBrushOverride(AntdResourceKeys.BrushFocusOutline, ParseColor("#6AFF61"));
                 SetBrushOverride(AntdResourceKeys.BrushTagDefaultBackground, ParseColor("#142214"));
-                SetBrushOverride(AntdResourceKeys.BrushTagDefaultForeground, ParseColor("#74FF63"));
+                SetBrushOverride(AntdResourceKeys.BrushTagDefaultForeground, ParseColor("#D8EFD4"));
                 SetEffectOverride(AntdResourceKeys.ShadowCard, ParseColor("#37FF2E"), 14d, 0d, 0.34d);
                 SetEffectOverride(AntdResourceKeys.ShadowPopup, ParseColor("#37FF2E"), 24d, 0d, 0.44d);
                 SetEffectOverride(AntdResourceKeys.ShadowModal, ParseColor("#37FF2E"), 32d, 0d, 0.52d);
@@ -496,7 +496,7 @@ public partial class MainWindow : Window
             new ThemePreset(ThemePresetKind.Illustration, ThemeSceneKind.Illustration, ThemePatternKind.Illustration, "插画风格", "深描边、柔和底色和贴纸感背景。", "参考插画式控制面板，强调主题辨识度与更强的轮廓语言。", "重点检查浅色主题下的深描边、弹层外壳与日历内部是否统一。", "浅色", AntdThemeMode.Light, CreateSeed("#3F86FF", "#62C63B", "#FFB020", "#FF6767", 16d, 15d, 42d), "#FCFAF2", "#F9EFF5", "#D7E7FF", "#F6D7E4", "#FCFAF2", "#373130", "#FFF8F7", "#FFF3F5", "#373130", "#373130", "#383230", "#F7D68B", 0.24d, true),
             new ThemePreset(ThemePresetKind.Bootstrap, ThemeSceneKind.Neutral, ThemePatternKind.Grid, "类 Bootstrap 拟物化风格", "更明确的容器边界与蓝灰层次。", "适合后台表单页，容器和控件之间会有更清楚的边界关系。", "关注列表、分页和按钮边框是否稳定统一。", "浅色", AntdThemeMode.Light, CreateSeed("#0D6EFD", "#198754", "#FFC107", "#DC3545", 8d, 14d, 40d), "#F3F7FC", "#ECF2F8", "#C2D7F5", "#DEEAF7", "#F7FBFF", "#7D9AB7", "#FFFFFF", "#F7FAFD", "#A5BDD7", "#A5BDD7", "#6E86A0", "#8AB4F8", 0.12d, false),
             new ThemePreset(ThemePresetKind.Glass, ThemeSceneKind.Glass, ThemePatternKind.None, "玻璃风格", "轻透高光与更柔和的蓝调。", "适合检查高亮背景、卡片阴影和弹层浮起感。", "打开 DatePicker 可重点观察弹层边界和内容衬托。", "浅色", AntdThemeMode.Light, CreateSeed("#2F8CFF", "#34C759", "#FF9F0A", "#FF453A", 20d, 14d, 42d), "#EEF7FF", "#F9FCFF", "#B7E4FF", "#E1F2FF", "#F7FCFF", "#B9DFF4", "#FCFFFF", "#F2FAFF", "#B9DFF4", "#B9DFF4", "#8BC5EA", "#88D7FF", 0d, false),
-            new ThemePreset(ThemePresetKind.Geek, ThemeSceneKind.Cyber, ThemePatternKind.Matrix, "极客风格", "霓虹绿边框与黑色控制台。", "参考极客与矩阵风格，强调发光描边、终端背景和高对比输入框。", "重点检查深色弹层、亮绿色文字和聚焦态是否足够统一。", "深色", AntdThemeMode.Dark, CreateSeed("#49FF43", "#49FF43", "#FADB14", "#FF5D5D", 8d, 14d, 38d), "#050805", "#090C09", "#103D11", "#102910", "#070A07", "#49FF43", "#0B0E0B", "#070907", "#49FF43", "#49FF43", "#49FF43", "#49FF43", 0.52d, true),
+            new ThemePreset(ThemePresetKind.Geek, ThemeSceneKind.Cyber, ThemePatternKind.Matrix, "极客风格", "霓虹绿边框与黑色控制台。", "参考极客与矩阵风格，强调发光描边、终端背景和高对比输入框。", "重点检查深色弹层、绿色强调色和聚焦态是否足够统一。", "深色", AntdThemeMode.Dark, CreateSeed("#49FF43", "#49FF43", "#FADB14", "#FF5D5D", 8d, 14d, 38d), "#050805", "#090C09", "#103D11", "#102910", "#070A07", "#49FF43", "#0B0E0B", "#070907", "#49FF43", "#49FF43", "#49FF43", "#49FF43", 0.52d, true),
         ];
     }
 

@@ -15,6 +15,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\Vktun.Antd.Core\Vktun.Antd.Core.csproj" />
     <ProjectReference Include="..\..\src\Vktun.Antd.Wpf\Vktun.Antd.Wpf.csproj" />
+    <ProjectReference Include="..\..\samples\Vktun.Antd.Wpf.Sample\Vktun.Antd.Wpf.Sample.csproj" />
     <Using Include="Microsoft.VisualStudio.TestTools.UnitTesting" />
   </ItemGroup>
 </Project>

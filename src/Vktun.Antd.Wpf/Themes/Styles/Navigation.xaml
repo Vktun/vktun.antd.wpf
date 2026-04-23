@@ -612,7 +612,13 @@
                             <Border.RenderTransform>
                                 <TranslateTransform Y="0" />
                             </Border.RenderTransform>
-                            <ContentPresenter Content="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=SelectedItem}" />
+                            <Border Padding="16"
+                                    Background="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=SelectedItem.Background}">
+                                <ContentPresenter Content="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=SelectedItem.Content}"
+                                                  ContentTemplate="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=SelectedItem.ContentTemplate}"
+                                                  ContentTemplateSelector="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=SelectedItem.ContentTemplateSelector}"
+                                                  ContentStringFormat="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=SelectedItem.ContentStringFormat}" />
+                            </Border>
                         </Border>
                     </Grid>
                     <ControlTemplate.Triggers>
